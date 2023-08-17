@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "Swash",
+    "slug": "swash",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "userInterfaceStyle": "light",
+      "supportsTablet": true,
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": [
+          "googlechrome",
+          "https"
+        ]
+      }
+    },
+    "android": {
+      "userInterfaceStyle": "light",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "swash",
+      "config": {
+        "googleSignIn": {
+          "certificateHash": "71:9C:0B:34:99:34:20:3F:1D:18:7C:97:1C:6E:42:05:77:0F:B3:AA"
+        }
+      },
+      "permissions": [
+        "INTERNET",
+        "USE_CREDENTIALS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "63d9aa32-95a7-4156-bcc4-57bc2380b667"
+      }
+    },
+    "owner": "nick_1995",
+    "scheme": "swash",
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      "expo-localization"
+    ]
+  }
+}
