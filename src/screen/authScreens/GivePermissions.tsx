@@ -48,15 +48,15 @@ const GivePermissions = () => {
 								permissions</Text>
 						}
 					</Box>
-					<Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'flex-start'}
+					<Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
 							 backgroundColor={colors.white}>
-						<Box flex={1} w={'100%'} justifyContent={'space-evenly'}>
-							<Box alignItems={'center'}>
-								<Text fontSize={28} fontWeight={'700'}>Give permissions</Text>
-								<Text textAlign={'center'} color={colors.grayLight}>
-									We need to ask you for camera, geo, push permissions. Without them application wouldn’t work properly
-								</Text>
-							</Box>
+						<Box flex={1} alignItems={'center'}>
+							<Text fontSize={28} fontWeight={'700'}>Give permissions</Text>
+							<Text textAlign={'center'} color={colors.grayLight}>
+								We need to ask you for camera, geo, push permissions. Without them application wouldn’t work properly
+							</Text>
+						</Box>
+						<Box flex={1} w={'100%'}>
 							<Button onPress={onPressAboutUs} styleContainer={styles.styleContainerBtn} title={'Give permissions'}
 											colorText={colors.white} backgroundColor={errorPermission ? colors.red : colors.blue} />
 						</Box>
