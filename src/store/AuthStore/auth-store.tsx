@@ -9,6 +9,7 @@ export class AuthStore {
 	userAuthGoogleData: UserAuthGoogleData = {} as UserAuthGoogleData
 	isAuth: boolean = false
 	phone: string = ''
+	clientCode: number = 0
 
 
 	setUser(userData: any): void {
@@ -23,41 +24,53 @@ export class AuthStore {
 		this.phone = phone
 	}
 
+	setClientCode(code: number): void {
+		this.clientCode = code
+	}
+
 	async setUserAuthData(userData: UserAuthGoogleData) {
 		await deviceStorage.saveItem('token', userData.token)
 		await deviceStorage.saveItem('clients_id', userData.clients_id)
 		this.userAuthGoogleData = userData
 	}
 
-	async sendClientVerifyCode(phone: string) {
+	async sendClientCode(formattedPhoneNumber?: string) {
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
 		const payload = {
-			clients_id: '1',
-			token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoia2VuaGVybGlAZ21haWwuY29tIiwiZXhwaXJlIjoxNzIzODI3Mjg5LjUyODc0M30.QrHmrh0mZGNOrGx8lrzEXYgsgvk3NVHVjsejR20gMfs.Y2xpZW50cw',
-			phone_verify_code: phone,
+			clients_id: clients_id,
+			token: token,
+			phone: formattedPhoneNumber ?? this.phone
 		}
-		this.setPhone(phone)
-		const sendClientCodeVerify = await authApi.sendClientCodeVerify(payload)
-		console.log(sendClientCodeVerify)
+
+		const {data} = await authApi.sendClientCode(payload)
+	}
+
+	async sendClientVerifyCode(code: string) {
+		const token = await deviceStorage.getItem('token')
+		const clients_id = await deviceStorage.getItem('clients_id')
+		const payload = {
+			clients_id: clients_id,
+			token: token,
+			phone_verify_code: code,
+		}
+		console.log(payload)
+		return await authApi.sendClientCodeVerify(payload)
 	}
 
 	async getBaseInfoClient() {
+		const token = await deviceStorage.getItem('token')
+		const clients_id = await deviceStorage.getItem('clients_id')
 		const payload = {
-			clients_id: this.userAuthGoogleData.clients_id,
-			token: this.userAuthGoogleData.token,
+			clients_id: clients_id,
+			token: token,
 		}
 		const dataPushMessages = await authApi.getClientPushMessages(payload)
-
+		console.log(dataPushMessages, 'dataPushMessages')
 		const dataSettingClient = await authApi.getSettingsClient(payload)
 		const dataDictionary = await authApi.getDictionary({ language })
 		const dataReportClient = await authApi.getOrderReportClient({ ...payload })
-		console.log(country)
 		const dataLogisticPoints = await authApi.getLogisticPoints({ country })
-		console.log(dataLogisticPoints)
-		console.log(dataReportClient)
-		console.log(dataDictionary)
-		console.log(dataPushMessages)
 	}
 
 	constructor() {
@@ -71,8 +84,10 @@ export class AuthStore {
 			getBaseInfoClient: action,
 			setAuth: action,
 			setUserAuthData: action,
+			sendClientCode: action,
 		})
 		this.setAuth = this.setAuth.bind(this)
+		this.sendClientCode = this.sendClientCode.bind(this)
 		this.setPhone = this.setPhone.bind(this)
 		this.sendClientVerifyCode = this.sendClientVerifyCode.bind(this)
 		this.getBaseInfoClient = this.setAuth.bind(this)

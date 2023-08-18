@@ -6,7 +6,7 @@ import {deviceStorage} from '../utils/storage/storage'
 export const url = 'http://stirka.webd.pro/';
 
 export const instance = axios.create({
-    baseURL: url,
+    baseURL: url
 });
 
 // Request interceptor for API calls

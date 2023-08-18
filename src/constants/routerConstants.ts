@@ -5,4 +5,6 @@ export const routerConstants = {
     GIVE_PERMISSIONS: 'GivePermissions',
     VERIFY_NUMBER: 'verify-number',
     PHONE_VERIFY: 'phone-verify',
+    RECONNECT: 'reconnect',
+    TERMS_OF_USE: 'terms-of-use',
 }

@@ -17,17 +17,17 @@ const GivePermissions = () => {
 		notificationStatus,
 		locationStatus,
 	} = usePermissionsPushGeo()
-	const [errorPermission, setErrorPermission] = useState<boolean>(true)
+	const [errorPermission, setErrorPermission] = useState<boolean>(false)
 
 	const onPressAboutUs = () => {
 		askNotificationPermissionHandler().then((data) => {
-			if (data ! === 'granted') {
+			if (data !== 'granted') {
 				return setErrorPermission(true)
 			}
 			setErrorPermission(false)
 		})
 		askLocationPermissionHandler().then((data) => {
-			if (data ! === 'granted') {
+			if (data !== 'granted') {
 				return setErrorPermission(true)
 			}
 			setErrorPermission(false)
@@ -53,7 +53,7 @@ const GivePermissions = () => {
 						<Box flex={1} w={'100%'} justifyContent={'space-evenly'}>
 							<Box alignItems={'center'}>
 								<Text fontSize={28} fontWeight={'700'}>Give permissions</Text>
-								<Text textAlign={'center'} color={colors.gray}>
+								<Text textAlign={'center'} color={colors.grayLight}>
 									We need to ask you for camera, geo, push permissions. Without them application wouldn’t work properly
 								</Text>
 							</Box>

@@ -17,11 +17,14 @@ export const authApi = {
 		return await instance.get(`washapi.php/get_client_push_messages`, { params: payload })
 	},
 	async sendClientCodeVerify(payload: { clients_id: string, token: string, phone_verify_code: string }) {
-
-		return await instance.post(`washapi.php/client_code_verify`, payload)
+		return await instance.post(`washapi.php/client_code_verify`, null, {
+			params: payload,
+		})
 	},
-	async sendClientCode(payload: { clients_id: string, token: string }) {
-		return await instance.post(`washapi.php/client_code_send`, payload)
+	async sendClientCode(payload: { clients_id: string, token: string, phone: string }) {
+		return await instance.post(`washapi.php/client_code_send`, {}, {
+			params: payload
+		})
 	},
 	async clientRegister(payload: { clients_id: string, token: string, phone: string, language: string, country: string }) {
 		return await instance.post(`washapi.php/client_register`, payload)

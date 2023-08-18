@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -38,7 +39,8 @@
       },
       "permissions": [
         "INTERNET",
-        "USE_CREDENTIALS"
+        "USE_CREDENTIALS",
+        "ACCESS_NETWORK_STATE"
       ]
     },
     "web": {

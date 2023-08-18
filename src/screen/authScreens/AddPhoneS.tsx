@@ -7,6 +7,7 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import Button from '../../components/Button'
 import rootStore from '../../store/RootStore/root-store'
 import { routerConstants } from '../../constants/routerConstants'
+import AuthStore from '../../store/AuthStore/auth-store'
 
 type PhoneVerifySProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -21,28 +22,30 @@ type CountryData = {
 	subregion: string; // Подрегион
 };
 const countryDataDefault = {
-	callingCode: ["48"],
-	cca2: "PL",
-	currency: ["PLN"],
-	flag: "flag-pl",
-	name: "Poland",
-	region: "Europe",
-	subregion: "Eastern Europe",
-};
-const PhoneVerifyS = ({ navigation }: PhoneVerifySProps) => {
+	callingCode: ['48'],
+	cca2: 'PL',
+	currency: ['PLN'],
+	flag: 'flag-pl',
+	name: 'Poland',
+	region: 'Europe',
+	subregion: 'Eastern Europe',
+}
+const AddPhoneS = ({ navigation }: PhoneVerifySProps) => {
 	const { AuthStoreService } = rootStore
+	const { setPhone: setVerifyPhone } = AuthStore
 	const [phone, setPhone] = useState<string>()
 	const [isValidPhone, setIsValidPhone] = useState<boolean>(false)
 	const [disabledBtn, setDisableBtn] = useState<boolean>(false)
-	const [countryCode, setCountryCode] = useState<CountryData>(countryDataDefault);
+	const [countryCode, setCountryCode] = useState<CountryData>(countryDataDefault)
 	const onPressSendSMS = () => {
 		if (!isValidPhone || !phone) {
 			return setDisableBtn(true)
 		}
 		if (isValidPhone && !disabledBtn) {
-			const formattedPhoneNumber = `${countryCode.callingCode[0]}${phone}`;
-			AuthStoreService.sendClientVerifyCode(formattedPhoneNumber).then((data) => {
-				if(data) {
+			const formattedPhoneNumber = `${countryCode.callingCode[0]}${phone}`
+			setVerifyPhone(formattedPhoneNumber)
+			AuthStoreService.sendClientCode(formattedPhoneNumber).then((data) => {
+				if (data) {
 					navigation.navigate(routerConstants.VERIFY_NUMBER)
 				}
 			})
@@ -65,7 +68,8 @@ const PhoneVerifyS = ({ navigation }: PhoneVerifySProps) => {
 					<Text fontSize={22} mb={2} fontWeight={'600'}>Phone verification</Text>
 					<Text fontSize={15} color={colors.grayLight}>We need your phone number</Text>
 				</Box>
-				<PhoneNumberField onChangeCountry={onChangeCountry}  defaultValue={phone} errorMessage={'Incorrect phone number'} onChangeText={onChangeTextPhone}
+				<PhoneNumberField onChangeCountry={onChangeCountry} defaultValue={phone} errorMessage={'Incorrect phone number'}
+													onChangeTextPhone={onChangeTextPhone}
 													isRequired={true} isInvalid={disabledBtn} />
 				<Box mt={10}>
 					<Button styleContainer={{ width: 280 }} backgroundColor={colors.blue} colorText={colors.white}
@@ -76,4 +80,4 @@ const PhoneVerifyS = ({ navigation }: PhoneVerifySProps) => {
 	)
 }
 
-export default PhoneVerifyS
+export default AddPhoneS

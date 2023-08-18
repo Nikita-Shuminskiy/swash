@@ -1,6 +1,6 @@
 import React from 'react'
 import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
-import PhoneVerification from '../../components/PhoneVerification'
+import PhoneVerificationCode from '../../components/PhoneVerificationCode'
 import { Box, Text } from 'native-base'
 import { colors } from '../../assets/colors/colors'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
@@ -17,7 +17,7 @@ const VerifyNumberS = observer(({ navigation }: VerifyNumberSProps) => {
 	const { phone } = AuthStore
 	const { AuthStoreService } = rootStore
 	const onPressSendCodeAgain = () => {
-		AuthStoreService.sendClientVerifyCode(phone)
+		AuthStoreService.sendClientCode()
 	}
 	const goBackPress = () => {
 		navigation.goBack()
@@ -32,7 +32,7 @@ const VerifyNumberS = observer(({ navigation }: VerifyNumberSProps) => {
 				<Text fontSize={15} color={colors.gray}>The code was sent to <Text fontSize={15}
 																																					 color={colors.blue}>+{phone}</Text></Text>
 				<Box mt={10} mb={10} flex={1} w={'100%'}>
-					<PhoneVerification />
+					<PhoneVerificationCode navigation={navigation} />
 				</Box>
 				<TimerComponent onPressSendCodeAgain={onPressSendCodeAgain} />
 			</Box>

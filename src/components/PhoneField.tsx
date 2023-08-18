@@ -10,11 +10,11 @@ type PhoneNumberFieldProps = PhoneInputProps & {
 	isInvalid: boolean
 	errorMessage?: string
 	onValidNumber?: (isValid: boolean) => void,
-	onChangeText: (text: string, isValid: boolean) => void
+	onChangeTextPhone: (text: string, isValid: boolean) => void
 }
 const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
 																														 isRequired,
-																														 onChangeText,
+																														 onChangeTextPhone,
 																														 isInvalid,
 																														 onValidNumber,
 																														 errorMessage,
@@ -43,7 +43,7 @@ const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
 					placeholder={'Phone*'}
 					layout='first'
 					onChangeText={(text) => {
-						onChangeText(text, phoneInput.current?.isValidNumber(text))
+						onChangeTextPhone(text, phoneInput.current?.isValidNumber(text))
 					}}
 					{...rest}
 				/>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { observer } from 'mobx-react-lite'
 import AuthStore from '../store/AuthStore'
@@ -10,34 +10,46 @@ import { routerConstants } from '../constants/routerConstants'
 import LoginS from '../screen/authScreens/LoginS'
 import Alerts from '../components/Alert'
 import GivePermissions from '../screen/authScreens/GivePermissions'
-import { usePermissionsPushGeo } from '../utils/hook/usePermissionsPushGeo'
 import VerifyNumberS from '../screen/authScreens/VerifyNumberS'
 import rootStore from '../store/RootStore/root-store'
-import PhoneVerifyS from '../screen/authScreens/PhoneVerifyS'
+import AddPhoneS from '../screen/authScreens/AddPhoneS'
+import WifiReconnectS from '../screen/authScreens/WifiReconnectS'
+import NetInfo from '@react-native-community/netinfo'
+import TermsOfUseS from '../screen/authScreens/TermsOfUseS'
 
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
-	const { isLoading, errorText } = NotificationStore
+	const { isLoading, serverResponseText } = NotificationStore
 	const { isAuth } = AuthStore
 	const { AuthStoreService } = rootStore
-	const {
-		askNotificationPermissionHandler,
-		askLocationPermissionHandler,
-		notificationStatus,
-		locationStatus,
-	} = usePermissionsPushGeo()
 
+	const [isConnected, setIsConnected] = useState(false)
+
+	const checkInternetConnection = async () => {
+		const netInfoState = await NetInfo.fetch()
+		setIsConnected(netInfoState.isConnected)
+	}
 
 	useEffect(() => {
-		AuthStoreService.getClientBaseInfo()
-		askNotificationPermissionHandler()
-		askLocationPermissionHandler()
+		const unsubscribe = NetInfo.addEventListener(state => {
+			setIsConnected(state.isConnected)
+		})
+		return () => {
+			unsubscribe()
+		}
 	}, [])
+
 	return (
 		<NavigationContainer>
 			{isLoading === LoadingEnum.fetching && <Loading visible={true} />}
-			{errorText && <Alerts text={'errorText'} />}
+			{serverResponseText && <Alerts text={serverResponseText} />}
+			{!isConnected && <WifiReconnectS checkInternet={checkInternetConnection} visible={!isConnected} />}
+			<RootStack.Screen
+				options={{ headerShown: false }}
+				name={routerConstants.RECONNECT}
+				component={WifiReconnectS}
+			/>
 			<RootStack.Navigator>
 				<RootStack.Screen
 					options={{ headerShown: false }}
@@ -57,7 +69,12 @@ const RootNavigation = observer(() => {
 				<RootStack.Screen
 					options={{ headerShown: false }}
 					name={routerConstants.PHONE_VERIFY}
-					component={PhoneVerifyS}
+					component={AddPhoneS}
+				/>
+				<RootStack.Screen
+					options={{ headerShown: false }}
+					name={routerConstants.TERMS_OF_USE}
+					component={TermsOfUseS}
 				/>
 			</RootStack.Navigator>
 		</NavigationContainer>

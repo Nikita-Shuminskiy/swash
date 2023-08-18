@@ -1,11 +1,17 @@
 import React from 'react'
-import { Alert, Box, Heading, HStack, VStack } from 'native-base'
+import { Alert, Box, CloseIcon, Heading, HStack, IconButton, VStack } from 'native-base'
 import { colors } from '../assets/colors/colors'
+import NotificationStore from '../store/NotificationStore/notification-store'
+import { TouchableHighlight, TouchableOpacity } from 'react-native'
 
 type AlertProps = {
 	text: string
 }
 const Alerts = ({ text }: AlertProps) => {
+	const { setServerErrorText } = NotificationStore
+	const onPressClose = () => {
+		setServerErrorText(undefined)
+	}
 	return <Alert position={'absolute'} top={20}
 								left={5}
 								shadow={2} zIndex={10}
@@ -20,7 +26,7 @@ const Alerts = ({ text }: AlertProps) => {
 						Service auth error
 					</Heading>
 				</HStack>
-				{/*	<IconButton variant='unstyled' icon={<CloseIcon size='3' color={colors.white} />} />*/}
+				<IconButton onPress={onPressClose} variant='unstyled' icon={<CloseIcon size='4' color={colors.white} />} />
 			</HStack>
 			<Box pl='6' _text={{
 				color: colors.white,

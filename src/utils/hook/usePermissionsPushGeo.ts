@@ -3,6 +3,8 @@ import * as Location from 'expo-location'
 import { useEffect, useState } from 'react'
 import NotificationStore from '../../store/NotificationStore/notification-store'
 import { LoadingEnum } from '../../store/types/types'
+import { useNavigation } from '@react-navigation/native'
+import { routerConstants } from '../../constants/routerConstants'
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -13,6 +15,7 @@ Notifications.setNotificationHandler({
 })
 
 export const usePermissionsPushGeo = () => {
+
 	const [notificationStatus, setNotificationStatus] = useState('undetermined')
 	const [locationStatus, setLocationStatus] = useState('undetermined')
 	const { setIsLoading} = NotificationStore

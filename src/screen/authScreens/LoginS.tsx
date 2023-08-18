@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Image, StyleSheet } from 'react-native'
 import * as Linking from 'expo-linking'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
@@ -13,6 +13,7 @@ import Button from '../../components/Button'
 import rootStore from '../../store/RootStore/root-store'
 import WebView from 'react-native-webview'
 import { routerConstants } from '../../constants/routerConstants'
+import { usePermissionsPushGeo } from '../../utils/hook/usePermissionsPushGeo'
 
 const uriGoogleAuth = {
 	uri:
@@ -37,8 +38,13 @@ export type  UserAuthGoogleData = {
 const LoginS = ({ navigation }: LoginSProps) => {
 	const { setUserAuthData } = AuthStore
 	const { AuthStoreService } = rootStore
+	const {
+		askNotificationPermissionHandler,
+		askLocationPermissionHandler,
+		notificationStatus,
+		locationStatus,
+	} = usePermissionsPushGeo()
 	const [webViewVisible, setWebViewVisible] = useState(false)
-	const [userData, setUserData] = useState<UserAuthGoogleData | {}>({})
 
 	const onPressSingUpGoogle = () => {
 		setWebViewVisible(true)
@@ -68,10 +74,9 @@ const LoginS = ({ navigation }: LoginSProps) => {
 		if (jsonData) {
 			try {
 				const parsedData: UserAuthGoogleData = JSON.parse(jsonData)
-				setUserData(parsedData)
 				if (parsedData.token) {
 					setUserAuthData(parsedData).then(r =>
-						setWebViewVisible(false),
+							setWebViewVisible(false),
 						navigation.navigate(routerConstants.PHONE_VERIFY)
 					)
 
@@ -92,6 +97,24 @@ const LoginS = ({ navigation }: LoginSProps) => {
 		)
 	}
 
+	useEffect(() => {
+		AuthStoreService.checkToken().then((data) => {
+			if(data) {
+				navigation.navigate(routerConstants.PHONE_VERIFY)
+				AuthStoreService.getClientBaseInfo()
+			}
+		})
+		askNotificationPermissionHandler().then((status) => {
+			if(status !== 'granted') {
+				navigation.navigate(routerConstants.GIVE_PERMISSIONS)
+			}
+		})
+		askLocationPermissionHandler().then((status) => {
+			if(status !== 'granted') {
+				navigation.navigate(routerConstants.GIVE_PERMISSIONS)
+			}
+		})
+	}, [])
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={false}>
 			{
