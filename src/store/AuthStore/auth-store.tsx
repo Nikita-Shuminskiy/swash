@@ -54,7 +54,6 @@ export class AuthStore {
 			token: token,
 			phone_verify_code: code,
 		}
-		console.log(payload)
 		return await authApi.sendClientCodeVerify(payload)
 	}
 

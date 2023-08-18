@@ -80,8 +80,8 @@ const LoginS = ({ navigation }: LoginSProps) => {
 			try {
 				const parsedData: UserAuthGoogleData = JSON.parse(jsonData)
 				if (parsedData.token) {
+					setWebViewVisible(false)
 					setUserAuthData(parsedData).then(r => {
-						setWebViewVisible(false)
 						// @ts-ignore
 						navigation.navigate(routerConstants.PHONE_VERIFY)
 					})

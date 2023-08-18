@@ -32,7 +32,7 @@ const VerifyNumberS = observer(({ navigation }: VerifyNumberSProps) => {
 				<Text fontSize={15} color={colors.gray}>The code was sent to <Text fontSize={15}
 																																					 color={colors.blue}>+{phone}</Text></Text>
 				<Box mt={10} mb={10} flex={1} w={'100%'}>
-					<PhoneVerificationCode  navigation={navigation} />
+					<PhoneVerificationCode navigation={navigation} />
 				</Box>
 				<TimerComponent onPressSendCodeAgain={onPressSendCodeAgain} />
 			</Box>

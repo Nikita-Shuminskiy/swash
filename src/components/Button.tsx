@@ -33,7 +33,7 @@ const Button = ({
 				alignItems: 'center',
 				justifyContent: 'center',
 				width: '100%',
-				minWidth: 120,
+				minWidth: 200,
 				minHeight: 54,
 				...styleContainer,
 			}}

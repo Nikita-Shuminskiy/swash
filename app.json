@@ -6,7 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -31,7 +30,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "swash",
+      "package": "com.nick_1995.swash",
       "config": {
         "googleSignIn": {
           "certificateHash": "71:9C:0B:34:99:34:20:3F:1D:18:7C:97:1C:6E:42:05:77:0F:B3:AA"
@@ -54,7 +53,6 @@
     "owner": "nick_1995",
     "scheme": "swash",
     "plugins": [
-      "@react-native-google-signin/google-signin",
       "expo-localization"
     ]
   }

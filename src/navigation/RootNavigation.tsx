@@ -9,11 +9,11 @@ import Loading from '../components/Loading'
 import { routerConstants } from '../constants/routerConstants'
 import LoginS from '../screen/authScreens/LoginS'
 import Alerts from '../components/Alert'
-import GivePermissions from '../screen/authScreens/GivePermissions'
+import GivePermissions from '../components/GivePermissions'
 import VerifyNumberS from '../screen/authScreens/VerifyNumberS'
 import rootStore from '../store/RootStore/root-store'
 import AddPhoneS from '../screen/authScreens/AddPhoneS'
-import WifiReconnectS from '../screen/authScreens/WifiReconnectS'
+import WifiReconnect from '../components/WifiReconnect'
 import NetInfo from '@react-native-community/netinfo'
 import TermsOfUseS from '../screen/authScreens/TermsOfUseS'
 import { usePermissionsPushGeo } from '../utils/hook/usePermissionsPushGeo'
@@ -21,38 +21,35 @@ import { usePermissionsPushGeo } from '../utils/hook/usePermissionsPushGeo'
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
-	const { isLoading, serverResponseText } = NotificationStore
+	const { isLoading, serverResponseText, setIsLoading } = NotificationStore
 	const { isAuth } = AuthStore
 	const { AuthStoreService } = rootStore
 	const {
 		askNotificationPermissionHandler,
 		askLocationPermissionHandler,
-		notificationStatus,
 		locationStatus,
 	} = usePermissionsPushGeo()
-	const [isConnected, setIsConnected] = useState(true)
-	const [isGivePermission, setIsGivePermission] = useState(false)
+	const checkStatusPermissions = locationStatus !== 'granted'
+
+	const [isConnected, setIsConnected] = useState(false)
+
 
 	const checkInternetConnection = async () => {
-		const netInfoState = await NetInfo.fetch()
-		setIsConnected(netInfoState.isConnected)
+		setIsLoading(LoadingEnum.fetching)
+		try {
+			const netInfoState = await NetInfo.fetch()
+			setIsConnected(netInfoState.isConnected)
+		} catch (e) {
+
+		} finally {
+			setIsLoading(LoadingEnum.success)
+		}
 	}
 
 	useEffect(() => {
 		const unsubscribe = NetInfo.addEventListener(state => {
 			setIsConnected(state.isConnected)
 		})
-		Promise.all([
-			askNotificationPermissionHandler(),
-			askLocationPermissionHandler(),
-		]).then(([notificationStatus, locationStatus]) => {
-			if (notificationStatus !== 'granted' || locationStatus !== 'granted') {
-				setIsGivePermission(true)
-			}
-		}).catch(error => {
-			console.log('Promise all')
-		})
-
 		return () => {
 			unsubscribe()
 		}
@@ -62,8 +59,10 @@ const RootNavigation = observer(() => {
 		<NavigationContainer>
 			{isLoading === LoadingEnum.fetching && <Loading visible={true} />}
 			{serverResponseText && <Alerts text={serverResponseText} />}
-			{!isConnected && <WifiReconnectS checkInternet={checkInternetConnection} visible={!isConnected} />}
-			{isGivePermission && <GivePermissions visible={isGivePermission} />}
+			{!isConnected && <WifiReconnect checkInternet={checkInternetConnection} visible={!isConnected} />}
+			{checkStatusPermissions && <GivePermissions askLocationPermissionHandler={askLocationPermissionHandler}
+																									askNotificationPermissionHandler={askNotificationPermissionHandler}
+																									visible={checkStatusPermissions} />}
 			<RootStack.Navigator>
 				<RootStack.Screen
 					options={{ headerShown: false }}

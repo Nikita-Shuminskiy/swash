@@ -1,18 +1,18 @@
 import React from 'react'
-import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
-import imgBack from '../../assets/Images/backWave.png'
-import imgLook from '../../assets/Images/wifiRed.png'
+import { BaseWrapperComponent } from './baseWrapperComponent'
+import imgBack from '../assets/Images/backWave.png'
+import imgLook from '../assets/Images/wifiRed.png'
 import { Box, Text } from 'native-base'
 import { Image, Modal, StyleSheet } from 'react-native'
-import { colors } from '../../assets/colors/colors'
-import Button from '../../components/Button'
+import { colors } from '../assets/colors/colors'
+import Button from './Button'
 import { StatusBar } from 'expo-status-bar'
 
 type WifiReconnectProps = {
 	visible?: boolean
 	checkInternet?: () => void
 }
-const WifiReconnectS = ({ visible, checkInternet }: WifiReconnectProps) => {
+const WifiReconnect = ({ visible, checkInternet }: WifiReconnectProps) => {
 	const onPressReconnect = () => {
 		checkInternet()
 	}
@@ -59,4 +59,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default WifiReconnectS
+export default WifiReconnect

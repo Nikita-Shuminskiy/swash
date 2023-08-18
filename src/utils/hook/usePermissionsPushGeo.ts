@@ -3,22 +3,13 @@ import * as Location from 'expo-location'
 import { useEffect, useState } from 'react'
 import NotificationStore from '../../store/NotificationStore/notification-store'
 import { LoadingEnum } from '../../store/types/types'
-import { useNavigation } from '@react-navigation/native'
-import { routerConstants } from '../../constants/routerConstants'
 
-Notifications.setNotificationHandler({
-	handleNotification: async () => ({
-		shouldShowAlert: true,
-		shouldPlaySound: false,
-		shouldSetBadge: false,
-	}),
-})
 
 export const usePermissionsPushGeo = () => {
 
 	const [notificationStatus, setNotificationStatus] = useState('undetermined')
 	const [locationStatus, setLocationStatus] = useState('undetermined')
-	const { setIsLoading} = NotificationStore
+	const { setIsLoading } = NotificationStore
 	const askNotificationPermissionHandler = async () => {
 		const { status } = await Notifications.requestPermissionsAsync()
 		setNotificationStatus(status)
@@ -35,10 +26,11 @@ export const usePermissionsPushGeo = () => {
 		(async () => {
 			setIsLoading(LoadingEnum.fetching)
 			try {
-				const { status: existingNotificationStatus } = await Notifications.getPermissionsAsync()
-				setNotificationStatus(existingNotificationStatus)
 
+				const { status } = await Notifications.requestPermissionsAsync()
+				setNotificationStatus(status)
 				const { status: existingLocationStatus } = await Location.getForegroundPermissionsAsync()
+				console.log(existingLocationStatus)
 				setLocationStatus(existingLocationStatus)
 			} catch (e) {
 

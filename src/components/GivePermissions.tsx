@@ -1,40 +1,33 @@
 import React, { useState } from 'react'
-import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
-import imgBack from '../../assets/Images/backWave.png'
-import imgLook from '../../assets/Images/lockBlue.png'
-import imgLookRed from '../../assets/Images/imgLookRed.png'
-import { Box, Text } from 'native-base'
-import { Image, Modal, StyleSheet } from 'react-native'
-import { colors } from '../../assets/colors/colors'
-import Button from '../../components/Button'
+import { BaseWrapperComponent } from './baseWrapperComponent'
+import imgBack from '../assets/Images/backWave.png'
+import imgLook from '../assets/Images/lockBlue.png'
+import imgLookRed from '../assets/Images/imgLookRed.png'
+import { Box, Modal, Text } from 'native-base'
+import { Image, StyleSheet } from 'react-native'
+import { colors } from '../assets/colors/colors'
+import Button from './Button'
 import { StatusBar } from 'expo-status-bar'
-import { usePermissionsPushGeo } from '../../utils/hook/usePermissionsPushGeo'
 
-const GivePermissions = ({visible}) => {
-	const {
-		askNotificationPermissionHandler,
-		askLocationPermissionHandler,
-		notificationStatus,
-		locationStatus,
-	} = usePermissionsPushGeo()
+const GivePermissions = ({visible, askLocationPermissionHandler, askNotificationPermissionHandler}) => {
 	const [errorPermission, setErrorPermission] = useState<boolean>(false)
 
 	const onPressAboutUs = () => {
-		askNotificationPermissionHandler().then((data) => {
-			if (data !== 'granted') {
+		Promise.all([
+			askNotificationPermissionHandler(),
+			askLocationPermissionHandler(),
+		]).then(([notificationStatus, locationStatus]) => {
+			if (notificationStatus !== 'granted' || locationStatus !== 'granted') {
 				return setErrorPermission(true)
+			} else {
+				setErrorPermission(false)
 			}
-			setErrorPermission(false)
-		})
-		askLocationPermissionHandler().then((data) => {
-			if (data !== 'granted') {
-				return setErrorPermission(true)
-			}
-			setErrorPermission(false)
+		}).catch(error => {
+			console.log('Promise all')
 		})
 	}
 	return (
-		<Modal visible={visible}>
+		<Modal isOpen={visible}>
 		<BaseWrapperComponent styleSafeArea={{ backgroundColor: errorPermission ? colors.redLight : colors.blueLight }}>
 			<StatusBar backgroundColor={errorPermission ? colors.redLight : colors.blueLight} />
 			<Box flex={1} w={'100%'} justifyContent={'space-between'} alignItems={'center'}
@@ -74,6 +67,7 @@ const styles = StyleSheet.create({
 		height: 357,
 	},
 	styleContainerBtn: {
+		width: '100%',
 		marginTop: 10,
 		marginBottom: 10,
 	},
