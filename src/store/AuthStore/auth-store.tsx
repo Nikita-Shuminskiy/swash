@@ -59,18 +59,22 @@ export class AuthStore {
 	}
 
 	async getBaseInfoClient() {
+
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
 		const payload = {
 			clients_id: clients_id,
 			token: token,
 		}
-		const dataPushMessages = await authApi.getClientPushMessages(payload)
-		console.log(dataPushMessages, 'dataPushMessages')
-		const dataSettingClient = await authApi.getSettingsClient(payload)
-		const dataDictionary = await authApi.getDictionary({ language })
-		const dataReportClient = await authApi.getOrderReportClient({ ...payload })
-		const dataLogisticPoints = await authApi.getLogisticPoints({ country })
+		/*const dataGetOrderReportClient =  await authApi.getOrderReportClient({ ...payload }) // ok
+		const dataPushMessages = await authApi.getClientPushMessages(payload) // не коректный метод*/
+
+		//const dataSettingClient = await authApi.getSettingsClient(payload) //500
+		console.log(country)
+		const dataDictionary = await authApi.getDictionary({ language }) // basik auth failed
+
+		const dataLogisticPoints = await authApi.getLogisticPoints({ country }) //Basic authorization faul
+		console.log(dataLogisticPoints)
 	}
 
 	constructor() {
@@ -90,7 +94,7 @@ export class AuthStore {
 		this.sendClientCode = this.sendClientCode.bind(this)
 		this.setPhone = this.setPhone.bind(this)
 		this.sendClientVerifyCode = this.sendClientVerifyCode.bind(this)
-		this.getBaseInfoClient = this.setAuth.bind(this)
+		this.getBaseInfoClient = this.getBaseInfoClient.bind(this)
 		this.setUserAuthData = this.setUserAuthData.bind(this)
 	}
 }

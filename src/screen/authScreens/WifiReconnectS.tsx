@@ -28,18 +28,19 @@ const WifiReconnectS = ({ visible, checkInternet }: WifiReconnectProps) => {
 						<Box alignItems={'center'}>
 							<Image style={{ width: '100%' }} source={imgBack} />
 						</Box>
-						<Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'flex-start'}
+						<Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
 								 backgroundColor={colors.white}>
-							<Box flex={1} w={'100%'} justifyContent={'space-evenly'}>
-								<Box alignItems={'center'}>
-									<Text fontSize={28} fontWeight={'700'}>Bad connection</Text>
-									<Text textAlign={'center'} color={colors.grayLight}>
-										Check your internet connection and try again
-									</Text>
-								</Box>
+							<Box flex={1} alignItems={'center'}>
+								<Text fontSize={28} fontWeight={'700'}>Bad connection</Text>
+								<Text textAlign={'center'} color={colors.grayLight}>
+									Check your internet connection and try again
+								</Text>
+							</Box>
+							<Box flex={1} w={'100%'}>
 								<Button onPress={onPressReconnect} styleContainer={styles.styleContainerBtn} title={'Reconnect'}
 												colorText={colors.white} backgroundColor={colors.red} />
 							</Box>
+
 						</Box>
 					</Box>
 				</Box>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Image, StyleSheet } from 'react-native'
-import * as Linking from 'expo-linking'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
 import AuthStore from '../../store/AuthStore/auth-store'
@@ -13,8 +12,19 @@ import Button from '../../components/Button'
 import rootStore from '../../store/RootStore/root-store'
 import WebView from 'react-native-webview'
 import { routerConstants } from '../../constants/routerConstants'
-import { usePermissionsPushGeo } from '../../utils/hook/usePermissionsPushGeo'
 
+function containsSpecialCharacters(inputString) {
+	try {
+		JSON.parse(inputString); // Попытка парсинга JSON
+		return false; // Если успешно, значит, нет ошибки "Unexpected end of input"
+	} catch (error) {
+		// Обработка ошибки парсинга JSON
+		if (error instanceof SyntaxError && error.message.includes("Unexpected end of input")) {
+			return true; // Возвращаем true, если ошибка "Unexpected end of input" обнаружена
+		}
+		return true; // Возвращаем false в случае другой ошибки
+	}
+}
 const uriGoogleAuth = {
 	uri:
 		'http://stirka.webd.pro/washapi.php/auth_client_by_google?status=client&country=PL&language=PL',
@@ -38,12 +48,7 @@ export type  UserAuthGoogleData = {
 const LoginS = ({ navigation }: LoginSProps) => {
 	const { setUserAuthData } = AuthStore
 	const { AuthStoreService } = rootStore
-	const {
-		askNotificationPermissionHandler,
-		askLocationPermissionHandler,
-		notificationStatus,
-		locationStatus,
-	} = usePermissionsPushGeo()
+
 	const [webViewVisible, setWebViewVisible] = useState(false)
 
 	const onPressSingUpGoogle = () => {
@@ -71,14 +76,15 @@ const LoginS = ({ navigation }: LoginSProps) => {
 		const body = event.nativeEvent.data
 		const jsonData = extractJSONFromBody(body)
 
-		if (jsonData) {
+		if (!containsSpecialCharacters(jsonData)) {
 			try {
 				const parsedData: UserAuthGoogleData = JSON.parse(jsonData)
 				if (parsedData.token) {
-					setUserAuthData(parsedData).then(r =>
-							setWebViewVisible(false),
+					setUserAuthData(parsedData).then(r => {
+						setWebViewVisible(false)
+						// @ts-ignore
 						navigation.navigate(routerConstants.PHONE_VERIFY)
-					)
+					})
 
 				}
 			} catch (error) {
@@ -98,22 +104,12 @@ const LoginS = ({ navigation }: LoginSProps) => {
 	}
 
 	useEffect(() => {
-		AuthStoreService.checkToken().then((data) => {
-			if(data) {
+	/*	AuthStoreService.checkToken().then((data) => {
+			if (data) {
 				navigation.navigate(routerConstants.PHONE_VERIFY)
 				AuthStoreService.getClientBaseInfo()
 			}
-		})
-		askNotificationPermissionHandler().then((status) => {
-			if(status !== 'granted') {
-				navigation.navigate(routerConstants.GIVE_PERMISSIONS)
-			}
-		})
-		askLocationPermissionHandler().then((status) => {
-			if(status !== 'granted') {
-				navigation.navigate(routerConstants.GIVE_PERMISSIONS)
-			}
-		})
+		})*/
 	}, [])
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={false}>

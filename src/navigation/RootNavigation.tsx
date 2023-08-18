@@ -16,6 +16,7 @@ import AddPhoneS from '../screen/authScreens/AddPhoneS'
 import WifiReconnectS from '../screen/authScreens/WifiReconnectS'
 import NetInfo from '@react-native-community/netinfo'
 import TermsOfUseS from '../screen/authScreens/TermsOfUseS'
+import { usePermissionsPushGeo } from '../utils/hook/usePermissionsPushGeo'
 
 
 const RootStack = createNativeStackNavigator()
@@ -23,8 +24,14 @@ const RootNavigation = observer(() => {
 	const { isLoading, serverResponseText } = NotificationStore
 	const { isAuth } = AuthStore
 	const { AuthStoreService } = rootStore
-
-	const [isConnected, setIsConnected] = useState(false)
+	const {
+		askNotificationPermissionHandler,
+		askLocationPermissionHandler,
+		notificationStatus,
+		locationStatus,
+	} = usePermissionsPushGeo()
+	const [isConnected, setIsConnected] = useState(true)
+	const [isGivePermission, setIsGivePermission] = useState(false)
 
 	const checkInternetConnection = async () => {
 		const netInfoState = await NetInfo.fetch()
@@ -35,31 +42,33 @@ const RootNavigation = observer(() => {
 		const unsubscribe = NetInfo.addEventListener(state => {
 			setIsConnected(state.isConnected)
 		})
+		Promise.all([
+			askNotificationPermissionHandler(),
+			askLocationPermissionHandler(),
+		]).then(([notificationStatus, locationStatus]) => {
+			if (notificationStatus !== 'granted' || locationStatus !== 'granted') {
+				setIsGivePermission(true)
+			}
+		}).catch(error => {
+			console.log('Promise all')
+		})
+
 		return () => {
 			unsubscribe()
 		}
-	}, [])
 
+	}, [])
 	return (
 		<NavigationContainer>
 			{isLoading === LoadingEnum.fetching && <Loading visible={true} />}
 			{serverResponseText && <Alerts text={serverResponseText} />}
 			{!isConnected && <WifiReconnectS checkInternet={checkInternetConnection} visible={!isConnected} />}
-			<RootStack.Screen
-				options={{ headerShown: false }}
-				name={routerConstants.RECONNECT}
-				component={WifiReconnectS}
-			/>
+			{isGivePermission && <GivePermissions visible={isGivePermission} />}
 			<RootStack.Navigator>
 				<RootStack.Screen
 					options={{ headerShown: false }}
 					name={routerConstants.LOGIN}
 					component={LoginS}
-				/>
-				<RootStack.Screen
-					options={{ headerShown: false }}
-					name={routerConstants.GIVE_PERMISSIONS}
-					component={GivePermissions}
 				/>
 				<RootStack.Screen
 					options={{ headerShown: false }}

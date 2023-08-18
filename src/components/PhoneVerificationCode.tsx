@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet } from 'react-native'
-import { Box, Button, Text } from 'native-base'
+import { StyleSheet, View } from 'react-native'
+import { Box, Text } from 'native-base'
 
-import {
-	CodeField,
-	Cursor,
-	useBlurOnFulfill,
-	useClearByFocusCell,
-} from 'react-native-confirmation-code-field'
+import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field'
 import { colors } from '../assets/colors/colors'
 import { observer } from 'mobx-react-lite'
 import rootStore from '../store/RootStore/root-store'
@@ -19,33 +14,37 @@ const CELL_COUNT = 5
 type PhoneVerificationProps = {
 	navigation: NavigationProp<ParamListBase>
 }
-const PhoneVerificationCode = observer(({navigation}: PhoneVerificationProps) => {
+const PhoneVerificationCode = observer(({ navigation }: PhoneVerificationProps) => {
 	const [code, setCode] = useState('')
 	const { AuthStoreService } = rootStore
 	const [isValid, setIsValid] = useState(true)
-	const [statusServer, setStatusServer] = useState<'warning' | ''>('')
+	const [statusServer, setStatusServer] = useState<'warning' | '' | 'error'>('')
 
 	const handleCodeChange = (newCode: string) => {
+		setCode(newCode)
 		setStatusServer('')
 		setIsValid(true)
-		setCode(newCode)
+
 
 	}
 	useEffect(() => {
 		if (code.trim().length === 5) {
 			AuthStoreService.sendClientVerifyCode(code).then((data) => {
-				if (data.status === 'warning') {
-					console.log(data.status)
+				console.log(data.status)
+				if (data.status === 'warning' || data.status === 'error') {
 					setStatusServer(data.status)
 					setIsValid(false)
-					setCode('')
+					setTimeout(() => {
+						setCode('')
+						setStatusServer('')
+						setIsValid(true)
+					}, 700)
 				}
 				if (data.status === 'ok') {
-
+					navigation.navigate(routerConstants.TERMS_OF_USE)
 				}
 			})
 		}
-		navigation.navigate(routerConstants.TERMS_OF_USE)
 	}, [code])
 	const handleVerifyCode = () => {
 
@@ -73,7 +72,7 @@ const PhoneVerificationCode = observer(({navigation}: PhoneVerificationProps) =>
 				textContentType='oneTimeCode'
 				renderCell={({ index, symbol, isFocused }) => (
 					<Box key={index} mr={3} style={[styles.boxCell, isFocused && styles.activeCell
-						, statusServer === 'warning' && styles.failedCodeBack,
+						, (statusServer === 'warning' || statusServer === 'error') && styles.failedCodeBack,
 					]} backgroundColor={'#F5F5F6'}
 							 borderRadius={16} alignItems={'center'}
 							 justifyContent={'center'}>

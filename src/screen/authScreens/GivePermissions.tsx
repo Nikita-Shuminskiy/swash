@@ -4,13 +4,13 @@ import imgBack from '../../assets/Images/backWave.png'
 import imgLook from '../../assets/Images/lockBlue.png'
 import imgLookRed from '../../assets/Images/imgLookRed.png'
 import { Box, Text } from 'native-base'
-import { Image, StyleSheet } from 'react-native'
+import { Image, Modal, StyleSheet } from 'react-native'
 import { colors } from '../../assets/colors/colors'
 import Button from '../../components/Button'
 import { StatusBar } from 'expo-status-bar'
 import { usePermissionsPushGeo } from '../../utils/hook/usePermissionsPushGeo'
 
-const GivePermissions = () => {
+const GivePermissions = ({visible}) => {
 	const {
 		askNotificationPermissionHandler,
 		askLocationPermissionHandler,
@@ -34,6 +34,7 @@ const GivePermissions = () => {
 		})
 	}
 	return (
+		<Modal visible={visible}>
 		<BaseWrapperComponent styleSafeArea={{ backgroundColor: errorPermission ? colors.redLight : colors.blueLight }}>
 			<StatusBar backgroundColor={errorPermission ? colors.redLight : colors.blueLight} />
 			<Box flex={1} w={'100%'} justifyContent={'space-between'} alignItems={'center'}
@@ -64,6 +65,7 @@ const GivePermissions = () => {
 				</Box>
 			</Box>
 		</BaseWrapperComponent>
+		</Modal>
 	)
 }
 const styles = StyleSheet.create({
