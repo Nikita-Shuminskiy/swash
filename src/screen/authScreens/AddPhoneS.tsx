@@ -13,13 +13,13 @@ type PhoneVerifySProps = {
 	navigation: NavigationProp<ParamListBase>
 }
 type CountryData = {
-	callingCode: string[]; // Массив кодов для звонков
-	cca2: string; // Код страны (двухсимвольный)
-	currency: string[]; // Массив кодов валюты
-	flag: string; // Имя файла флага
-	name: string; // Название страны
-	region: string; // Регион
-	subregion: string; // Подрегион
+	callingCode: string[];
+	cca2: string;
+	currency: string[];
+	flag: string;
+	name: string;
+	region: string;
+	subregion: string;
 };
 const countryDataDefault = {
 	callingCode: ['48'],

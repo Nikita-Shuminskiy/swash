@@ -3,6 +3,7 @@ import { authApi } from '../../api/authApi'
 import { deviceStorage } from '../../utils/storage/storage'
 import { UserAuthGoogleData } from '../../screen/authScreens/LoginS'
 import { country, language } from '../../utils/commonUtils'
+import { clientApi } from '../../api/Client/clientApi'
 
 export class AuthStore {
 	user: any = {} as any
@@ -42,8 +43,7 @@ export class AuthStore {
 			token: token,
 			phone: formattedPhoneNumber ?? this.phone
 		}
-
-		const {data} = await authApi.sendClientCode(payload)
+		await authApi.sendClientCode(payload)
 	}
 
 	async sendClientVerifyCode(code: string) {
@@ -65,15 +65,16 @@ export class AuthStore {
 			clients_id: clients_id,
 			token: token,
 		}
-		/*const dataGetOrderReportClient =  await authApi.getOrderReportClient({ ...payload }) // ok
-		const dataPushMessages = await authApi.getClientPushMessages(payload) // не коректный метод*/
+		/*const dataGetOrderReportClient =  await clientApi.getOrderReportClient({ ...payload }) // ok
+		const dataPushMessages = await clientApi.getClientPushMessages(payload) // не коректный метод*/
 
-		//const dataSettingClient = await authApi.getSettingsClient(payload) //500
-		console.log(country)
-		const dataDictionary = await authApi.getDictionary({ language }) // basik auth failed
-
-		const dataLogisticPoints = await authApi.getLogisticPoints({ country }) //Basic authorization faul
-		console.log(dataLogisticPoints)
+		const {data: dataSetting} = await clientApi.getSettingsClient(payload)
+		console.log(dataSetting.orders)
+		return !!dataSetting.client.phone_verify_datetime
+		/*const { data: dataDictionary } = await clientApi.getDictionary({ language }) // basik auth failed
+		console.log(dataDictionary)
+		const { data: dataLogistic } = await clientApi.getLogisticPoints({ country }) //Basic authorization faul
+		console.log(dataLogistic)*/
 	}
 
 	constructor() {

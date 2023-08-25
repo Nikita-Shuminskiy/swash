@@ -7,9 +7,8 @@ import { LoadingEnum } from '../../store/types/types'
 
 export const usePermissionsPushGeo = () => {
 
-	const [notificationStatus, setNotificationStatus] = useState('undetermined')
-	const [locationStatus, setLocationStatus] = useState('undetermined')
-	const { setIsLoading } = NotificationStore
+	const [notificationStatus, setNotificationStatus] = useState<string>('undetermined')
+	const [locationStatus, setLocationStatus] = useState<string>('undetermined')
 	const askNotificationPermissionHandler = async () => {
 		const { status } = await Notifications.requestPermissionsAsync()
 		setNotificationStatus(status)
@@ -24,18 +23,14 @@ export const usePermissionsPushGeo = () => {
 
 	useEffect(() => {
 		(async () => {
-			setIsLoading(LoadingEnum.fetching)
 			try {
-
 				const { status } = await Notifications.requestPermissionsAsync()
 				setNotificationStatus(status)
 				const { status: existingLocationStatus } = await Location.getForegroundPermissionsAsync()
-				console.log(existingLocationStatus)
 				setLocationStatus(existingLocationStatus)
 			} catch (e) {
 
 			} finally {
-				setIsLoading(LoadingEnum.success)
 			}
 		})()
 	}, [])

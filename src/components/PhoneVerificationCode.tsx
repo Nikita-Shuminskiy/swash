@@ -30,7 +30,6 @@ const PhoneVerificationCode = observer(({ navigation }: PhoneVerificationProps) 
 	useEffect(() => {
 		if (code.trim().length === 5) {
 			AuthStoreService.sendClientVerifyCode(code).then((data) => {
-				console.log(data.status)
 				if (data.status === 'warning' || data.status === 'error') {
 					setStatusServer(data.status)
 					setIsValid(false)

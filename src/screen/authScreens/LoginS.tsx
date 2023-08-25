@@ -15,19 +15,20 @@ import { routerConstants } from '../../constants/routerConstants'
 
 function containsSpecialCharacters(inputString) {
 	try {
-		JSON.parse(inputString); // Попытка парсинга JSON
-		return false; // Если успешно, значит, нет ошибки "Unexpected end of input"
+		JSON.parse(inputString) // Попытка парсинга JSON
+		return false // Если успешно, значит, нет ошибки "Unexpected end of input"
 	} catch (error) {
 		// Обработка ошибки парсинга JSON
-		if (error instanceof SyntaxError && error.message.includes("Unexpected end of input")) {
-			return true; // Возвращаем true, если ошибка "Unexpected end of input" обнаружена
+		if (error instanceof SyntaxError && error.message.includes('Unexpected end of input')) {
+			return true // Возвращаем true, если ошибка "Unexpected end of input" обнаружена
 		}
-		return true; // Возвращаем false в случае другой ошибки
+		return true // Возвращаем false в случае другой ошибки
 	}
 }
+
 const uriGoogleAuth = {
 	uri:
-		'http://stirka.webd.pro/washapi.php/auth_client_by_google?status=client&country=PL&language=PL',
+		'https://s-wash.com/washapi.php/auth_client_by_google?status=client&country=PL&language=PL',
 }
 const jsCode = 'window.ReactNativeWebView.postMessage(document.documentElement.innerHTML)'
 type LoginSProps = {
@@ -50,7 +51,9 @@ const LoginS = ({ navigation }: LoginSProps) => {
 	const { AuthStoreService } = rootStore
 
 	const [webViewVisible, setWebViewVisible] = useState(false)
-
+	const onPressExitAuthGoogle = () => {
+		setWebViewVisible(false)
+	}
 	const onPressSingUpGoogle = () => {
 		setWebViewVisible(true)
 	}
@@ -103,14 +106,7 @@ const LoginS = ({ navigation }: LoginSProps) => {
 		)
 	}
 
-	useEffect(() => {
-	/*	AuthStoreService.checkToken().then((data) => {
-			if (data) {
-				navigation.navigate(routerConstants.PHONE_VERIFY)
-				AuthStoreService.getClientBaseInfo()
-			}
-		})*/
-	}, [])
+
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={false}>
 			{
@@ -151,6 +147,8 @@ const LoginS = ({ navigation }: LoginSProps) => {
 				</Box>) : (
 					<Box flex={1} w={'100%'}>
 						<WebView
+							javaScriptEnabled={true}
+							mediaCapturePermissionGrantType={'grant'}
 							injectedJavaScript={jsCode}
 							source={uriGoogleAuth}
 							renderLoading={LoadingIndicatorView}
@@ -158,10 +156,10 @@ const LoginS = ({ navigation }: LoginSProps) => {
 							userAgent='Chrome'
 							onMessage={onMessageWebView}
 						/>
-						{/*<Box paddingX={10}>
+						<Box paddingX={10}>
 							<Button backgroundColor={colors.blue} colorText={colors.white} onPress={onPressExitAuthGoogle}
 											title={'Exit'} />
-						</Box>*/}
+						</Box>
 					</Box>
 				)
 			}
