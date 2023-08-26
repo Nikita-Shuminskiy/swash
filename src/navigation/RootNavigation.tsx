@@ -17,7 +17,7 @@ import WifiReconnect from '../components/WifiReconnect'
 import NetInfo from '@react-native-community/netinfo'
 import TermsOfUseS from '../screen/authScreens/TermsOfUseS'
 import { usePermissionsPushGeo } from '../utils/hook/usePermissionsPushGeo'
-import CreateOrder from '../screen/Main/CreateOrder'
+import CreateOrder from '../screen/Main/CreateOrder/CreateOrder'
 import AddNewCardS from '../screen/Main/AddNewCardS'
 
 

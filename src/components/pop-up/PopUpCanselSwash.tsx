@@ -9,10 +9,12 @@ import { colors } from '../../assets/colors/colors'
 type PopUpCanselSwashProps = {
 	visible: boolean
 	onClose: () => void
+	onDelete: () => void
 }
-const PopUpCanselSwash = ({ visible, onClose }: PopUpCanselSwashProps) => {
+const PopUpCanselSwash = ({ visible, onClose, onDelete }: PopUpCanselSwashProps) => {
 	const onPressDelete = () => {
-
+		onDelete()
+		onClose()
 	}
 	return (
 		<ModalPopup modalHeight={Math.round(Dimensions.get('window').height *  0.2)} style={{}} visible={visible} onClose={onClose}>

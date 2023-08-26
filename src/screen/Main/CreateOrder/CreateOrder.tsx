@@ -1,24 +1,24 @@
 import React, { useState } from 'react'
-import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
+import { BaseWrapperComponent } from '../../../components/baseWrapperComponent'
 import { Box, Text } from 'native-base'
-import BtnDelete from '../../components/btnDelete'
-import Button from '../../components/Button'
-import ironImg from '../../assets/Images/order/iron.png'
-import ironBlueImg from '../../assets/Images/order/Iron-blue.png'
-import hypoallergenicBlueImg from '../../assets/Images/order/quill-blue.png'
-import hypoallergenicImg from '../../assets/Images/order/quil-gray.png'
-import { colors } from '../../assets/colors/colors'
+import BtnDelete from '../../../components/btnDelete'
+import Button from '../../../components/Button'
+import ironImg from '../../../assets/Images/order/iron.png'
+import ironBlueImg from '../../../assets/Images/order/Iron-blue.png'
+import hypoallergenicBlueImg from '../../../assets/Images/order/quill-blue.png'
+import hypoallergenicImg from '../../../assets/Images/order/quil-gray.png'
+import { colors } from '../../../assets/colors/colors'
 import { Image, StyleSheet, TouchableOpacity } from 'react-native'
-import { CheckBoxs } from '../../components/CheckBox'
-import PaymentMethodPopUp from '../../components/pop-up/PaymentMethod/PaymentMethodPopUp'
-import arrowBlue from '../../assets/Images/order/arrowRightBlue.png'
+import { CheckBoxs } from '../../../components/CheckBox'
+import PaymentMethodPopUp from '../../../components/pop-up/PaymentMethod/PaymentMethodPopUp'
+import arrowBlue from '../../../assets/Images/order/arrowRightBlue.png'
 import { observer } from 'mobx-react-lite'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
-import OrdersStore from '../../store/OrdersStore/orders-store'
-import rootStore from '../../store/RootStore/root-store'
-import { createAlert } from '../../components/CreateAlert'
-import AddPhotoComponent from '../../components/AddPhotoComponent'
-import PopUpCanselSwash from '../../components/pop-up/PopUpCanselSwash'
+import OrdersStore from '../../../store/OrdersStore/orders-store'
+import rootStore from '../../../store/RootStore/root-store'
+import AddPhotoComponent from '../../../components/AddPhotoComponent'
+import PopUpCanselSwash from '../../../components/pop-up/PopUpCanselSwash'
+import Footer from './Footer'
 
 type CreateOrderProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -28,22 +28,16 @@ const CreateOrder = observer(({navigation}: CreateOrderProps) => {
 	const {OrdersStoreService} = rootStore
 	const [isHypoallergenic, setIsHypoallergenic] = useState(false)
 	const [isShowModalPayment, setIsShowModalPayment] = useState<boolean>(false)
-	const [isShowPopUpCanselSwash, setIsShowPopUpCanselSwash] = useState<boolean>(true)
+	const [isShowPopUpCanselSwash, setIsShowPopUpCanselSwash] = useState<boolean>(false)
 
 	const [isIron, setIsIron] = useState(false)
+	const deleteOrder = () => {
+		//console.log(orders.forEach(el => console.log(el.id)))
+		OrdersStoreService.deleteOrder('11', '422369')
+		OrdersStoreService.getOrderReportDetail('422369')
+	}
 	const onPressDeleteOrder = () => {
 		setIsShowPopUpCanselSwash(true)
-/*		const deleteOrder = () => {
-
-			//console.log(orders.forEach(el => console.log(el.id)))
-			OrdersStoreService.deleteOrder('11', '422369')
-			OrdersStoreService.getOrderReportDetail('422369')
-		}
-		createAlert({
-			title: 'Messages',
-			message: 'Do you really want to delete the order?',
-			buttons: [{text: 'Delete', style: "default", onPress: deleteOrder}, {text: 'Exit', style: "default"}]
-		})*/
 	}
 	const onPressWithIron = () => {
 		setIsIron(prevState => !prevState)
@@ -97,7 +91,6 @@ const CreateOrder = observer(({navigation}: CreateOrderProps) => {
 						<Text fontSize={22} fontWeight={'600'}>Photo</Text>
 						<AddPhotoComponent/>
 					</Box>
-
 					<Box mt={2}>
 						<Text mb={2} fontSize={22} fontWeight={'600'}>Paczkomat</Text>
 
@@ -127,11 +120,14 @@ const CreateOrder = observer(({navigation}: CreateOrderProps) => {
 							</Box>
 						</TouchableOpacity>
 					</Box>
+					<Box mt={4}>
+						<Footer/>
+					</Box>
 				</Box>
 			</BaseWrapperComponent>
 			{
 				isShowPopUpCanselSwash &&
-				<PopUpCanselSwash visible={isShowPopUpCanselSwash} onClose={() => setIsShowPopUpCanselSwash(false)} />
+				<PopUpCanselSwash onDelete={deleteOrder} visible={isShowPopUpCanselSwash} onClose={() => setIsShowPopUpCanselSwash(false)} />
 			}
 			{
 				isShowModalPayment &&
