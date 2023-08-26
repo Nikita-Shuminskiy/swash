@@ -1,9 +1,7 @@
 import { Checkbox } from 'native-base'
-import { StyleProp, ViewStyle } from 'react-native'
-import { ICheckboxComponentType } from 'native-base/lib/typescript/components/primitives/Checkbox/types'
 
 
-type CheckBoxsProps = ICheckboxComponentType & {
+type CheckBoxsProps = {
 	onPress: (value: boolean) => void
 	value: boolean
 	borderRadius?: number

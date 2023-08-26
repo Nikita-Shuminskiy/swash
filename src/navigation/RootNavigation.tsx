@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { observer } from 'mobx-react-lite'
 import AuthStore from '../store/AuthStore'
 import NotificationStore from '../store/NotificationStore/notification-store'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { LoadingEnum } from '../store/types/types'
 import Loading from '../components/Loading'
 import { routerConstants } from '../constants/routerConstants'
@@ -17,7 +17,7 @@ import WifiReconnect from '../components/WifiReconnect'
 import NetInfo from '@react-native-community/netinfo'
 import TermsOfUseS from '../screen/authScreens/TermsOfUseS'
 import { usePermissionsPushGeo } from '../utils/hook/usePermissionsPushGeo'
-import MainS from '../screen/Main/MainS'
+import CreateOrder from '../screen/Main/CreateOrder'
 import AddNewCardS from '../screen/Main/AddNewCardS'
 
 
@@ -48,12 +48,6 @@ const RootNavigation = observer(() => {
 	}
 
 	useEffect(() => {
-		AuthStoreService.checkToken().then((data) => {
-			if (data) {
-				OrdersStoreService.getClientBaseInfo()
-				setAuth(true)
-			}
-		})
 		const unsubscribe = NetInfo.addEventListener(state => {
 			setIsConnected(state.isConnected)
 		})
@@ -73,40 +67,39 @@ const RootNavigation = observer(() => {
 																									visible={checkStatusPermissions} />}
 			<RootStack.Navigator>
 				{
-					isAuth ?  <>
+					isAuth && <>
 						<RootStack.Screen
 							options={{ headerShown: false }}
-							name={routerConstants.LOGIN}
-							component={MainS}
+							name={routerConstants.CREATE_ORDER}
+							component={CreateOrder}
 						/>
 						<RootStack.Screen
 							options={{ headerShown: false }}
 							name={routerConstants.ADD_NEW_CARD}
 							component={AddNewCardS}
 						/>
-					</> : <>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.LOGIN}
-							component={LoginS}
-						/>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.VERIFY_NUMBER}
-							component={VerifyNumberS}
-						/>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.PHONE_VERIFY}
-							component={AddPhoneS}
-						/>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.TERMS_OF_USE}
-							component={TermsOfUseS}
-						/>
 					</>
 				}
+				<RootStack.Screen
+					options={{ headerShown: false }}
+					name={routerConstants.LOGIN}
+					component={LoginS}
+				/>
+				<RootStack.Screen
+					options={{ headerShown: false }}
+					name={routerConstants.VERIFY_NUMBER}
+					component={VerifyNumberS}
+				/>
+				<RootStack.Screen
+					options={{ headerShown: false }}
+					name={routerConstants.PHONE_VERIFY}
+					component={AddPhoneS}
+				/>
+				<RootStack.Screen
+					options={{ headerShown: false }}
+					name={routerConstants.TERMS_OF_USE}
+					component={TermsOfUseS}
+				/>
 			</RootStack.Navigator>
 		</NavigationContainer>
 	)

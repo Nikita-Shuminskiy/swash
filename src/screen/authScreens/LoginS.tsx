@@ -47,9 +47,8 @@ export type  UserAuthGoogleData = {
 	token: string;
 }
 const LoginS = ({ navigation }: LoginSProps) => {
-	const { setUserAuthData } = AuthStore
-	const { AuthStoreService } = rootStore
-
+	const { setUserAuthData, isAuth } = AuthStore
+	const { AuthStoreService, OrdersStoreService } = rootStore
 	const [webViewVisible, setWebViewVisible] = useState(false)
 	const onPressExitAuthGoogle = () => {
 		setWebViewVisible(false)
@@ -106,7 +105,13 @@ const LoginS = ({ navigation }: LoginSProps) => {
 		)
 	}
 
-
+	useEffect(() => {
+		AuthStoreService.checkToken().then((data) => {
+			if (data) {
+				OrdersStoreService.getClientBaseInfo(navigation.navigate)
+			}
+		})
+	}, [])
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={false}>
 			{

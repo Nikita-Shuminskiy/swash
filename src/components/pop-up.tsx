@@ -7,8 +7,9 @@ type ModalPopupProps = {
 	onClose: () => void
 	style?: any
 	children: JSX.Element
+	modalHeight?: number
 }
-const ModalPopup = ({ visible, onClose, children, style }: ModalPopupProps) => {
+const ModalPopup = ({ visible, onClose, children, style, modalHeight }: ModalPopupProps) => {
 	const modalizeRef = useRef(null)
 
 	useEffect(() => {
@@ -20,7 +21,7 @@ const ModalPopup = ({ visible, onClose, children, style }: ModalPopupProps) => {
 
 	return (
 		<Modalize
-			modalHeight={Math.round(Dimensions.get('window').height * 0.5)}
+			modalHeight={ modalHeight ? modalHeight : Math.round(Dimensions.get('window').height *  0.5)}
 			avoidKeyboardLikeIOS={true}
 			childrenStyle={{ ...styles.modalContent, ...style }}
 			ref={modalizeRef}

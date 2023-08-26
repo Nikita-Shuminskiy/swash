@@ -12,13 +12,38 @@ import { Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { CheckBoxs } from '../../components/CheckBox'
 import PaymentMethodPopUp from '../../components/pop-up/PaymentMethod/PaymentMethodPopUp'
 import arrowBlue from '../../assets/Images/order/arrowRightBlue.png'
+import { observer } from 'mobx-react-lite'
+import { NavigationProp, ParamListBase } from '@react-navigation/native'
+import OrdersStore from '../../store/OrdersStore/orders-store'
+import rootStore from '../../store/RootStore/root-store'
+import { createAlert } from '../../components/CreateAlert'
+import AddPhotoComponent from '../../components/AddPhotoComponent'
+import PopUpCanselSwash from '../../components/pop-up/PopUpCanselSwash'
 
-const MainS = ({navigation}) => {
+type CreateOrderProps = {
+	navigation: NavigationProp<ParamListBase>
+}
+const CreateOrder = observer(({navigation}: CreateOrderProps) => {
+	const {newOrderId, orders} = OrdersStore
+	const {OrdersStoreService} = rootStore
 	const [isHypoallergenic, setIsHypoallergenic] = useState(false)
 	const [isShowModalPayment, setIsShowModalPayment] = useState<boolean>(false)
+	const [isShowPopUpCanselSwash, setIsShowPopUpCanselSwash] = useState<boolean>(true)
+
 	const [isIron, setIsIron] = useState(false)
 	const onPressDeleteOrder = () => {
+		setIsShowPopUpCanselSwash(true)
+/*		const deleteOrder = () => {
 
+			//console.log(orders.forEach(el => console.log(el.id)))
+			OrdersStoreService.deleteOrder('11', '422369')
+			OrdersStoreService.getOrderReportDetail('422369')
+		}
+		createAlert({
+			title: 'Messages',
+			message: 'Do you really want to delete the order?',
+			buttons: [{text: 'Delete', style: "default", onPress: deleteOrder}, {text: 'Exit', style: "default"}]
+		})*/
 	}
 	const onPressWithIron = () => {
 		setIsIron(prevState => !prevState)
@@ -40,7 +65,7 @@ const MainS = ({navigation}) => {
 			<BaseWrapperComponent isKeyboardAwareScrollView={true}>
 				<Box paddingX={3}>
 					<BtnDelete onPress={onPressDeleteOrder} />
-					<Text fontSize={28} mt={3} fontWeight={'600'} color={colors.black}>Swash #221</Text>
+					<Text fontSize={28} mt={3} fontWeight={'600'} color={colors.black}>Swash #{orders[0].id}</Text>
 					<Text fontSize={22} mt={3} fontWeight={'600'}>Services</Text>
 					<Box flexDirection={'row'} alignItems={'center'}
 							 justifyContent={'center'}>
@@ -70,6 +95,7 @@ const MainS = ({navigation}) => {
 					</Box>
 					<Box mt={2}>
 						<Text fontSize={22} fontWeight={'600'}>Photo</Text>
+						<AddPhotoComponent/>
 					</Box>
 
 					<Box mt={2}>
@@ -104,13 +130,17 @@ const MainS = ({navigation}) => {
 				</Box>
 			</BaseWrapperComponent>
 			{
+				isShowPopUpCanselSwash &&
+				<PopUpCanselSwash visible={isShowPopUpCanselSwash} onClose={() => setIsShowPopUpCanselSwash(false)} />
+			}
+			{
 				isShowModalPayment &&
 				<PaymentMethodPopUp navigation={navigation} visible={isShowModalPayment} onClose={() => setIsShowModalPayment(false)} />
 			}
 
 		</>
 	)
-}
+})
 const styles = StyleSheet.create({
 	btnText: {
 		fontWeight: '500',
@@ -124,4 +154,4 @@ const styles = StyleSheet.create({
 		borderRadius: 40,
 	},
 })
-export default MainS
+export default CreateOrder

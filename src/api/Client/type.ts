@@ -28,16 +28,35 @@ type UnitType = {
 	price_basic: string;
 	type_of_units_id: string; // добавлять иконки от type_of_units_id
 };
-
+type OrderType = {
+	add_hypo: string;
+	add_iron: string;
+	amount: string;
+	client_logistic_partners_points_id: string | null;
+	clients_id: string;
+	country: string;
+	date_estimated_ready: string | null;
+	datetime_closed: string | null;
+	datetime_register: string;
+	executors_id: string | null;
+	id: string;
+	last_step: string | null;
+};
+ type OrderReportDetailType = OrderType & {
+	status: string;
+	units_order: any[];
+};
 type DataSettingClientType = {
 	client: ClientType;
 	countries: CountryType[];
 	languages: string[];
-	orders: any[];
+	orders: OrderType[];
 	status: string;
 	units: UnitType[];
 };
 export {
+	OrderReportDetailType,
+	OrderType,
 	ClientType,
 	DataSettingClientType,
 	UnitType,

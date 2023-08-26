@@ -9,11 +9,15 @@ import listImg from '../../assets/Images/listTermUse.png'
 import imgBack from '../../assets/Images/backWave.png'
 import Button from '../../components/Button'
 import { CheckBoxs } from '../../components/CheckBox'
+import rootStore from '../../store/RootStore/root-store'
+import { observer } from 'mobx-react-lite'
+import { routerConstants } from '../../constants/routerConstants'
 
 type TermsOfUseSProps = {
 	navigation: NavigationProp<ParamListBase>
 }
-const TermsOfUseS = ({ navigation }: TermsOfUseSProps) => {
+const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
+	const { AuthStoreService } = rootStore
 	const [checkToc, setCheckToc] = useState(false)
 	const [checkLegal, setCheckLegal] = useState(false)
 	const [disBtn, setDisBtn] = useState(false)
@@ -21,6 +25,13 @@ const TermsOfUseS = ({ navigation }: TermsOfUseSProps) => {
 		if (!checkLegal || !checkToc) {
 			setDisBtn(true)
 		}
+		AuthStoreService.sendClientRegister({
+			consent_datetime: new Date().toString(),
+		}).then((data) => {
+			if(data) {
+				navigation.navigate(routerConstants.CREATE_ORDER)
+			}
+		})
 	}
 	const onPressTocHandler = (value) => {
 		setCheckToc(value)
@@ -48,7 +59,7 @@ const TermsOfUseS = ({ navigation }: TermsOfUseSProps) => {
 							<Box mt={3} w={'100%'}>
 								<Box borderRadius={16} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'center'}
 										 p={3} backgroundColor={colors.blueLight}>
-									<CheckBoxs value={false} onPress={onPressTocHandler} />
+									<CheckBoxs value={checkToc} onPress={onPressTocHandler} />
 
 									<Box flexDirection={'row'} justifyContent={'flex-start'}
 											 alignItems={'center'}>
@@ -61,7 +72,7 @@ const TermsOfUseS = ({ navigation }: TermsOfUseSProps) => {
 								<Box borderRadius={16} mt={3} flexDirection={'row'} justifyContent={'flex-start'}
 										 alignItems={'center'}
 										 p={3} backgroundColor={colors.blueLight}>
-									<CheckBoxs value={false} onPress={onPressLegalHandler} />
+									<CheckBoxs value={checkLegal} onPress={onPressLegalHandler} />
 									<Box flexDirection={'row'} justifyContent={'flex-start'}
 											 alignItems={'center'}>
 										<Text ml={2} fontSize={15}>I agree with{' '}</Text>
@@ -83,7 +94,7 @@ const TermsOfUseS = ({ navigation }: TermsOfUseSProps) => {
 			</Box>
 		</BaseWrapperComponent>
 	)
-}
+})
 const styles = StyleSheet.create({
 	disBtn: {
 		opacity: 0.1,

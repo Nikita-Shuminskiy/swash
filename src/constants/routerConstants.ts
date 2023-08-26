@@ -8,6 +8,6 @@ export const routerConstants = {
 
 
 
-    MAIN: 'main',
+    CREATE_ORDER: 'create-order',
     ADD_NEW_CARD: 'add-new-card',
 }
