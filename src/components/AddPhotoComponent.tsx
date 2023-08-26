@@ -6,49 +6,59 @@ import { observer } from 'mobx-react-lite'
 import OrdersStore from '../store/OrdersStore/orders-store'
 import rootStore from '../store/RootStore/root-store'
 import deleteImg from '../assets/Images/order/closeCircleGray.png'
-import { Box } from 'native-base'
+import btnCamera from '../assets/Images/order/button-camera.png'
+import closeCameraImg from '../assets/Images/order/closeBlack.png'
 import DeleteModal from './modal/DeleteModal'
+import NotificationStore from '../store/NotificationStore/notification-store'
+import { LoadingEnum } from '../store/types/types'
+import * as ImagePicker from 'expo-image-picker'
+import GiveChoiceCameraModal from './modal/GiveChoiceCameraModal'
+import { Box } from 'native-base'
 
 const AddPhotoComponent = observer(() => {
 	const { orders, saveOrderPhoto } = OrdersStore
+	const { setIsLoading } = NotificationStore
 	const { OrdersStoreService } = rootStore
 	const [images, setImages] = useState([])
+
 	const [cameraPermission, setCameraPermission] = useState(null)
 	const [isOpenCamera, setIsOpenCamera] = useState(false)
 	const [isDeleteModal, setIsDeleteModal] = useState(false)
+	const [lastAddedPhoto, setLastAddedPhoto] = useState<string>()
+	const [isGiveChoice, setIsGiveChoice] = useState(false)
+
 
 	const cameraRef = useRef(null)
 
 	useEffect(() => {
 		getPermission()
 	}, [])
+	useEffect(() => {
+		if (lastAddedPhoto) {
+			saveOrderPhoto(lastAddedPhoto)
+		}
+	}, [lastAddedPhoto])
 
 	const getPermission = async () => {
 		const { status } = await Camera.requestCameraPermissionsAsync()
 		setCameraPermission(status === 'granted')
-	}
-	const openCameraHandler = () => {
-		setIsOpenCamera(true)
+		return status
 	}
 	const takePicture = async () => {
 		if (!cameraPermission) {
-			getPermission()
+			const status = await getPermission()
+			if (status !== 'granted') return
 		}
-		if (cameraRef.current) {
+		setIsLoading(LoadingEnum.fetching)
+		try {
 			const photo = await cameraRef.current.takePictureAsync()
-			// Используем uri из фотографии напрямую
-
-			const formData = new FormData()
-			// @ts-ignore
-			formData.append('image', { uri: photo.uri,
-				name: 'image.jpg',
-				type: 'image/jpeg',
-			})
-
-			// @ts-ignore
-			await saveOrderPhoto(formData._parts[0][1].uri)
+			setLastAddedPhoto(photo.uri)
 			setImages([{ uri: photo.uri, key: String(images.length) }, ...images])
 			setIsOpenCamera(false)
+		} catch (e) {
+			console.log(e)
+		} finally {
+			setIsLoading(LoadingEnum.success)
 		}
 	}
 	const onPressDeletePhoto = () => {
@@ -57,6 +67,33 @@ const AddPhotoComponent = observer(() => {
 	const onCloseModalDelete = () => {
 		setIsDeleteModal(false)
 	}
+	const onGalleryHandler = async () => {
+		const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+
+		if (permissionResult.granted === false) {
+			alert('Permission to access camera roll is required!')
+			return
+		}
+		try {
+			const result = await ImagePicker.launchImageLibraryAsync({
+				mediaTypes: ImagePicker.MediaTypeOptions.Images,
+				allowsEditing: true,
+				aspect: [4, 3],
+				quality: 1,
+			})
+
+			if (!result.canceled) {
+				const selectedAsset = result.assets[0]
+				const selectedImageUri = selectedAsset.uri
+
+				setLastAddedPhoto(selectedImageUri)
+				setImages([{ uri: selectedImageUri, key: String(images.length) }, ...images])
+				setIsOpenCamera(false)
+			}
+		} catch (error) {
+			console.log('Error selecting image from gallery:', error)
+		}
+	}
 	return (
 		<View style={styles.container}>
 			<FlatList
@@ -64,7 +101,7 @@ const AddPhotoComponent = observer(() => {
 				data={[{ key: 'add_photo_button' }, ...images]}
 				renderItem={({ item }) => (
 					item.key === 'add_photo_button' ? (
-						<TouchableOpacity style={styles.addPhotoButton} onPress={openCameraHandler}>
+						<TouchableOpacity style={styles.addPhotoButton} onPress={() => setIsOpenCamera(true)}>
 							<Image source={addPhotoImage} alt={'add_photo'} />
 						</TouchableOpacity>
 					) : (
@@ -80,13 +117,23 @@ const AddPhotoComponent = observer(() => {
 			{cameraPermission && isOpenCamera && (
 				<Modal visible={isOpenCamera}>
 					<Camera style={styles.camera} ref={cameraRef}>
-						<TouchableOpacity style={styles.cameraButton} onPress={takePicture}>
-							<Text style={styles.cameraButtonText}>Сфотографировать</Text>
+					<Box position={'absolute'} top={5} left={5}>
+						<TouchableOpacity onPress={() => setIsOpenCamera(false)}>
+							<Image source={closeCameraImg} alt={'delete'} />
 						</TouchableOpacity>
+					</Box>
+						<Box position={'absolute'} bottom={5}>
+							<TouchableOpacity style={styles.cameraButton} onPress={takePicture}>
+								<Image source={btnCamera} />
+							</TouchableOpacity>
+						</Box>
 					</Camera>
 				</Modal>
 			)}
-			<DeleteModal visible={isDeleteModal} onClose={onCloseModalDelete}/>
+			<DeleteModal visible={isDeleteModal} onClose={onCloseModalDelete} />
+		{/*	<GiveChoiceCameraModal onCamera={() => setIsOpenCamera(true)}
+														 onGallery={onGalleryHandler} visible={isGiveChoice}
+														 onClose={() => setIsGiveChoice(false)} />*/}
 		</View>
 	)
 })

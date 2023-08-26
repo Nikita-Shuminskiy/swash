@@ -1,5 +1,6 @@
 import { instance } from '../config'
 import { DataSettingClientType } from './type'
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator'
 
 
 export const clientApi = {
@@ -43,11 +44,27 @@ export const clientApi = {
 	async getOrderReportDetail(payload: { clients_id: string, token: string, orders_id: string }) {
 		return await instance.get(`washapi.php/order_report_client_detail`, { params: payload })
 	},
-	async saveOrderPhoto(payload: { clients_id: string, token: string, orders_id: string, photo: any }) {
-		console.log(payload)
-		return await instance.post(`washapi.php/order_client_photo`, {}, {
-			params: payload,
+	async saveOrderPhoto(payload: { clients_id: string, token: string, orders_id: string, photo: string }) {
+		const { clients_id, orders_id, photo, token } = payload
+		const resizedImage = await manipulateAsync(
+			photo, [{ resize: { width: 800, height: 800 } }],
+			{ format: 'jpeg' as SaveFormat, compress: 0.8 },
+		)
+		const formData = new FormData()
+
+		// @ts-ignore
+		formData.append('photo', { uri: resizedImage.uri,
+			name: 'image.jpg', type: 'image/jpeg',
+		})
+
+		return await instance.post(`washapi.php/order_client_photo`, formData, {
+			params: {
+				token,
+				orders_id,
+				clients_id,
+			},
 			headers: {
+				Accept: 'application/json',
 				'Content-Type': 'multipart/form-data',
 			},
 		})
