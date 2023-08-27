@@ -3,14 +3,14 @@ import { Box, Text } from 'native-base'
 import Link from '../../../components/Link'
 import Button from '../../../components/Button'
 import { colors } from '../../../assets/colors/colors'
-
-const Footer = () => {
+type FooterProps = {
+	onSave: () => void
+}
+const Footer = ({onSave}:FooterProps) => {
 	const onPressPrises = () => {
 
 	}
-	const onPressClose = () => {
 
-	}
 	return (
 		<Box alignItems={'center'}>
 			<Text fontSize={22} fontWeight={'500'}>We will ask you to pay later</Text>
@@ -23,7 +23,7 @@ const Footer = () => {
 				<Box mt={2}>
 					<Button backgroundColor={colors.blue} colorText={colors.white} styleContainer={{
 						borderRadius: 28,
-					}} onPress={onPressClose} title={'OK'} />
+					}} onPress={onSave} title={'OK'} />
 				</Box>
 			</Box>
 		</Box>

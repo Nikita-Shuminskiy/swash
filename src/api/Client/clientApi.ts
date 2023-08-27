@@ -30,8 +30,9 @@ export const clientApi = {
 
 
 	//order
-	async deleteOrderPhoto(payload: { clients_id: string, token: string, photo_id: string }) {
-		return await instance.post(`washapi.php/order_client_delete`, {}, {
+	async deleteOrderPhoto(payload: { clients_id: string, token: string, photo_id: string, order_number: string }) {
+		console.log(payload)
+		return await instance.post(`washapi.php/order_client_photo_delete`, {}, {
 			params: payload,
 		})
 	},
@@ -69,6 +70,27 @@ export const clientApi = {
 			},
 		})
 	},
+
+	async updOrder(payload: payloadUpdOrderType) {
+		return await instance.post(`washapi.php/order_client_register`, payload)
+	},
+}
+export type payloadUpdOrderType = {
+	'orders_id'?: string
+	'clients_id'?: string
+	'token'?: string
+	'services'?: {
+		'hypo'?: number,
+		'iron'?: number
+	},
+	'units_order'?: [
+		{
+			'type_of_units_id': string
+			'unit_count': string
+		}
+	],
+	'client_logistic_partners_points_id'?: string
+	'amount'?: string
 }
 export type DeleteOrderPayload = {
 	orders_id: string

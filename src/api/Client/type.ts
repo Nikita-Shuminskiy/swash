@@ -42,10 +42,12 @@ type OrderType = {
 	id: string;
 	last_step: string | null;
 };
- type OrderReportDetailType = OrderType & {
+type OrderReportDetailType = OrderType & {
 	status: string;
 	units_order: any[];
+	photos: PhotoType[]
 };
+export type PhotoType = { 'filename': string, 'id': string }
 type DataSettingClientType = {
 	client: ClientType;
 	countries: CountryType[];
@@ -60,5 +62,5 @@ export {
 	ClientType,
 	DataSettingClientType,
 	UnitType,
-	CountryType
+	CountryType,
 }

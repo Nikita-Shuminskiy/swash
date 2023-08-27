@@ -8,10 +8,12 @@ import { colors } from '../../assets/colors/colors'
 type BaseModalProps = {
 	visible: boolean
 	onClose: () => void
+	deleteOrderPhoto: () => void
 }
-const DeleteModal = ({ visible, onClose }: BaseModalProps) => {
+const DeleteModal = ({ visible, onClose, deleteOrderPhoto }: BaseModalProps) => {
 	const onPressDelete = () => {
-
+		deleteOrderPhoto()
+		onClose()
 	}
 	return (
 		<Modal transparent={true} visible={visible}>

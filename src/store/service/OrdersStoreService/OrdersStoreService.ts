@@ -1,7 +1,7 @@
 import RootStore from '../../RootStore'
 import { LoadingEnum } from '../../types/types'
-import { deviceStorage } from '../../../utils/storage/storage'
 import { routerConstants } from '../../../constants/routerConstants'
+import { payloadUpdOrderType } from '../../../api/Client/clientApi'
 
 
 export class OrdersStoreService {
@@ -10,7 +10,6 @@ export class OrdersStoreService {
 	constructor(rootStore: typeof RootStore) {
 		this.rootStore = rootStore
 	}
-
 	async getClientBaseInfo(navigate) {
 		this.rootStore.Notification.setIsLoading(LoadingEnum.fetching)
 		try {
@@ -23,6 +22,7 @@ export class OrdersStoreService {
 					})
 				}
 				if (data.orders.length) {
+					this.rootStore.OrdersStore.setOrder(data.orders[0])
 					this.rootStore.OrdersStore.setOrders(data.orders)
 				}
 				this.rootStore.AuthStore.setAuth(true)
@@ -39,7 +39,6 @@ export class OrdersStoreService {
 			this.rootStore.Notification.setIsLoading(LoadingEnum.success)
 		}
 	}
-
 	async deleteOrder(comment: string, orders_id: string) {
 		try {
 			await this.rootStore.OrdersStore.deleteOrder(comment, orders_id)
@@ -49,9 +48,20 @@ export class OrdersStoreService {
 
 		}
 	}
-	async deleteOrderPhoto(orders_id: string, photo_id: string) {
+	async deleteOrderPhoto(photo_id: string) {
 		try {
-			await this.rootStore.OrdersStore.deleteOrderPhoto(orders_id, photo_id)
+			await this.rootStore.OrdersStore.deleteOrderPhoto(photo_id)
+			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.id)
+		} catch (e) {
+			console.log(e)
+		} finally {
+
+		}
+	}
+	async saveOrderPhoto(photo) {
+		try {
+			await this.rootStore.OrdersStore.saveOrderPhoto(photo)
+			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.id)
 		} catch (e) {
 			console.log(e)
 		} finally {
@@ -61,6 +71,17 @@ export class OrdersStoreService {
 	async getOrderReportDetail(orders_id: string) {
 		try {
 			await this.rootStore.OrdersStore.getOrderReportDetail(orders_id)
+		} catch (e) {
+			console.log(e)
+		} finally {
+
+		}
+	}
+
+	async updateOrder(payload: payloadUpdOrderType) {
+		try {
+			await this.rootStore.OrdersStore.updateOrder(payload)
+			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.id)
 		} catch (e) {
 			console.log(e)
 		} finally {

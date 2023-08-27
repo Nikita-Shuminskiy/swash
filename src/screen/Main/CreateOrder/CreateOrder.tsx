@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BaseWrapperComponent } from '../../../components/baseWrapperComponent'
 import { Box, Text } from 'native-base'
 import BtnDelete from '../../../components/btnDelete'
@@ -19,32 +19,26 @@ import rootStore from '../../../store/RootStore/root-store'
 import AddPhotoComponent from '../../../components/AddPhotoComponent'
 import PopUpCanselSwash from '../../../components/pop-up/PopUpCanselSwash'
 import Footer from './Footer'
+import Header from './Header'
+import { payloadUpdOrderType } from '../../../api/Client/clientApi'
 
 type CreateOrderProps = {
 	navigation: NavigationProp<ParamListBase>
 }
-const CreateOrder = observer(({navigation}: CreateOrderProps) => {
-	const {newOrderId, orders} = OrdersStore
-	const {OrdersStoreService} = rootStore
-	const [isHypoallergenic, setIsHypoallergenic] = useState(false)
+const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
+	const { order, orderDetail } = OrdersStore
+	const { OrdersStoreService } = rootStore
 	const [isShowModalPayment, setIsShowModalPayment] = useState<boolean>(false)
 	const [isShowPopUpCanselSwash, setIsShowPopUpCanselSwash] = useState<boolean>(false)
 
-	const [isIron, setIsIron] = useState(false)
+	useEffect(() => {
+		OrdersStoreService.getOrderReportDetail(order.id)
+	}, [])
+
 	const deleteOrder = () => {
-		//console.log(orders.forEach(el => console.log(el.id)))
-		OrdersStoreService.deleteOrder('11', '422369')
-		OrdersStoreService.getOrderReportDetail('422369')
+		OrdersStoreService.deleteOrder('', order.id)
 	}
-	const onPressDeleteOrder = () => {
-		setIsShowPopUpCanselSwash(true)
-	}
-	const onPressWithIron = () => {
-		setIsIron(prevState => !prevState)
-	}
-	const onPressHypoallergenic = () => {
-		setIsHypoallergenic(prevState => !prevState)
-	}
+
 	const onPressPachkomat = () => {
 
 	}
@@ -54,42 +48,27 @@ const CreateOrder = observer(({navigation}: CreateOrderProps) => {
 	const onPressChangePayment = () => {
 		setIsShowModalPayment(prevState => !prevState)
 	}
+	const onSendOrder = () => {
+		/*	OrdersStoreService.updateOrder({
+				orders_id,
+				units_order,
+				amount,
+			})*/
+	}
+	const onPressDeleteOrder = () => {
+		setIsShowPopUpCanselSwash(true)
+	}
+	const updateOrder = (payload: payloadUpdOrderType) => {
+		OrdersStoreService.updateOrder(payload)
+	}
 	return (
 		<>
 			<BaseWrapperComponent isKeyboardAwareScrollView={true}>
 				<Box paddingX={3}>
-					<BtnDelete onPress={onPressDeleteOrder} />
-					<Text fontSize={28} mt={3} fontWeight={'600'} color={colors.black}>Swash #{orders[0].id}</Text>
-					<Text fontSize={22} mt={3} fontWeight={'600'}>Services</Text>
-					<Box flexDirection={'row'} alignItems={'center'}
-							 justifyContent={'center'}>
-						<Box>
-							<Button onPress={onPressWithIron}>
-								<Box backgroundColor={isIron ? '#E8F5FE' : null} w={169} h={50} borderWidth={1}
-										 borderRadius={16}
-										 borderColor={isIron ? colors.blue : colors.grayLight} flexDirection={'row'} alignItems={'center'}
-										 justifyContent={'center'}>
-									<Image alt={'iron'} source={isIron ? ironBlueImg : ironImg} />
-									<Text ml={2} color={isIron ? colors.blue : colors.grayLight}>With iron</Text>
-								</Box>
-							</Button>
-						</Box>
-						<Box>
-							<Button onPress={onPressHypoallergenic}>
-								<Box backgroundColor={isHypoallergenic ? '#E8F5FE' : null} w={169} h={50} borderWidth={1}
-										 borderRadius={16}
-										 borderColor={isHypoallergenic ? colors.blue : colors.grayLight} flexDirection={'row'}
-										 alignItems={'center'}
-										 justifyContent={'center'}>
-									<Image alt={'iron'} source={isHypoallergenic ? hypoallergenicBlueImg : hypoallergenicImg} />
-									<Text ml={2} color={isHypoallergenic ? colors.blue : colors.grayLight}>Hypoallergenic</Text>
-								</Box>
-							</Button>
-						</Box>
-					</Box>
+					<Header updateOrder={updateOrder} onPressDeleteOrder={onPressDeleteOrder} orderDetail={orderDetail} />
 					<Box mt={2}>
 						<Text fontSize={22} fontWeight={'600'}>Photo</Text>
-						<AddPhotoComponent/>
+						<AddPhotoComponent />
 					</Box>
 					<Box mt={2}>
 						<Text mb={2} fontSize={22} fontWeight={'600'}>Paczkomat</Text>
@@ -121,17 +100,19 @@ const CreateOrder = observer(({navigation}: CreateOrderProps) => {
 						</TouchableOpacity>
 					</Box>
 					<Box mt={4}>
-						<Footer/>
+						<Footer onSave={onSendOrder} />
 					</Box>
 				</Box>
 			</BaseWrapperComponent>
 			{
 				isShowPopUpCanselSwash &&
-				<PopUpCanselSwash onDelete={deleteOrder} visible={isShowPopUpCanselSwash} onClose={() => setIsShowPopUpCanselSwash(false)} />
+				<PopUpCanselSwash onDelete={deleteOrder} visible={isShowPopUpCanselSwash}
+													onClose={() => setIsShowPopUpCanselSwash(false)} />
 			}
 			{
 				isShowModalPayment &&
-				<PaymentMethodPopUp navigation={navigation} visible={isShowModalPayment} onClose={() => setIsShowModalPayment(false)} />
+				<PaymentMethodPopUp navigation={navigation} visible={isShowModalPayment}
+														onClose={() => setIsShowModalPayment(false)} />
 			}
 
 		</>

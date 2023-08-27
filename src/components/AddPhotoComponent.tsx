@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, Image, ImageBackground, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, ImageBackground, Modal, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Camera } from 'expo-camera'
 import addPhotoImage from '../assets/Images/order/add_photo.png'
 import { observer } from 'mobx-react-lite'
@@ -12,48 +12,43 @@ import DeleteModal from './modal/DeleteModal'
 import NotificationStore from '../store/NotificationStore/notification-store'
 import { LoadingEnum } from '../store/types/types'
 import * as ImagePicker from 'expo-image-picker'
-import GiveChoiceCameraModal from './modal/GiveChoiceCameraModal'
 import { Box } from 'native-base'
+import { PhotoType } from '../api/Client/type'
+import { BASE_URL } from '../api/config'
 
 const AddPhotoComponent = observer(() => {
-	const { orders, saveOrderPhoto } = OrdersStore
+	const { orderDetail } = OrdersStore
 	const { setIsLoading } = NotificationStore
 	const { OrdersStoreService } = rootStore
-	const [images, setImages] = useState([])
 
 	const [cameraPermission, setCameraPermission] = useState(null)
 	const [isOpenCamera, setIsOpenCamera] = useState(false)
 	const [isDeleteModal, setIsDeleteModal] = useState(false)
-	const [lastAddedPhoto, setLastAddedPhoto] = useState<string>()
+	const [deletedPhotoId, setDeletedPhotoId] = useState('')
 	const [isGiveChoice, setIsGiveChoice] = useState(false)
 
 
 	const cameraRef = useRef(null)
 
 	useEffect(() => {
-		getPermission()
+		getCameraPermission()
 	}, [])
-	useEffect(() => {
-		if (lastAddedPhoto) {
-			saveOrderPhoto(lastAddedPhoto)
-		}
-	}, [lastAddedPhoto])
 
-	const getPermission = async () => {
+
+	const getCameraPermission = async () => {
 		const { status } = await Camera.requestCameraPermissionsAsync()
 		setCameraPermission(status === 'granted')
 		return status
 	}
 	const takePicture = async () => {
 		if (!cameraPermission) {
-			const status = await getPermission()
+			const status = await getCameraPermission()
 			if (status !== 'granted') return
 		}
 		setIsLoading(LoadingEnum.fetching)
 		try {
 			const photo = await cameraRef.current.takePictureAsync()
-			setLastAddedPhoto(photo.uri)
-			setImages([{ uri: photo.uri, key: String(images.length) }, ...images])
+			await OrdersStoreService.saveOrderPhoto(photo.uri)
 			setIsOpenCamera(false)
 		} catch (e) {
 			console.log(e)
@@ -61,9 +56,7 @@ const AddPhotoComponent = observer(() => {
 			setIsLoading(LoadingEnum.success)
 		}
 	}
-	const onPressDeletePhoto = () => {
-		setIsDeleteModal(true)
-	}
+
 	const onCloseModalDelete = () => {
 		setIsDeleteModal(false)
 	}
@@ -85,43 +78,53 @@ const AddPhotoComponent = observer(() => {
 			if (!result.canceled) {
 				const selectedAsset = result.assets[0]
 				const selectedImageUri = selectedAsset.uri
-
-				setLastAddedPhoto(selectedImageUri)
-				setImages([{ uri: selectedImageUri, key: String(images.length) }, ...images])
+				await OrdersStoreService.saveOrderPhoto(selectedImageUri)
 				setIsOpenCamera(false)
 			}
 		} catch (error) {
 			console.log('Error selecting image from gallery:', error)
 		}
 	}
+
+
+	const renderItem = ({ item }: { item: PhotoType }) => {
+		const onPressDeletePhoto = () => {
+			setDeletedPhotoId(item.id)
+			setIsDeleteModal(true)
+		}
+		const imageUrl = `${BASE_URL}${item.filename}`
+		return item.id === 'add_photo_button' ? (
+			<TouchableOpacity style={styles.addPhotoButton} onPress={() => setIsOpenCamera(true)}>
+				<Image source={addPhotoImage} alt={'add_photo'} />
+			</TouchableOpacity>
+		) : (
+			<ImageBackground source={{ uri: imageUrl }} borderRadius={16} style={styles.image}>
+				<TouchableOpacity onPress={onPressDeletePhoto}>
+					<Image style={styles.deleteImg} source={deleteImg} alt={'delete'} />
+				</TouchableOpacity>
+			</ImageBackground>
+		)
+	}
+
 	return (
 		<View style={styles.container}>
 			<FlatList
 				horizontal
-				data={[{ key: 'add_photo_button' }, ...images]}
-				renderItem={({ item }) => (
-					item.key === 'add_photo_button' ? (
-						<TouchableOpacity style={styles.addPhotoButton} onPress={() => setIsOpenCamera(true)}>
-							<Image source={addPhotoImage} alt={'add_photo'} />
-						</TouchableOpacity>
-					) : (
-						<ImageBackground source={{ uri: item.uri }} borderRadius={16} style={styles.image}>
-							<TouchableOpacity onPress={onPressDeletePhoto}>
-								<Image style={styles.deleteImg} source={deleteImg} alt={'delete'} />
-							</TouchableOpacity>
-						</ImageBackground>
-					)
-				)}
-				keyExtractor={(item) => item.key}
+				data={orderDetail.photos ? [{
+					filename: '',
+					id: 'add_photo_button',
+				}, ...orderDetail.photos] : [{ id: 'add_photo_button', filename: '' }]}
+				renderItem={renderItem}
+				keyExtractor={(item) => item.id}
 			/>
 			{cameraPermission && isOpenCamera && (
 				<Modal visible={isOpenCamera}>
 					<Camera style={styles.camera} ref={cameraRef}>
-					<Box position={'absolute'} top={5} left={5}>
-						<TouchableOpacity onPress={() => setIsOpenCamera(false)}>
-							<Image source={closeCameraImg} alt={'delete'} />
-						</TouchableOpacity>
-					</Box>
+						<Box position={'absolute'} top={5} left={5}>
+							<TouchableOpacity onPress={() => setIsOpenCamera(false)}>
+								<Image source={closeCameraImg} alt={'delete'} />
+							</TouchableOpacity>
+						</Box>
 						<Box position={'absolute'} bottom={5}>
 							<TouchableOpacity style={styles.cameraButton} onPress={takePicture}>
 								<Image source={btnCamera} />
@@ -130,8 +133,9 @@ const AddPhotoComponent = observer(() => {
 					</Camera>
 				</Modal>
 			)}
-			<DeleteModal visible={isDeleteModal} onClose={onCloseModalDelete} />
-		{/*	<GiveChoiceCameraModal onCamera={() => setIsOpenCamera(true)}
+			<DeleteModal deleteOrderPhoto={() => OrdersStoreService.deleteOrderPhoto(deletedPhotoId)} visible={isDeleteModal}
+									 onClose={onCloseModalDelete} />
+			{/*	<GiveChoiceCameraModal onCamera={() => setIsOpenCamera(true)}
 														 onGallery={onGalleryHandler} visible={isGiveChoice}
 														 onClose={() => setIsGiveChoice(false)} />*/}
 		</View>

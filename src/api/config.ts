@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-export const url = 'https://s-wash.com/'
+export const BASE_URL = 'https://s-wash.com/'
 
 export const instance = axios.create({
-	baseURL: url,
+	baseURL: BASE_URL,
 })
 
 instance.interceptors.request.use(
