@@ -19,6 +19,9 @@ import TermsOfUseS from '../screen/authScreens/TermsOfUseS'
 import { usePermissionsPushGeo } from '../utils/hook/usePermissionsPushGeo'
 import CreateOrder from '../screen/Main/CreateOrder/CreateOrder'
 import AddNewCardS from '../screen/Main/AddNewCardS'
+import OrderConfirmationS from '../screen/Main/OrderConfirmationS'
+import PriceS from '../screen/Main/PriceS'
+import LogisticsPointS from '../screen/LogisticsPointS'
 
 
 const RootStack = createNativeStackNavigator()
@@ -77,6 +80,21 @@ const RootNavigation = observer(() => {
 							options={{ headerShown: false }}
 							name={routerConstants.ADD_NEW_CARD}
 							component={AddNewCardS}
+						/>
+						<RootStack.Screen
+							options={{ headerShown: false }}
+							name={routerConstants.ORDER_CONFIRMATION}
+							component={OrderConfirmationS}
+						/>
+						<RootStack.Screen
+							options={{ headerShown: false }}
+							name={routerConstants.PRICE}
+							component={PriceS}
+						/>
+						<RootStack.Screen
+							options={{ headerShown: false }}
+							name={routerConstants.LOGISTIC_POINT}
+							component={LogisticsPointS}
 						/>
 					</>
 				}

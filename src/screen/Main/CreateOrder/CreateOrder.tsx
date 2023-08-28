@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { BaseWrapperComponent } from '../../../components/baseWrapperComponent'
 import { Box, Text } from 'native-base'
-import BtnDelete from '../../../components/btnDelete'
 import Button from '../../../components/Button'
-import ironImg from '../../../assets/Images/order/iron.png'
-import ironBlueImg from '../../../assets/Images/order/Iron-blue.png'
-import hypoallergenicBlueImg from '../../../assets/Images/order/quill-blue.png'
-import hypoallergenicImg from '../../../assets/Images/order/quil-gray.png'
 import { colors } from '../../../assets/colors/colors'
 import { Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { CheckBoxs } from '../../../components/CheckBox'
@@ -21,6 +16,7 @@ import PopUpCanselSwash from '../../../components/pop-up/PopUpCanselSwash'
 import Footer from './Footer'
 import Header from './Header'
 import { payloadUpdOrderType } from '../../../api/Client/clientApi'
+import { routerConstants } from '../../../constants/routerConstants'
 
 type CreateOrderProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -45,6 +41,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 		setIsShowModalPayment(prevState => !prevState)
 	}
 	const onSendOrder = () => {
+		navigation.navigate(routerConstants.ORDER_CONFIRMATION)
 		/*	OrdersStoreService.updateOrder({
 				orders_id,
 				units_order,

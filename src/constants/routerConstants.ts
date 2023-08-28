@@ -10,4 +10,7 @@ export const routerConstants = {
 
     CREATE_ORDER: 'create-order',
     ADD_NEW_CARD: 'add-new-card',
+    ORDER_CONFIRMATION: 'order-confirmation',
+    LOGISTIC_POINT: 'logistic-point',
+    PRICE: 'price',
 }

@@ -9,7 +9,7 @@ type ArrowBackProps = {
 const ArrowBack = ({goBackPress, img, styleTouchable}: ArrowBackProps) => {
     return (
         <TouchableOpacity style={{marginTop: 10, ...styleTouchable}} onPress={goBackPress}>
-            <Image style={{width: 31, height: 31}} source={img ?? arrowLeftBlackImg}/>
+            <Image style={{width: 24, height: 24}} source={img ?? arrowLeftBlackImg}/>
         </TouchableOpacity>
     );
 };

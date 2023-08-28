@@ -95,7 +95,7 @@ const AddPhotoComponent = observer(() => {
 		const imageUrl = `${BASE_URL}${item.filename}`
 		return item.id === 'add_photo_button' ? (
 			<TouchableOpacity style={styles.addPhotoButton} onPress={() => setIsOpenCamera(true)}>
-				<Image source={addPhotoImage} alt={'add_photo'} />
+				<Image style={{ width: 64, height: 64 }} source={addPhotoImage} alt={'add_photo'} />
 			</TouchableOpacity>
 		) : (
 			<ImageBackground source={{ uri: imageUrl }} borderRadius={16} style={styles.image}>
