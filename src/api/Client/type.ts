@@ -42,8 +42,12 @@ type OrderType = {
 	id: string;
 	last_step: string | null;
 };
+export enum StatusOrder {
+	EDITABLE = 'editable',
+	IN_PROCESS = 'in_process'
+}
 type OrderReportDetailType = OrderType & {
-	status: string;
+	status: StatusOrder;
 	units_order: any[];
 	photos: PhotoType[]
 };

@@ -6,35 +6,25 @@ import { OrderReportDetailType, OrderType } from '../../api/Client/type'
 export class OrdersStore {
 	orderDetail: OrderReportDetailType = {} as OrderReportDetailType
 	orders: OrderType[] = [] as OrderType[]
-	order: OrderType = {} as OrderType
-	newOrderId: number = 0
 
 	setOrderDetail(order: OrderReportDetailType) {
 		this.orderDetail = order
 	}
+
 	setOrders(orders: OrderType[]) {
 		this.orders = orders
-	}
-
-	setOrder(order: OrderType) {
-		this.order = order
-	}
-
-	setNewOrderId(orderId: number) {
-		this.newOrderId = orderId
 	}
 
 	async createOrderClient(payload: CreateServicesDataType) {
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
-
 		const { data } = await clientApi.createOrderClientPrev({
 			services: { ...payload },
 			clients_id: clients_id,
 			token: token,
 		})
-		this.setNewOrderId(data?.order_id)
-		return data
+		console.log(data, 'createOrderClient')
+		return data.order_id
 	}
 
 	async deleteOrder(comment: string, orders_id: string) {
@@ -46,9 +36,10 @@ export class OrdersStore {
 			clients_id: clients_id,
 			token: token,
 		})
+		console.log(data)
 	}
 
-	async getOrderReportDetail(orders_id: string) {
+	async getOrderReportDetail(orders_id: string): Promise<OrderReportDetailType> {
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
 		const { data } = await clientApi.getOrderReportDetail({
@@ -57,6 +48,7 @@ export class OrdersStore {
 			orders_id,
 		})
 		this.setOrderDetail(data)
+		return data
 	}
 
 	async saveOrderPhoto(photo) {
@@ -78,10 +70,10 @@ export class OrdersStore {
 	async updateOrder(payload: payloadUpdOrderType) {
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
-	  const data = await clientApi.updOrder({
+		const data = await clientApi.updOrder({
 			...payload,
 			token,
-			clients_id
+			clients_id,
 		})
 		console.log(data.data)
 	}
@@ -93,7 +85,7 @@ export class OrdersStore {
 			token,
 			clients_id,
 			photo_id,
-			order_number: this.orderDetail.id
+			order_number: this.orderDetail.id,
 		})
 		console.log(data)
 	}
@@ -102,15 +94,11 @@ export class OrdersStore {
 		makeObservable(this, {
 			orderDetail: observable,
 			orders: observable,
-			order: observable,
-			newOrderId: observable,
 			createOrderClient: action,
 			setOrderDetail: action,
 			saveOrderPhoto: action,
-			setNewOrderId: action,
 			updateOrder: action,
 			deleteOrderPhoto: action,
-			setOrder: action,
 			setOrders: action,
 			deleteOrder: action,
 			getOrderReportDetail: action,
@@ -118,13 +106,11 @@ export class OrdersStore {
 
 		this.createOrderClient = this.createOrderClient.bind(this)
 		this.updateOrder = this.updateOrder.bind(this)
-		this.setOrder = this.setOrder.bind(this)
 		this.saveOrderPhoto = this.saveOrderPhoto.bind(this)
 		this.getOrderReportDetail = this.getOrderReportDetail.bind(this)
 		this.setOrderDetail = this.setOrderDetail.bind(this)
 		this.deleteOrder = this.deleteOrder.bind(this)
 		this.setOrders = this.setOrders.bind(this)
-		this.setNewOrderId = this.setNewOrderId.bind(this)
 		this.deleteOrderPhoto = this.deleteOrderPhoto.bind(this)
 	}
 }

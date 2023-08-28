@@ -69,13 +69,7 @@ export class AuthStore {
 			clients_id: clients_id,
 			token: token,
 		}
-		/*const dataGetOrderReportClient =  await clientApi.getOrderReportClient({ ...payload }) // ok
-		const dataPushMessages = await clientApi.getClientPushMessages(payload) // не коректный метод*/
-
-		const { data: dataSetting } = await clientApi.getSettingsClient(payload)
-
-		this.setClientSettings(dataSetting)
-		return dataSetting
+	//const dataPushMessages = await clientApi.getClientPushMessages(payload) // не коректный метод*/
 		/*const { data: dataDictionary } = await clientApi.getDictionary({ language }) // basik auth failed
 		console.log(dataDictionary)
 		const { data: dataLogistic } = await clientApi.getLogisticPoints({ country }) //Basic authorization faul

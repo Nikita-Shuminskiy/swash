@@ -2,6 +2,7 @@ import RootStore from '../../RootStore'
 import { LoadingEnum } from '../../types/types'
 import { routerConstants } from '../../../constants/routerConstants'
 import { payloadUpdOrderType } from '../../../api/Client/clientApi'
+import { StatusOrder } from '../../../api/Client/type'
 
 
 export class OrdersStoreService {
@@ -10,38 +11,49 @@ export class OrdersStoreService {
 	constructor(rootStore: typeof RootStore) {
 		this.rootStore = rootStore
 	}
-	async getClientBaseInfo(navigate) {
+	async getSettingClient(navigate) {
 		this.rootStore.Notification.setIsLoading(LoadingEnum.fetching)
 		try {
 			const data = await this.rootStore.AuthStore.getSettingsClient()
-			if (!!data.client.phone_verify_datetime && !!data.client.consent_datetime) {
-				if (!data.orders.length) {
-					 await this.rootStore.OrdersStore.createOrderClient({
-						hypo: 0,
-						iron: 0,
-					})
-				}
-				if (data.orders.length) {
-					this.rootStore.OrdersStore.setOrder(data.orders[0])
-					this.rootStore.OrdersStore.setOrders(data.orders)
-				}
-				this.rootStore.AuthStore.setAuth(true)
-				navigate && navigate(routerConstants.CREATE_ORDER)
-			}
 			if (!data.client.phone_verify_datetime) return navigate && navigate(routerConstants.PHONE_VERIFY)
 			if (!data.client.consent_datetime) {
 				return navigate && navigate(routerConstants.TERMS_OF_USE)
 			}
-
+			if (!!data.client.phone_verify_datetime && !!data.client.consent_datetime) {
+				if (!data.orders.length) {
+					const idOrder = await this.rootStore.OrdersStore.createOrderClient({
+						hypo: 0,
+						iron: 0,
+					})
+					await this.rootStore.OrdersStore.getOrderReportDetail(idOrder)
+				}
+				if(data.orders.length === 1) {
+					//this.rootStore.OrdersStore.setOrders(data.orders)
+					const dataDetailOrder = await this.rootStore.OrdersStore.getOrderReportDetail(data.orders[0].id)
+					if(dataDetailOrder.status === StatusOrder.EDITABLE) {
+						navigate && navigate(routerConstants.CREATE_ORDER)
+						return
+					}
+				}
+				if (data.orders.length >= 2) {
+					//this.rootStore.OrdersStore.setOrder(data.orders[0])
+					//this.rootStore.OrdersStore.setOrders(data.orders)
+					await this.rootStore.OrdersStore.getOrderReportDetail(data.orders[0].id) // временно
+				}
+				this.rootStore.AuthStore.setAuth(true)
+				navigate && navigate(routerConstants.CREATE_ORDER)
+			}
 		} catch (e) {
 			console.log(e, 'getClientBaseInfo')
 		} finally {
 			this.rootStore.Notification.setIsLoading(LoadingEnum.success)
 		}
 	}
-	async deleteOrder(comment: string, orders_id: string) {
+
+	async deleteOrder(comment: string, orders_id: string, navigate) {
 		try {
 			await this.rootStore.OrdersStore.deleteOrder(comment, orders_id)
+			await this.rootStore.OrdersStoreService.getSettingClient(navigate)
 		} catch (e) {
 			console.log(e)
 		} finally {

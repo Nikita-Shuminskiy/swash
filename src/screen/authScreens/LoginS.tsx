@@ -108,7 +108,7 @@ const LoginS = ({ navigation }: LoginSProps) => {
 	useEffect(() => {
 		AuthStoreService.checkToken().then((data) => {
 			if (data) {
-				OrdersStoreService.getClientBaseInfo(navigation.navigate)
+				OrdersStoreService.getSettingClient(navigation.navigate)
 			}
 		})
 	}, [])

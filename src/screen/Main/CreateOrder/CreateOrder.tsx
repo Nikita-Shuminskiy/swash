@@ -26,17 +26,13 @@ type CreateOrderProps = {
 	navigation: NavigationProp<ParamListBase>
 }
 const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
-	const { order, orderDetail } = OrdersStore
+	const { orderDetail } = OrdersStore
 	const { OrdersStoreService } = rootStore
 	const [isShowModalPayment, setIsShowModalPayment] = useState<boolean>(false)
 	const [isShowPopUpCanselSwash, setIsShowPopUpCanselSwash] = useState<boolean>(false)
 
-	useEffect(() => {
-		OrdersStoreService.getOrderReportDetail(order.id)
-	}, [])
-
 	const deleteOrder = () => {
-		OrdersStoreService.deleteOrder('', order.id)
+		OrdersStoreService.deleteOrder('', orderDetail.id, navigation.navigate)
 	}
 
 	const onPressPachkomat = () => {
