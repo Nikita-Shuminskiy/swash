@@ -26,12 +26,16 @@ const PopUpCanselSwash = ({ visible, onClose, onDelete }: PopUpCanselSwashProps)
 					</TouchableOpacity>
 				</Box>
 				<Box flexDirection={'row'} mt={3} justifyContent={'space-between'}>
-					<Button styleContainer={styles.styleContainerBtn} backgroundColor={colors.blue} colorText={colors.white}
-									onPress={onClose} title={'No'} />
-					<Button styleContainer={{ ...styles.styleContainerBtn, ...styles.btnYes }} colorText={colors.blue}
-									onPress={onPressDelete}
-									styleText={colors.blue}
-									title={'Yes'} />
+					<Box mr={2} flex={1}>
+						<Button styleContainer={styles.styleContainerBtn} backgroundColor={colors.blue} colorText={colors.white}
+										onPress={onClose} title={'No'} />
+					</Box>
+					<Box flex={1}>
+						<Button styleContainer={{ ...styles.styleContainerBtn, ...styles.btnYes }} colorText={colors.blue}
+										onPress={onPressDelete}
+										styleText={colors.blue}
+										title={'Yes'} />
+					</Box>
 				</Box>
 			</Box>
 		</ModalPopup>

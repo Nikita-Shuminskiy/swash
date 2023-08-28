@@ -52,13 +52,14 @@ const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
 	return (
 		<BaseWrapperComponent>
 			<Box paddingX={5}>
-				<Box flexDirection={'row'} alignItems={'flex-end'} justifyContent={'space-between'}>
-					<Box flex={1}>
+				<Box flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
+					<Box position={'relative'} bottom={1}>
 						<ArrowBack goBackPress={goBackPress} />
 					</Box>
-					<Box flex={2} justifyContent={'center'}>
+					<Box>
 						<Text fontSize={22} fontWeight={'600'}>Add new card</Text>
 					</Box>
+					<Box/>
 				</Box>
 
 				<Box mt={10} borderWidth={1} borderColor={colors.grayBright} borderRadius={16} padding={5}>
@@ -88,7 +89,7 @@ const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
 								maxLength={5}
 							/>
 						</Box>
-						<Box maxW={152} w={'100%'}>
+						<Box maxW={122} w={'100%'}>
 							<InputCustom
 								placeholderTextColor={'#B0BAC1'}
 								placeholder={'CVV / CVC'}

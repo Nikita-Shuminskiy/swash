@@ -41,10 +41,6 @@ const AddPhotoComponent = observer(() => {
 		return status
 	}
 	const takePicture = async () => {
-		if (!cameraPermission) {
-			const status = await getCameraPermission()
-			if (status !== 'granted') return
-		}
 		setIsLoading(LoadingEnum.fetching)
 		try {
 			const photo = await cameraRef.current.takePictureAsync()
@@ -94,7 +90,12 @@ const AddPhotoComponent = observer(() => {
 		}
 		const imageUrl = `${BASE_URL}${item.filename}`
 		return item.id === 'add_photo_button' ? (
-			<TouchableOpacity style={styles.addPhotoButton} onPress={() => setIsOpenCamera(true)}>
+			<TouchableOpacity style={styles.addPhotoButton} onPress={() => {
+				if (!cameraPermission) {
+					getCameraPermission()
+				}
+				setIsOpenCamera(true)
+			}}>
 				<Image style={{ width: 64, height: 64 }} source={addPhotoImage} alt={'add_photo'} />
 			</TouchableOpacity>
 		) : (

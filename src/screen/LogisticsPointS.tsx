@@ -5,6 +5,8 @@ import { Box, Text } from 'native-base'
 import ArrowBack from '../components/ArrowBack'
 import { colors } from '../assets/colors/colors'
 import { MapViews } from '../components/MapViews/MapViews'
+import { Image, TouchableOpacity } from 'react-native'
+import myPositionImg from '../assets/Images/Map/MyPosition.png'
 
 type LogisticsPointProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -24,9 +26,7 @@ const LogisticsPointS = ({ navigation }: LogisticsPointProps) => {
 				</Box>
 				<Box/>
 			</Box>
-			<Box w={'100%'} h={'100%'}>
-				<MapViews />
-			</Box>
+			<MapViews />
 		</BaseWrapperComponent>
 	)
 }

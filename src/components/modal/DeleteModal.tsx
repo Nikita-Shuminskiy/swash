@@ -45,8 +45,9 @@ const DeleteModal = ({ visible, onClose, deleteOrderPhoto }: BaseModalProps) => 
 }
 const styles = StyleSheet.create({
 	styleContainerBtn: {
-		maxWidth: 168,
+		maxWidth: 138,
 		minWidth: 0,
+		width: '100%',
 		height: 56,
 	},
 	btnYes: {

@@ -10,7 +10,7 @@ import hypoallergenicBlueImg from '../../../assets/Images/order/quill-blue.png'
 import hypoallergenicImg from '../../../assets/Images/order/quil-gray.png'
 import { OrderReportDetailType } from '../../../api/Client/type'
 import { payloadUpdOrderType } from '../../../api/Client/clientApi'
-import BergerMenuImg from '../../../components/bergerMenuImg'
+import BergerMenuImg from '../../../components/burgerMenuImg'
 
 type HeaderProps = {
 	orderDetail: OrderReportDetailType
