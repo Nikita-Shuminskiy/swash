@@ -93,7 +93,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 						</TouchableOpacity>
 					</Box>
 					<Box mt={4}>
-						<Footer onSave={onSendOrder} />
+						<Footer navigate={navigation.navigate} onSave={onSendOrder} />
 					</Box>
 				</Box>
 			</BaseWrapperComponent>

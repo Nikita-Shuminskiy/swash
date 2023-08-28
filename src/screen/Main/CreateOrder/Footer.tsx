@@ -3,12 +3,15 @@ import { Box, Text } from 'native-base'
 import Link from '../../../components/Link'
 import Button from '../../../components/Button'
 import { colors } from '../../../assets/colors/colors'
+import { routerConstants } from '../../../constants/routerConstants'
+
 type FooterProps = {
 	onSave: () => void
+	navigate: (val: any) => void
 }
-const Footer = ({onSave}:FooterProps) => {
+const Footer = ({onSave, navigate}:FooterProps) => {
 	const onPressPrises = () => {
-
+		navigate(routerConstants.PRICE)
 	}
 
 	return (

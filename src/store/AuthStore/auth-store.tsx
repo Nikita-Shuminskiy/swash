@@ -6,16 +6,9 @@ import { clientApi } from '../../api/Client/clientApi'
 import { DataSettingClientType } from '../../api/Client/type'
 
 export class AuthStore {
-	user: any = {} as any
-	userAuthGoogleData: UserAuthGoogleData = {} as UserAuthGoogleData
 	isAuth: boolean = false
 	phone: string = ''
-	clientCode: number = 0
 	clientSettings: DataSettingClientType = {} as DataSettingClientType
-
-	setUser(userData: any): void {
-		this.user = userData
-	}
 
 	setAuth(auth: boolean): void {
 		this.isAuth = auth
@@ -25,10 +18,6 @@ export class AuthStore {
 		this.phone = phone
 	}
 
-	setClientCode(code: number): void {
-		this.clientCode = code
-	}
-
 	setClientSettings(data: any): void {
 		this.clientSettings = data
 	}
@@ -36,7 +25,6 @@ export class AuthStore {
 	async setUserAuthData(userData: UserAuthGoogleData) {
 		await deviceStorage.saveItem('token', userData.token)
 		await deviceStorage.saveItem('clients_id', userData.clients_id)
-		this.userAuthGoogleData = userData
 	}
 
 	async sendClientCode(formattedPhoneNumber?: string) {
@@ -84,6 +72,8 @@ export class AuthStore {
 				clients_id
 			}
 		)
+
+		this.setClientSettings(data)
 		return data
 	}
 
@@ -101,11 +91,9 @@ export class AuthStore {
 
 	constructor() {
 		makeObservable(this, {
-			user: observable,
 			clientSettings: observable,
 			isAuth: observable,
 			phone: observable,
-			setUser: action,
 			setPhone: action,
 			getSettingsClient: action,
 			setClientSettings: action,
