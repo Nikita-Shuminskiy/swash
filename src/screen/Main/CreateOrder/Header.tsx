@@ -4,12 +4,13 @@ import { Box, Text } from 'native-base'
 import { colors } from '../../../assets/colors/colors'
 import Button from '../../../components/Button'
 import { Image } from 'react-native'
-import ironBlueImg from '../../../assets/Images/order/Iron-blue.png'
+import ironBlueImg from '../../../assets/Images/order/iron-blue.png'
 import ironImg from '../../../assets/Images/order/iron.png'
 import hypoallergenicBlueImg from '../../../assets/Images/order/quill-blue.png'
 import hypoallergenicImg from '../../../assets/Images/order/quil-gray.png'
 import { OrderReportDetailType } from '../../../api/Client/type'
 import { payloadUpdOrderType } from '../../../api/Client/clientApi'
+import BergerMenuImg from '../../../components/bergerMenuImg'
 
 type HeaderProps = {
 	orderDetail: OrderReportDetailType
@@ -40,7 +41,10 @@ const Header = ({orderDetail, onPressDeleteOrder, updateOrder}:HeaderProps) => {
 	const isHypoallergenic = orderDetail.add_hypo === '1'
 	return (
 		<>
-			<BtnDelete onPress={onPressDeleteOrder} />
+			<Box flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
+				<BergerMenuImg/>
+				<BtnDelete onPress={onPressDeleteOrder} />
+			</Box>
 			<Text fontSize={28} mt={3} fontWeight={'600'} color={colors.black}>Swash #{orderDetail?.id}</Text>
 			<Text fontSize={22} mt={3} fontWeight={'600'}>Services</Text>
 			<Box flexDirection={'row'} alignItems={'center'}
@@ -51,7 +55,7 @@ const Header = ({orderDetail, onPressDeleteOrder, updateOrder}:HeaderProps) => {
 								 borderRadius={16}
 								 borderColor={isIron ? colors.blue : colors.grayLight} flexDirection={'row'} alignItems={'center'}
 								 justifyContent={'center'}>
-							<Image alt={'iron'} source={isIron ? ironBlueImg : ironImg} />
+							<Image style={{ width: 32, height: 32 }} alt={'iron'} source={isIron ? ironBlueImg : ironImg} />
 							<Text ml={2} color={isIron ? colors.blue : colors.grayLight}>With iron</Text>
 						</Box>
 					</Button>
@@ -63,7 +67,7 @@ const Header = ({orderDetail, onPressDeleteOrder, updateOrder}:HeaderProps) => {
 								 borderColor={isHypoallergenic ? colors.blue : colors.grayLight} flexDirection={'row'}
 								 alignItems={'center'}
 								 justifyContent={'center'}>
-							<Image alt={'iron'} source={isHypoallergenic ? hypoallergenicBlueImg : hypoallergenicImg} />
+							<Image  style={{ width: 29, height: 29 }} alt={'iron'} source={isHypoallergenic ? hypoallergenicBlueImg : hypoallergenicImg} />
 							<Text ml={2} color={isHypoallergenic ? colors.blue : colors.grayLight}>Hypoallergenic</Text>
 						</Box>
 					</Button>

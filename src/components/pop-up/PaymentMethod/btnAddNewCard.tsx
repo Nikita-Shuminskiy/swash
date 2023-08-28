@@ -10,7 +10,7 @@ const BtnAddNewCard = ({onPressNewPayment}) => {
 			<Box paddingY={18} borderRadius={16} paddingX={5} flexDirection={'row'} alignItems={'center'}
 					 justifyContent={'flex-start'}
 					 backgroundColor={colors.grayBright}>
-				<Image source={addCircleImage} alt={'arrow'} />
+				<Image style={{ width: 24, height: 24 }} source={addCircleImage} alt={'arrow'} />
 				<Text ml={2} fontSize={15} color={colors.blue}>Add new card</Text>
 
 			</Box>

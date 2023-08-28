@@ -7,8 +7,8 @@ type BtnDeleteProps =   {
 }
 const BtnDelete = ({onPress}: BtnDeleteProps) => {
 	return (
-		<TouchableOpacity onPress={onPress}>
-			<Image source={deleteImg} alt={'delete'}/>
+		<TouchableOpacity  onPress={onPress}>
+			<Image style={{ width: 28, height: 28 }} source={deleteImg} alt={'delete'}/>
 		</TouchableOpacity>
 	)
 }

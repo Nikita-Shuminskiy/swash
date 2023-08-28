@@ -17,6 +17,7 @@ import Footer from './Footer'
 import Header from './Header'
 import { payloadUpdOrderType } from '../../../api/Client/clientApi'
 import { routerConstants } from '../../../constants/routerConstants'
+import CustomCheckbox from '../../../components/CustomCheckbox'
 
 type CreateOrderProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -26,16 +27,18 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 	const { OrdersStoreService } = rootStore
 	const [isShowModalPayment, setIsShowModalPayment] = useState<boolean>(false)
 	const [isShowPopUpCanselSwash, setIsShowPopUpCanselSwash] = useState<boolean>(false)
+	const [isChecked, setIsChecked] = useState(false)
+
 
 	const deleteOrder = () => {
 		OrdersStoreService.deleteOrder('', orderDetail.id, navigation.navigate)
 	}
 
 	const onPressPachkomat = () => {
-
+		setIsChecked(prevState => !prevState)
 	}
 	const onPressChosePaczkomat = () => {
-
+		navigation.navigate(routerConstants.LOGISTIC_POINT)
 	}
 	const onPressChangePayment = () => {
 		setIsShowModalPayment(prevState => !prevState)
@@ -70,7 +73,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 								 alignItems={'center'}
 								 justifyContent={'flex-start'}>
 							<Box ml={4}>
-								<CheckBoxs borderRadius={16} onPress={onPressPachkomat} value={true} />
+								<CustomCheckbox checked={isChecked} onPress={onPressPachkomat} />
 							</Box>
 							<Text ml={2} fontSize={15}>Paczkomat 1</Text>
 						</Box>

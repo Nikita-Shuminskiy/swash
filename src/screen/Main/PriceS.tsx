@@ -18,7 +18,7 @@ import AuthStore from '../../store/AuthStore/auth-store'
 import { UnitType } from '../../api/Client/type'
 import { colors } from '../../assets/colors/colors' // 7
 import hypoallergenicBlueImg from '../../assets/Images/order/quill-blue.png'
-import ironBlueImg from '../../assets/Images/order/Iron-blue.png'
+import ironBlueImg from '../../assets/Images/order/iron-blue.png'
 import Button from '../../components/Button'
 
 type PriceSProps = {
