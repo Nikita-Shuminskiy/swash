@@ -4,7 +4,6 @@ import { Box, Text } from 'native-base'
 import Button from '../../../components/Button'
 import { colors } from '../../../assets/colors/colors'
 import { Image, StyleSheet, TouchableOpacity } from 'react-native'
-import { CheckBoxs } from '../../../components/CheckBox'
 import PaymentMethodPopUp from '../../../components/pop-up/PaymentMethod/PaymentMethodPopUp'
 import arrowBlue from '../../../assets/Images/order/arrowRightBlue.png'
 import { observer } from 'mobx-react-lite'
@@ -66,7 +65,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 						<Text fontSize={22} fontWeight={'600'}>Photo</Text>
 						<AddPhotoComponent />
 					</Box>
-					<Box mt={2}>
+					<Box>
 						<Text mb={2} fontSize={22} fontWeight={'600'}>Paczkomat</Text>
 
 						<Box paddingY={18} backgroundColor={colors.grayBright} borderRadius={16} flexDirection={'row'}

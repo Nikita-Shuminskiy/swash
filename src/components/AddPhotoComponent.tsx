@@ -126,6 +126,14 @@ const AddPhotoComponent = observer(() => {
 					id: 'add_photo_button',
 				}, ...orderDetail.photos] : [{ id: 'add_photo_button', filename: '' }]}
 				renderItem={renderItem}
+				contentContainerStyle={{
+					flexGrow: 1,
+					alignItems: 'flex-start',
+					paddingBottom: 15
+				}}
+				style={{ width: '100%' }}
+				showsHorizontalScrollIndicator={true}
+			/*	persistentScrollbar={true}*/
 				keyExtractor={(item) => item.id}
 			/>
 			{cameraPermission && isOpenCamera && (
