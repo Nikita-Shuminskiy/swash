@@ -14,9 +14,9 @@ import AddPhotoComponent from '../../../components/AddPhotoComponent'
 import PopUpCanselSwash from '../../../components/pop-up/PopUpCanselSwash'
 import Footer from './Footer'
 import Header from './Header'
-import { payloadUpdOrderType } from '../../../api/Client/clientApi'
 import { routerConstants } from '../../../constants/routerConstants'
 import CustomCheckbox from '../../../components/CustomCheckbox'
+import { payloadUpdOrderType } from '../../../api/Client/type'
 
 type CreateOrderProps = {
 	navigation: NavigationProp<ParamListBase>

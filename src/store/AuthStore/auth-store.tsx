@@ -3,11 +3,12 @@ import { authApi } from '../../api/authApi'
 import { deviceStorage } from '../../utils/storage/storage'
 import { UserAuthGoogleData } from '../../screen/authScreens/LoginS'
 import { clientApi } from '../../api/Client/clientApi'
-import { DataSettingClientType } from '../../api/Client/type'
+import { DataSettingClientType, LogisticsPointType } from '../../api/Client/type'
 
 export class AuthStore {
 	isAuth: boolean = false
 	phone: string = ''
+	logisticPoints: LogisticsPointType[] = [] as LogisticsPointType[]
 	clientSettings: DataSettingClientType = {} as DataSettingClientType
 
 	setAuth(auth: boolean): void {
@@ -16,6 +17,10 @@ export class AuthStore {
 
 	setPhone(phone: string): void {
 		this.phone = phone
+	}
+
+	setLogisticPoints(data: LogisticsPointType[]): void {
+		this.logisticPoints = data
 	}
 
 	setClientSettings(data: any): void {
@@ -49,29 +54,26 @@ export class AuthStore {
 		return await authApi.sendClientCodeVerify(payload)
 	}
 
-	async getBaseInfoClient() {
+	async getLogisticPoints() {
+		const { data } = await clientApi.getLogisticPoints({ country: 'PL' }) // временно
 
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
-		const payload = {
-			clients_id: clients_id,
-			token: token,
-		}
-	//const dataPushMessages = await clientApi.getClientPushMessages(payload) // не коректный метод*/
+		this.setLogisticPoints(data.points)
+		//const dataPushMessages = await clientApi.getClientPushMessages(payload) // не коректный метод*/
 		/*const { data: dataDictionary } = await clientApi.getDictionary({ language }) // basik auth failed
 		console.log(dataDictionary)
-		const { data: dataLogistic } = await clientApi.getLogisticPoints({ country }) //Basic authorization faul
-		console.log(dataLogistic)*/
+	*/
 	}
+
 	async getSettingsClient() {
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
 		const { data } = await clientApi.getSettingsClient(
 			{
 				token,
-				clients_id
-			}
+				clients_id,
+			},
 		)
+
 
 		this.setClientSettings(data)
 		return data
@@ -93,22 +95,25 @@ export class AuthStore {
 		makeObservable(this, {
 			clientSettings: observable,
 			isAuth: observable,
+			logisticPoints: observable,
 			phone: observable,
 			setPhone: action,
 			getSettingsClient: action,
 			setClientSettings: action,
 			sendClientVerifyCode: action,
-			getBaseInfoClient: action,
+			getLogisticPoints: action,
 			setAuth: action,
 			setUserAuthData: action,
 			sendClientCode: action,
+			setLogisticPoints: action,
 		})
 		this.setAuth = this.setAuth.bind(this)
+		this.setLogisticPoints = this.setLogisticPoints.bind(this)
 		this.getSettingsClient = this.getSettingsClient.bind(this)
 		this.sendClientCode = this.sendClientCode.bind(this)
 		this.setPhone = this.setPhone.bind(this)
 		this.sendClientVerifyCode = this.sendClientVerifyCode.bind(this)
-		this.getBaseInfoClient = this.getBaseInfoClient.bind(this)
+		this.getLogisticPoints = this.getLogisticPoints.bind(this)
 		this.setUserAuthData = this.setUserAuthData.bind(this)
 	}
 }

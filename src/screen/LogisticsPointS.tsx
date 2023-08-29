@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BaseWrapperComponent } from '../components/baseWrapperComponent'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { Box, Text } from 'native-base'
@@ -7,11 +7,15 @@ import { colors } from '../assets/colors/colors'
 import { MapViews } from '../components/MapViews/MapViews'
 import { Image, TouchableOpacity } from 'react-native'
 import myPositionImg from '../assets/Images/Map/MyPosition.png'
+import rootStore from '../store/RootStore/root-store'
+import { observer } from 'mobx-react-lite'
+import AuthStore from '../store/AuthStore/auth-store'
 
 type LogisticsPointProps = {
 	navigation: NavigationProp<ParamListBase>
 }
-const LogisticsPointS = ({ navigation }: LogisticsPointProps) => {
+const LogisticsPointS = observer(({ navigation }: LogisticsPointProps) => {
+	const { logisticPoints } = AuthStore
 	const goBackPress = () => {
 		navigation.goBack()
 	}
@@ -26,9 +30,9 @@ const LogisticsPointS = ({ navigation }: LogisticsPointProps) => {
 				</Box>
 				<Box/>
 			</Box>
-			<MapViews />
+			<MapViews logisticPoints={logisticPoints} />
 		</BaseWrapperComponent>
 	)
-}
+})
 
 export default LogisticsPointS

@@ -1,11 +1,17 @@
 import { instance } from '../config'
-import { DataSettingClientType } from './type'
+import {
+	ClientRegisterType,
+	CreateOrderClientPrevType,
+	DataSettingClientType,
+	DeleteOrderPayload,
+	LogisticsPointType, payloadUpdOrderType,
+} from './type'
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator'
 
 
 export const clientApi = {
 	async getLogisticPoints(payload: { country: string }) {
-		return await instance.get(`washapi.php/get_logistics_points`, { params: payload })
+		return await instance.get<ResponseLogisticsPoints>(`washapi.php/get_logistics_points`, { params: payload })
 	},
 	async getDictionary(payload: { language: string }) {
 		return await instance.get(`washapi.php/get_dictionary`, { params: payload })
@@ -72,44 +78,7 @@ export const clientApi = {
 		return await instance.post(`washapi.php/order_client_register`, payload)
 	},
 }
-export type payloadUpdOrderType = {
-	'orders_id'?: string
-	'clients_id'?: string
-	'token'?: string
-	'services'?: {
-		'hypo'?: number,
-		'iron'?: number
-	},
-	'units_order'?: [
-		{
-			'type_of_units_id': string
-			'unit_count': string
-		}
-	],
-	'client_logistic_partners_points_id'?: string
-	'amount'?: string
-}
-export type DeleteOrderPayload = {
-	orders_id: string
-	clients_id: string,
-	token: string,
-	comment: string
-}
-export type ClientRegisterType = {
-	clients_id: string,
-	token: string,
-	phone?: string,
-	country?: string,
-	language?: string,
-	consent_datetime?: string
-}
-
-export type CreateOrderClientPrevType = {
-	'clients_id': string,
-	'token': string,
-	'services': CreateServicesDataType
-}
-export type CreateServicesDataType = {
-	'hypo': number,
-	'iron': number
-}
+type ResponseLogisticsPoints = {
+	status: string;
+	points: LogisticsPointType[];
+};

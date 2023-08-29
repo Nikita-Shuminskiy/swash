@@ -8,15 +8,19 @@ import NotificationStore from '../../store/NotificationStore/notification-store'
 import { allowLocation } from './utils'
 import AddressAutocomplete from '../AddressAutocomplete'
 import myPositionImg from '../../assets/Images/Map/MyPosition.png'
+import { LogisticsPointType } from '../../api/Client/type'
+import MarkerCustom from './MarkerCustom'
 
-type MapViewsProps = {}
-export const MapViews = ({}: MapViewsProps) => {
+type MapViewsProps = {
+	logisticPoints: LogisticsPointType[]
+}
+export const MapViews = ({ logisticPoints }: MapViewsProps) => {
 	const { setIsLoading } = NotificationStore
 	const navigation = useNavigation<any>()
 	const [mapRef, setMapRef] = useState(null)
 	const [myPosition, setMyPosition] = useState<{ latitude: number, longitude: number }>({
-		latitude: 52.2370,
-		longitude: 21.0175,
+		latitude: 54.34544523458879,
+		longitude: 18.66879642843845
 	})
 
 	const getCurrentPositionHandler = async () => {
@@ -32,7 +36,7 @@ export const MapViews = ({}: MapViewsProps) => {
 		} finally {
 		}
 	}
-	useEffect(() => {
+/*	useEffect(() => {
 		if (mapRef && myPosition?.latitude) {
 			mapRef.fitToCoordinates([{ latitude: myPosition.latitude, longitude: myPosition.longitude }], {
 				edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
@@ -42,7 +46,7 @@ export const MapViews = ({}: MapViewsProps) => {
 	}, [myPosition])
 	useEffect(() => {
 		getCurrentPositionHandler()
-	}, [])
+	}, [])*/
 
 	const onSaveAutoCompleteHandler = () => {
 
@@ -78,6 +82,9 @@ export const MapViews = ({}: MapViewsProps) => {
 						title={''}
 					/>
 				}
+				{logisticPoints.map(point => (
+					<MarkerCustom point={point} key={point.id} />
+				))}
 			</MapView>
 			<Box mt={5} zIndex={10} position={'absolute'} right={0} bottom={10}>
 				<TouchableOpacity onPress={getCurrentPositionHandler}>

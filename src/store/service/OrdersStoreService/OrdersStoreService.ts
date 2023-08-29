@@ -1,8 +1,7 @@
 import RootStore from '../../RootStore'
 import { LoadingEnum } from '../../types/types'
 import { routerConstants } from '../../../constants/routerConstants'
-import { payloadUpdOrderType } from '../../../api/Client/clientApi'
-import { StatusOrder } from '../../../api/Client/type'
+import { payloadUpdOrderType, StatusOrder } from '../../../api/Client/type'
 
 
 export class OrdersStoreService {
@@ -27,6 +26,7 @@ export class OrdersStoreService {
 					})
 					await this.rootStore.OrdersStore.getOrderReportDetail(idOrder)
 				}
+				await this.rootStore.AuthStore.getLogisticPoints()
 				if(data.orders.length === 1) {
 					//this.rootStore.OrdersStore.setOrders(data.orders)
 					const dataDetailOrder = await this.rootStore.OrdersStore.getOrderReportDetail(data.orders[0].id)

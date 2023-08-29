@@ -43,10 +43,12 @@ type OrderType = {
 	id: string;
 	last_step: string | null;
 };
+
 export enum StatusOrder {
 	EDITABLE = 'editable',
 	IN_PROCESS = 'in_process'
 }
+
 type OrderReportDetailType = OrderType & {
 	status: StatusOrder;
 	units_order: any[];
@@ -61,7 +63,71 @@ type DataSettingClientType = {
 	status: string;
 	units: UnitType[];
 };
+type LogisticsPointType = {
+	id: string;
+	logistic_partners_id: string;
+	lat: string;
+	lon: string;
+	point_name: string;
+	address: string;
+	comment: string;
+	hours: string;
+	disabled: null | any; // ??
+	country: string;
+	name: string;
+};
+
+type DeleteOrderPayload = {
+	orders_id: string;
+	clients_id: string;
+	token: string;
+	comment: string;
+};
+type payloadUpdOrderType = {
+	orders_id?: string;
+	clients_id?: string;
+	token?: string;
+	services?: {
+		hypo?: number;
+		iron?: number;
+	};
+	units_order?: [
+		{
+			type_of_units_id: string;
+			unit_count: string;
+		}
+	];
+	client_logistic_partners_points_id?: string;
+	amount?: string;
+};
+
+type ClientRegisterType = {
+	clients_id: string;
+	token: string;
+	phone?: string;
+	country?: string;
+	language?: string;
+	consent_datetime?: string;
+};
+
+type CreateOrderClientPrevType = {
+	clients_id: string;
+	token: string;
+	services: CreateServicesDataType;
+};
+
+type CreateServicesDataType = {
+	hypo: number;
+	iron: number;
+};
+
 export {
+	payloadUpdOrderType,
+	DeleteOrderPayload,
+	ClientRegisterType,
+	CreateOrderClientPrevType,
+	CreateServicesDataType,
+	LogisticsPointType,
 	OrderReportDetailType,
 	OrderType,
 	ClientType,
