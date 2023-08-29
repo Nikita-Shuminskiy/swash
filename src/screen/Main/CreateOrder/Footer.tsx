@@ -22,7 +22,7 @@ const Footer = ({onSave, navigate}:FooterProps) => {
 				You will get push-notification</Text>
 			<Box mb={3}>
 				<Link styleText={{ color: colors.blue, fontSize: 22, fontWeight: '400' }} onPress={onPressPrises}
-							text={'Prises'} />
+							text={'Prices'} />
 				<Box mt={2}>
 					<Button backgroundColor={colors.blue} colorText={colors.white} styleContainer={{
 						borderRadius: 28,

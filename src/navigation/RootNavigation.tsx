@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { observer } from 'mobx-react-lite'
 import AuthStore from '../store/AuthStore'
 import NotificationStore from '../store/NotificationStore/notification-store'
-import { NavigationContainer, useNavigation } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import { LoadingEnum } from '../store/types/types'
 import Loading from '../components/Loading'
 import { routerConstants } from '../constants/routerConstants'
@@ -11,7 +11,6 @@ import LoginS from '../screen/authScreens/LoginS'
 import Alerts from '../components/Alert'
 import GivePermissions from '../components/GivePermissions'
 import VerifyNumberS from '../screen/authScreens/VerifyNumberS'
-import rootStore from '../store/RootStore/root-store'
 import AddPhoneS from '../screen/authScreens/AddPhoneS'
 import WifiReconnect from '../components/WifiReconnect'
 import NetInfo from '@react-native-community/netinfo'
@@ -22,13 +21,13 @@ import AddNewCardS from '../screen/Main/AddNewCardS'
 import OrderConfirmationS from '../screen/Main/OrderConfirmationS'
 import PriceS from '../screen/Main/PriceS'
 import LogisticsPointS from '../screen/LogisticsPointS'
+import LoadingLocal from '../components/LoadingLocal'
 
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
-	const { isLoading, serverResponseText, setIsLoading } = NotificationStore
-	const { isAuth, setAuth } = AuthStore
-	const { AuthStoreService, OrdersStoreService } = rootStore
+	const { isLoading, serverResponseText, setIsLoading, isLocalLoading } = NotificationStore
+	const { isAuth } = AuthStore
 	const {
 		askNotificationPermissionHandler,
 		askLocationPermissionHandler,
@@ -60,9 +59,11 @@ const RootNavigation = observer(() => {
 
 	}, [])
 
+
 	return (
 		<NavigationContainer>
 			{isLoading === LoadingEnum.fetching && <Loading visible={true} />}
+			{isLocalLoading === LoadingEnum.fetching && <LoadingLocal visible={true} />}
 			{serverResponseText && <Alerts text={serverResponseText} />}
 			{!isConnected && <WifiReconnect checkInternet={checkInternetConnection} visible={!isConnected} />}
 			{checkStatusPermissions && <GivePermissions askLocationPermissionHandler={askLocationPermissionHandler}

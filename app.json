@@ -22,6 +22,9 @@
           "googlechrome",
           "https"
         ]
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyD-3PKe63YHjDDaxjVahTekuyvvOFfwKp4"
       }
     },
     "android": {
@@ -30,10 +33,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.nick_1995.swash",
+      "package": "com.nick.swash",
       "config": {
         "googleSignIn": {
           "certificateHash": "71:9C:0B:34:99:34:20:3F:1D:18:7C:97:1C:6E:42:05:77:0F:B3:AA"
+        },
+        "googleMaps": {
+          "apiKey": "AIzaSyD-3PKe63YHjDDaxjVahTekuyvvOFfwKp4"
         }
       },
       "permissions": [
@@ -47,10 +53,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "63d9aa32-95a7-4156-bcc4-57bc2380b667"
+        "projectId": "f8d3d5f4-10a1-4ba5-95cf-fbb2254c65cb"
       }
     },
-    "owner": "nick_1995",
+    "owner": "nick_12345",
     "scheme": "swash",
     "plugins": [
       "expo-localization"

@@ -12,7 +12,7 @@ import { CheckBoxs } from '../../components/CheckBox'
 import rootStore from '../../store/RootStore/root-store'
 import { observer } from 'mobx-react-lite'
 import { routerConstants } from '../../constants/routerConstants'
-
+import { format } from 'date-fns';
 type TermsOfUseSProps = {
 	navigation: NavigationProp<ParamListBase>
 }
@@ -24,9 +24,13 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 	const onPressContinue = () => {
 		if (!checkLegal || !checkToc) {
 			setDisBtn(true)
+			return
 		}
+		const currentDate = new Date();
+
+		const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm');
 		AuthStoreService.sendClientRegister({
-			consent_datetime: new Date().toString(),
+			consent_datetime: formattedDate,
 		}).then((data) => {
 			if(data) {
 				navigation.navigate(routerConstants.CREATE_ORDER)

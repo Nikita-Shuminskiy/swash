@@ -57,7 +57,6 @@ export class OrdersStoreService {
 		} catch (e) {
 			console.log(e)
 		} finally {
-
 		}
 	}
 	async deleteOrderPhoto(photo_id: string) {
@@ -65,7 +64,7 @@ export class OrdersStoreService {
 			await this.rootStore.OrdersStore.deleteOrderPhoto(photo_id)
 			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.id)
 		} catch (e) {
-			console.log(e)
+			console.log(e, 'deleteOrderPhoto')
 		} finally {
 
 		}
@@ -91,13 +90,14 @@ export class OrdersStoreService {
 	}
 
 	async updateOrder(payload: payloadUpdOrderType) {
+		this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
 		try {
 			await this.rootStore.OrdersStore.updateOrder(payload)
 			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.id)
 		} catch (e) {
 			console.log(e)
 		} finally {
-
+			this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
 		}
 	}
 }

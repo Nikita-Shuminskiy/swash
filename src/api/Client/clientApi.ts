@@ -31,10 +31,7 @@ export const clientApi = {
 
 	//order
 	async deleteOrderPhoto(payload: { clients_id: string, token: string, photo_id: string, order_number: string }) {
-		console.log(payload)
-		return await instance.post(`washapi.php/order_client_photo_delete`, {}, {
-			params: payload,
-		})
+		return await instance.post(`washapi.php/order_client_photo_delete`, payload)
 	},
 	async createOrderClientPrev(payload: CreateOrderClientPrevType) {
 		return await instance.post(`washapi.php/order_client_prev`, payload)

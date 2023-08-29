@@ -5,7 +5,7 @@ import burgerImg from '../assets/Images/burgerMenu.png'
 const BergerMenuImg = () => {
 	return (
 		<TouchableOpacity>
-			<Image style={{ width: 48, height: 48 }} source={burgerImg} />
+			<Image style={{ width: 38, height: 38 }} source={burgerImg} />
 		</TouchableOpacity>
 	)
 }

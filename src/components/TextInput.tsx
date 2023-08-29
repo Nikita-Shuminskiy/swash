@@ -36,9 +36,9 @@ const InputCustom = forwardRef(({
                                 }: InputCustomProps, ref) => {
     const [showPassword, setShowPassword] = useState(false)
     return (
-        <Box pt={2} width={'100%'}>
+        <Box mt={2} width={'100%'}>
             <FormControl isInvalid={isInvalid} isRequired={isRequired}>
-                {label && <FormControl.Label>
+                {label && <FormControl.Label ml={1}>
                   <Text fontWeight={'400'}>{label}</Text>
                 </FormControl.Label>}
                 <Input

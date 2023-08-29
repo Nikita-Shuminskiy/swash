@@ -84,8 +84,7 @@ const LoginS = ({ navigation }: LoginSProps) => {
 				if (parsedData.token) {
 					setWebViewVisible(false)
 					setUserAuthData(parsedData).then(r => {
-						// @ts-ignore
-						navigation.navigate(routerConstants.PHONE_VERIFY)
+						OrdersStoreService.getSettingClient(navigation.navigate)
 					})
 
 				}
@@ -161,10 +160,10 @@ const LoginS = ({ navigation }: LoginSProps) => {
 							userAgent='Chrome'
 							onMessage={onMessageWebView}
 						/>
-						<Box paddingX={10}>
+					{/*	<Box paddingX={10}>
 							<Button backgroundColor={colors.blue} colorText={colors.white} onPress={onPressExitAuthGoogle}
 											title={'Exit'} />
-						</Box>
+						</Box>*/}
 					</Box>
 				)
 			}
