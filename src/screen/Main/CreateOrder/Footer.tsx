@@ -8,6 +8,7 @@ import { routerConstants } from '../../../constants/routerConstants'
 type FooterProps = {
 	onSave: () => void
 	navigate: (val: any) => void
+	isDisableBtn: boolean
 }
 const Footer = ({onSave, navigate}:FooterProps) => {
 	const onPressPrises = () => {
@@ -20,12 +21,14 @@ const Footer = ({onSave, navigate}:FooterProps) => {
 			<Text textAlign={'center'} fontSize={17} fontWeight={'400'}>Our executor will count your clothes and
 				put up a payment for you after that
 				You will get push-notification</Text>
-			<Box mb={3}>
-				<Link styleText={{ color: colors.blue, fontSize: 22, fontWeight: '400' }} onPress={onPressPrises}
+			<Box mb={3} w={'100%'}>
+				<Link styleText={{ color: colors.blue, fontSize: 24, fontWeight: '400' }} onPress={onPressPrises}
 							text={'Prices'} />
-				<Box mt={2}>
+				<Box mt={2} alignItems={'center'}>
 					<Button backgroundColor={colors.blue} colorText={colors.white} styleContainer={{
 						borderRadius: 28,
+						maxWidth: 280,
+						width: '100%'
 					}} onPress={onSave} title={'OK'} />
 				</Box>
 			</Box>

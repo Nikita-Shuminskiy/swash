@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx'
 import { deviceStorage } from '../../utils/storage/storage'
-import { clientApi, CreateServicesDataType, payloadUpdOrderType } from '../../api/Client/clientApi'
-import { OrderReportDetailType, OrderType } from '../../api/Client/type'
+import { clientApi } from '../../api/Client/clientApi'
+import { CreateServicesDataType, OrderReportDetailType, OrderType, payloadUpdOrderType } from '../../api/Client/type'
 
 export class OrdersStore {
 	orderDetail: OrderReportDetailType = {} as OrderReportDetailType

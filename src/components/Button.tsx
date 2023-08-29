@@ -32,8 +32,6 @@ const Button = ({
 				borderRadius: 16,
 				alignItems: 'center',
 				justifyContent: 'center',
-				width: '100%',
-				minWidth: 200,
 				minHeight: 54,
 				...styleContainer,
 			}}
@@ -47,7 +45,7 @@ const Button = ({
 						color={colorText}
 						style={{
 							fontSize: 15,
-							fontWeight: '500',
+							fontWeight: '600',
 							...styleText,
 						}}
 					>

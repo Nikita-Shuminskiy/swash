@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
 	imgLogo: {},
 	styleContainerBtn: {
 		maxWidth: 280,
+		width: '100%',
 		borderRadius: 50,
 		marginBottom: 20,
 	},

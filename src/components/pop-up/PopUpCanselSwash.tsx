@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
 		maxWidth: 168,
 		minWidth: 0,
 		height: 56,
+		borderRadius: 28
 	},
 	btnYes: {
 		borderWidth: 1,

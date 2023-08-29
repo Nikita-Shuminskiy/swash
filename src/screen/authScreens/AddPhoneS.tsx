@@ -72,7 +72,7 @@ const AddPhoneS = ({ navigation }: PhoneVerifySProps) => {
 													onChangeTextPhone={onChangeTextPhone}
 													isRequired={true} isInvalid={disabledBtn} />
 				<Box mt={10}>
-					<Button styleContainer={{ width: 280 }} backgroundColor={colors.blue} colorText={colors.white}
+					<Button styleContainer={{ maxWidth: 280, width: '100%' }} backgroundColor={colors.blue} colorText={colors.white}
 									onPress={onPressSendSMS} title={'Send SMS'} />
 				</Box>
 			</Box>

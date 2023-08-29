@@ -3,13 +3,12 @@ import BtnDelete from '../../../components/btnDelete'
 import { Box, Text } from 'native-base'
 import { colors } from '../../../assets/colors/colors'
 import Button from '../../../components/Button'
-import { Image } from 'react-native'
+import { Image, StyleSheet } from 'react-native'
 import ironBlueImg from '../../../assets/Images/order/iron-blue.png'
 import ironImg from '../../../assets/Images/order/iron.png'
 import hypoallergenicBlueImg from '../../../assets/Images/order/quill-blue.png'
 import hypoallergenicImg from '../../../assets/Images/order/quil-gray.png'
-import { OrderReportDetailType } from '../../../api/Client/type'
-import { payloadUpdOrderType } from '../../../api/Client/clientApi'
+import { OrderReportDetailType, payloadUpdOrderType } from '../../../api/Client/type'
 import BergerMenuImg from '../../../components/burgerMenuImg'
 
 type HeaderProps = {
@@ -18,14 +17,14 @@ type HeaderProps = {
 	updateOrder: (payload: payloadUpdOrderType) => void
 }
 
-const Header = ({orderDetail, onPressDeleteOrder, updateOrder}:HeaderProps) => {
+const Header = ({ orderDetail, onPressDeleteOrder, updateOrder }: HeaderProps) => {
 	const onPressWithIron = () => {
 		updateOrder({
 			orders_id: orderDetail.id,
 			services: {
 				hypo: +orderDetail.add_hypo,
 				iron: orderDetail.add_iron === '1' ? 0 : 1,
-			}
+			},
 		})
 	}
 	const onPressHypoallergenic = () => {
@@ -34,7 +33,7 @@ const Header = ({orderDetail, onPressDeleteOrder, updateOrder}:HeaderProps) => {
 			services: {
 				iron: +orderDetail.add_iron,
 				hypo: orderDetail.add_hypo === '1' ? 0 : 1,
-			}
+			},
 		})
 	}
 	const isIron = orderDetail.add_iron === '1'
@@ -42,39 +41,62 @@ const Header = ({orderDetail, onPressDeleteOrder, updateOrder}:HeaderProps) => {
 	return (
 		<>
 			<Box flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-				<BergerMenuImg/>
+				<BergerMenuImg />
 				<BtnDelete onPress={onPressDeleteOrder} />
 			</Box>
 			<Text fontSize={28} mt={3} fontWeight={'600'} color={colors.black}>Swash #{orderDetail?.id}</Text>
 			<Text fontSize={22} mt={3} fontWeight={'600'}>Services</Text>
-			<Box flexDirection={'row'} alignItems={'center'}
-					 justifyContent={'center'}>
-				<Box>
-					<Button onPress={onPressWithIron}>
-						<Box backgroundColor={isIron ? '#E8F5FE' : null} w={169} h={50} borderWidth={1}
-								 borderRadius={16}
-								 borderColor={isIron ? colors.blue : colors.grayLight} flexDirection={'row'} alignItems={'center'}
-								 justifyContent={'center'}>
-							<Image style={{ width: 32, height: 32 }} alt={'iron'} source={isIron ? ironBlueImg : ironImg} />
-							<Text ml={2} color={isIron ? colors.blue : colors.grayLight}>With iron</Text>
-						</Box>
+			<Box mt={2} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
+				<Box flex={1}>
+					<Button
+						styleContainer={{
+							...styles.styleContainerBtn,
+							borderColor: isIron ? colors.blue : colors.grayLight,
+							backgroundColor: isIron ? '#E8F5FE' : null,
+						}}
+						onPress={onPressWithIron}
+					>
+						<Image
+							style={{ width: 32, height: 32 }}
+							alt={'iron'}
+							source={isIron ? ironBlueImg : ironImg}
+						/>
+						<Text ml={2} color={isIron ? colors.blue : colors.grayLight}>
+							With iron
+						</Text>
 					</Button>
 				</Box>
-				<Box>
-					<Button onPress={onPressHypoallergenic}>
-						<Box backgroundColor={isHypoallergenic ? '#E8F5FE' : null} w={169} h={50} borderWidth={1}
-								 borderRadius={16}
-								 borderColor={isHypoallergenic ? colors.blue : colors.grayLight} flexDirection={'row'}
-								 alignItems={'center'}
-								 justifyContent={'center'}>
-							<Image  style={{ width: 29, height: 29 }} alt={'iron'} source={isHypoallergenic ? hypoallergenicBlueImg : hypoallergenicImg} />
-							<Text ml={2} color={isHypoallergenic ? colors.blue : colors.grayLight}>Hypoallergenic</Text>
-						</Box>
+				<Box ml={2} flex={1}>
+					<Button
+						styleContainer={{
+							...styles.styleContainerBtn,
+							borderColor: isHypoallergenic ? colors.blue : colors.grayLight,
+							backgroundColor: isHypoallergenic ? '#E8F5FE' : null,
+						}}
+						onPress={onPressHypoallergenic}
+					>
+						<Image
+							style={{ width: 29, height: 29 }}
+							alt={'iron'}
+							source={isHypoallergenic ? hypoallergenicBlueImg : hypoallergenicImg}
+						/>
+						<Text ml={2} color={isHypoallergenic ? colors.blue : colors.grayLight}>
+							Hypoallergenic
+						</Text>
 					</Button>
 				</Box>
 			</Box>
 		</>
 	)
 }
-
+const styles = StyleSheet.create({
+	styleContainerBtn: {
+		width: '100%',
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 16,
+		borderWidth: 1,
+	},
+})
 export default Header

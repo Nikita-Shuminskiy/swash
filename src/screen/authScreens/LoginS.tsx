@@ -11,7 +11,6 @@ import { colors } from '../../assets/colors/colors'
 import Button from '../../components/Button'
 import rootStore from '../../store/RootStore/root-store'
 import WebView from 'react-native-webview'
-import { routerConstants } from '../../constants/routerConstants'
 
 function containsSpecialCharacters(inputString) {
 	try {
@@ -47,12 +46,9 @@ export type  UserAuthGoogleData = {
 	token: string;
 }
 const LoginS = ({ navigation }: LoginSProps) => {
-	const { setUserAuthData, isAuth } = AuthStore
+	const { setUserAuthData } = AuthStore
 	const { AuthStoreService, OrdersStoreService } = rootStore
 	const [webViewVisible, setWebViewVisible] = useState(false)
-	const onPressExitAuthGoogle = () => {
-		setWebViewVisible(false)
-	}
 	const onPressSingUpGoogle = () => {
 		setWebViewVisible(true)
 	}
@@ -146,7 +142,7 @@ const LoginS = ({ navigation }: LoginSProps) => {
 						</Button>
 
 					</Box>
-					<Button onPress={onPressAboutUs} styleContainer={[styles.styleContainerBtn]} title={'About us'}
+					<Button onPress={onPressAboutUs} styleContainer={styles.styleContainerBtn} title={'About us'}
 									colorText={colors.blue} backgroundColor={colors.blueLight} />
 				</Box>) : (
 					<Box flex={1} w={'100%'}>
@@ -160,7 +156,7 @@ const LoginS = ({ navigation }: LoginSProps) => {
 							userAgent='Chrome'
 							onMessage={onMessageWebView}
 						/>
-					{/*	<Box paddingX={10}>
+						{/*	<Box paddingX={10}>
 							<Button backgroundColor={colors.blue} colorText={colors.white} onPress={onPressExitAuthGoogle}
 											title={'Exit'} />
 						</Box>*/}
@@ -182,6 +178,8 @@ const styles = StyleSheet.create({
 		height: 72.5,
 	},
 	styleContainerBtn: {
+		maxWidth: 343,
+		width: '100%',
 		marginTop: 10,
 		marginBottom: 10,
 	},

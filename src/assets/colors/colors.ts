@@ -9,5 +9,6 @@ export const colors: { [key: string]: string } = {
     black: '#161616',
     white: '#FFFFFF',
     blueLight: '#E6F5FF',
+    bluePale: '#99D4FF',
     blue: '#0094FF',
 }

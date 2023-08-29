@@ -3,7 +3,7 @@ import { BaseWrapperComponent } from '../../../components/baseWrapperComponent'
 import { Box, Text } from 'native-base'
 import Button from '../../../components/Button'
 import { colors } from '../../../assets/colors/colors'
-import { Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import PaymentMethodPopUp from '../../../components/pop-up/PaymentMethod/PaymentMethodPopUp'
 import arrowBlue from '../../../assets/Images/order/arrowRightBlue.png'
 import { observer } from 'mobx-react-lite'
@@ -16,13 +16,15 @@ import Footer from './Footer'
 import Header from './Header'
 import { routerConstants } from '../../../constants/routerConstants'
 import CustomCheckbox from '../../../components/CustomCheckbox'
-import { payloadUpdOrderType } from '../../../api/Client/type'
+import { LogisticsPointType, payloadUpdOrderType } from '../../../api/Client/type'
+import AuthStore from '../../../store/AuthStore/auth-store'
 
 type CreateOrderProps = {
 	navigation: NavigationProp<ParamListBase>
 }
 const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 	const { orderDetail } = OrdersStore
+	const { logisticPoints } = AuthStore
 	const { OrdersStoreService } = rootStore
 	const [isShowModalPayment, setIsShowModalPayment] = useState<boolean>(false)
 	const [isShowPopUpCanselSwash, setIsShowPopUpCanselSwash] = useState<boolean>(false)
@@ -56,10 +58,23 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 	const updateOrder = (payload: payloadUpdOrderType) => {
 		OrdersStoreService.updateOrder(payload)
 	}
+	const renderItem = ({ item }: { item: LogisticsPointType }) => {
+
+		return <Box paddingY={5} mb={2} minHeight={70} backgroundColor={colors.grayBright} borderRadius={16} flexDirection={'row'}
+								alignItems={'center'}
+								justifyContent={'flex-start'}>
+			<Box ml={4}>
+				<CustomCheckbox checked={isChecked} onPress={onPressPachkomat} />
+			</Box>
+			<Box ml={2}>
+				<Text fontSize={15}>{item.address.trim()}</Text>
+			</Box>
+		</Box>
+	}
 	return (
 		<>
 			<BaseWrapperComponent isKeyboardAwareScrollView={true}>
-				<Box paddingX={3}>
+				<Box style={{ paddingHorizontal: 16 }}>
 					<Header updateOrder={updateOrder} onPressDeleteOrder={onPressDeleteOrder} orderDetail={orderDetail} />
 					<Box mt={2}>
 						<Text fontSize={22} fontWeight={'600'}>Photo</Text>
@@ -68,14 +83,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 					<Box>
 						<Text mb={2} fontSize={22} fontWeight={'600'}>Paczkomat</Text>
 
-						<Box paddingY={18} backgroundColor={colors.grayBright} borderRadius={16} flexDirection={'row'}
-								 alignItems={'center'}
-								 justifyContent={'flex-start'}>
-							<Box ml={4}>
-								<CustomCheckbox checked={isChecked} onPress={onPressPachkomat} />
-							</Box>
-							<Text ml={2} fontSize={15}>Paczkomat 1</Text>
-						</Box>
+						<FlatList keyExtractor={(item, index) => index.toString()} scrollEnabled={false} data={logisticPoints} renderItem={renderItem} />
 					</Box>
 					<Box mt={4} alignItems={'center'}>
 						<Button backgroundColor={colors.blue} styleText={styles.btnText} colorText={colors.white}
@@ -95,7 +103,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 						</TouchableOpacity>
 					</Box>
 					<Box mt={4}>
-						<Footer navigate={navigation.navigate} onSave={onSendOrder} />
+						<Footer isDisableBtn={true} navigate={navigation.navigate} onSave={onSendOrder} />
 					</Box>
 				</Box>
 			</BaseWrapperComponent>
@@ -121,6 +129,7 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		height: 56,
 		maxWidth: 238,
+		width: '100%'
 	},
 	checkBox: {
 		borderRadius: 40,

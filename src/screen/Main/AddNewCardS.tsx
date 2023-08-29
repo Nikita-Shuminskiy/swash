@@ -16,7 +16,7 @@ const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
 	const [cardNumber, setCardNumber] = useState('')
 	const [expiry, setExpiry] = useState('')
 	const [cvv, setCvv] = useState('')
-
+	const isDisabledBtn = !cardNumber || !expiry || !cvv
 	const handleCardNumberChange = (value) => {
 		setCardNumber(value)
 	}
@@ -47,7 +47,7 @@ const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
 		navigation.goBack()
 	}
 	const saveNewCard = () => {
-
+		if (isDisabledBtn) return
 	}
 	return (
 		<BaseWrapperComponent>
@@ -59,7 +59,7 @@ const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
 					<Box>
 						<Text fontSize={22} fontWeight={'600'}>Add new card</Text>
 					</Box>
-					<Box/>
+					<Box />
 				</Box>
 
 				<Box mt={10} borderWidth={1} borderColor={colors.grayBright} borderRadius={16} padding={5}>
@@ -104,8 +104,10 @@ const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
 						</Box>
 					</Box>
 				</Box>
-				<Box mt={10} alignItems={'center'}>
-					<Button styleContainer={{ maxWidth: 280 }} backgroundColor={'#99D4FF'} colorText={colors.white}
+				<Box mt={10} flex={1} w={'100%'} alignItems={'center'}>
+					<Button styleContainer={{ maxWidth: 280, width: '100%', borderRadius: 28 }}
+									backgroundColor={isDisabledBtn ? colors.bluePale : colors.blue}
+									colorText={colors.white}
 									onPress={saveNewCard} title={'Add new card'} />
 				</Box>
 			</Box>

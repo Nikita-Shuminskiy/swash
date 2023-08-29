@@ -8,7 +8,7 @@ import rootStore from '../store/RootStore/root-store'
 import deleteImg from '../assets/Images/order/closeCircleGray.png'
 import btnCamera from '../assets/Images/order/blue-circle.png'
 import closeCameraImg from '../assets/Images/order/closeBlack.png'
-import DeleteModal from './modal/DeleteModal'
+import DeletePhotoModal from './modal/DeletePhotoModal'
 import NotificationStore from '../store/NotificationStore/notification-store'
 import { LoadingEnum } from '../store/types/types'
 import * as ImagePicker from 'expo-image-picker'
@@ -129,11 +129,11 @@ const AddPhotoComponent = observer(() => {
 				contentContainerStyle={{
 					flexGrow: 1,
 					alignItems: 'flex-start',
-					paddingBottom: 15
+					paddingBottom: 15,
 				}}
 				style={{ width: '100%' }}
 				showsHorizontalScrollIndicator={true}
-			/*	persistentScrollbar={true}*/
+				/*	persistentScrollbar={true}*/
 				keyExtractor={(item) => item.id}
 			/>
 			{cameraPermission && isOpenCamera && (
@@ -152,7 +152,8 @@ const AddPhotoComponent = observer(() => {
 							<TouchableOpacity
 								onPress={flashModeHandler}
 							>
-								<Ionicons name='flashlight' size={30} color={colors.blue} />
+								<Ionicons name='ios-flashlight' size={30} color={colors.blue} />
+
 							</TouchableOpacity>
 						</Box>
 						<Box position={'absolute'} bottom={5}>
@@ -169,8 +170,9 @@ const AddPhotoComponent = observer(() => {
 					</Camera>
 				</Modal>
 			)}
-			<DeleteModal deleteOrderPhoto={() => OrdersStoreService.deleteOrderPhoto(deletedPhotoId)} visible={isDeleteModal}
-									 onClose={onCloseModalDelete} />
+			<DeletePhotoModal deleteOrderPhoto={() => OrdersStoreService.deleteOrderPhoto(deletedPhotoId)}
+												visible={isDeleteModal}
+												onClose={onCloseModalDelete} />
 		</View>
 	)
 })
