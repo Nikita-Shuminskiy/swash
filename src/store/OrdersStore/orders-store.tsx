@@ -63,11 +63,12 @@ export class OrdersStore {
 	async updateOrder(payload: payloadUpdOrderType) {
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
-		await clientApi.updOrder({
+		const data = await clientApi.updOrder({
 			...payload,
 			token,
 			clients_id,
 		})
+
 	}
 
 	async deleteOrderPhoto(photo_id) {

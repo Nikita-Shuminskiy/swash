@@ -36,7 +36,7 @@ export const MapViews = ({ logisticPoints }: MapViewsProps) => {
 		} finally {
 		}
 	}
-/*	useEffect(() => {
+	useEffect(() => {
 		if (mapRef && myPosition?.latitude) {
 			mapRef.fitToCoordinates([{ latitude: myPosition.latitude, longitude: myPosition.longitude }], {
 				edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
@@ -46,7 +46,7 @@ export const MapViews = ({ logisticPoints }: MapViewsProps) => {
 	}, [myPosition])
 	useEffect(() => {
 		getCurrentPositionHandler()
-	}, [])*/
+	}, [])
 
 	const onSaveAutoCompleteHandler = () => {
 

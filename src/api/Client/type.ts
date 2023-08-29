@@ -42,6 +42,7 @@ type OrderType = {
 	executors_id: string | null;
 	id: string;
 	last_step: string | null;
+	status: StatusOrder;
 };
 
 export enum StatusOrder {
@@ -50,7 +51,6 @@ export enum StatusOrder {
 }
 
 type OrderReportDetailType = OrderType & {
-	status: StatusOrder;
 	units_order: any[];
 	photos: PhotoType[]
 };

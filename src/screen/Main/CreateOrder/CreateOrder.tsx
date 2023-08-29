@@ -28,16 +28,13 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 	const { OrdersStoreService } = rootStore
 	const [isShowModalPayment, setIsShowModalPayment] = useState<boolean>(false)
 	const [isShowPopUpCanselSwash, setIsShowPopUpCanselSwash] = useState<boolean>(false)
-	const [isChecked, setIsChecked] = useState(false)
 
 
 	const deleteOrder = () => {
 		OrdersStoreService.deleteOrder('', orderDetail.id, navigation.navigate)
 	}
 
-	const onPressPachkomat = () => {
-		setIsChecked(prevState => !prevState)
-	}
+
 	const onPressChosePaczkomat = () => {
 		navigation.navigate(routerConstants.LOGISTIC_POINT)
 	}
@@ -59,12 +56,21 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 		OrdersStoreService.updateOrder(payload)
 	}
 	const renderItem = ({ item }: { item: LogisticsPointType }) => {
+		const chousenPaczkomat = orderDetail.client_logistic_partners_points_id === item.logistic_partners_id
+		console.log(orderDetail.client_logistic_partners_points_id)
 
-		return <Box paddingY={5} mb={2} minHeight={70} backgroundColor={colors.grayBright} borderRadius={16} flexDirection={'row'}
+		const onPressPaczkomat= () => {
+			OrdersStoreService.updateOrder({
+				orders_id: orderDetail.id,
+				client_logistic_partners_points_id: item.logistic_partners_id
+			})
+		}
+		return <Box paddingY={5} mb={2} minHeight={70} backgroundColor={colors.grayBright} borderRadius={16}
+								flexDirection={'row'}
 								alignItems={'center'}
 								justifyContent={'flex-start'}>
 			<Box ml={4}>
-				<CustomCheckbox checked={isChecked} onPress={onPressPachkomat} />
+				<CustomCheckbox checked={chousenPaczkomat} onPress={onPressPaczkomat} />
 			</Box>
 			<Box ml={2}>
 				<Text fontSize={15}>{item.address.trim()}</Text>
@@ -83,7 +89,8 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 					<Box>
 						<Text mb={2} fontSize={22} fontWeight={'600'}>Paczkomat</Text>
 
-						<FlatList keyExtractor={(item, index) => index.toString()} scrollEnabled={false} data={logisticPoints} renderItem={renderItem} />
+						<FlatList keyExtractor={(item, index) => index.toString()} scrollEnabled={false} data={logisticPoints}
+											renderItem={renderItem} />
 					</Box>
 					<Box mt={4} alignItems={'center'}>
 						<Button backgroundColor={colors.blue} styleText={styles.btnText} colorText={colors.white}
@@ -103,7 +110,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 						</TouchableOpacity>
 					</Box>
 					<Box mt={4}>
-						<Footer isDisableBtn={true} navigate={navigation.navigate} onSave={onSendOrder} />
+						<Footer orderDetail={orderDetail} navigate={navigation.navigate} onSave={onSendOrder} />
 					</Box>
 				</Box>
 			</BaseWrapperComponent>
@@ -129,7 +136,7 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		height: 56,
 		maxWidth: 238,
-		width: '100%'
+		width: '100%',
 	},
 	checkBox: {
 		borderRadius: 40,

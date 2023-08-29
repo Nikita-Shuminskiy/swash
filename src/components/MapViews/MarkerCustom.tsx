@@ -10,8 +10,6 @@ type MarkerCustomProps = {
 	point: LogisticsPointType
 }
 const MarkerCustom = ({ point }: MarkerCustomProps) => {
-	console.log(point.lat)
-	console.log(point.lon)
 	return (
 		<Marker title={point.point_name} description={point.address} coordinate={{
 			latitude: +point.lat,

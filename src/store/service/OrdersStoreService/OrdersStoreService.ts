@@ -28,12 +28,18 @@ export class OrdersStoreService {
 				}
 				await this.rootStore.AuthStore.getLogisticPoints()
 				if(data.orders.length === 1) {
-					//this.rootStore.OrdersStore.setOrders(data.orders)
-					const dataDetailOrder = await this.rootStore.OrdersStore.getOrderReportDetail(data.orders[0].id)
-					if(dataDetailOrder.status === StatusOrder.EDITABLE) {
-						navigate && navigate(routerConstants.CREATE_ORDER)
-						return
+					if(data.orders[0].status === StatusOrder.EDITABLE) {
+						const dataDetailOrder = await this.rootStore.OrdersStore.getOrderReportDetail(data.orders[0].id)
 					}
+					if(data.orders[0].status === StatusOrder.IN_PROCESS) {
+						const idOrder = await this.rootStore.OrdersStore.createOrderClient({
+							hypo: 0,
+							iron: 0,
+						})
+						await this.rootStore.OrdersStore.getOrderReportDetail(idOrder)
+					} // временно
+
+					navigate && navigate(routerConstants.CREATE_ORDER)
 				}
 				if (data.orders.length >= 2) {
 					//this.rootStore.OrdersStore.setOrder(data.orders[0])
