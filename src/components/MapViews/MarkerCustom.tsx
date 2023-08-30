@@ -17,7 +17,7 @@ const MarkerCustom = ({ point }: MarkerCustomProps) => {
 		}}>
 			<ImageBackground source={paczkomatLogo} style={{ width: 40, height: 40, justifyContent: 'flex-end', alignItems: 'center' }} >
 				<Box>
-					<Text fontWeight={'500'} fontSize={7} color={colors.white}>{point.hours}</Text>
+					<Text  fontFamily={'regular'} fontSize={7} color={colors.white}>{point.hours}</Text>
 				</Box>
 
 			</ImageBackground>

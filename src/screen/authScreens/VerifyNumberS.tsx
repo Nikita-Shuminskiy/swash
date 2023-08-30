@@ -28,8 +28,8 @@ const VerifyNumberS = observer(({ navigation }: VerifyNumberSProps) => {
 				<Box mb={5}>
 					<ArrowBack goBackPress={goBackPress} />
 				</Box>
-				<Text fontSize={28} fontWeight={'700'}>Phone verification</Text>
-				<Text fontSize={15} color={colors.gray}>The code was sent to <Text fontSize={15}
+				<Text fontSize={28} fontFamily={'semiBold'}>Phone verification</Text>
+				<Text fontSize={15} color={colors.gray} fontFamily={'regular'}>The code was sent to <Text fontFamily={'regular'} fontSize={15}
 																																					 color={colors.blue}>+{phone}</Text></Text>
 				<Box mt={10} mb={10} flex={1} w={'100%'}>
 					<PhoneVerificationCode navigation={navigation} />

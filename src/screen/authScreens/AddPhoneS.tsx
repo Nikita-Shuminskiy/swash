@@ -65,8 +65,8 @@ const AddPhoneS = ({ navigation }: PhoneVerifySProps) => {
 		<BaseWrapperComponent>
 			<Box flex={1} justifyContent={'center'} alignItems={'center'} paddingX={5}>
 				<Box alignItems={'center'} mb={10}>
-					<Text fontSize={22} mb={2} fontWeight={'600'}>Phone verification</Text>
-					<Text fontSize={15} color={colors.grayLight}>We need your phone number</Text>
+					<Text fontSize={22} mb={2} fontFamily={'semiBold'}>Phone verification</Text>
+					<Text fontSize={15} color={colors.grayLight} fontFamily={'regular'}>We need your phone number</Text>
 				</Box>
 				<PhoneNumberField onChangeCountry={onChangeCountry} defaultValue={phone} errorMessage={'Incorrect phone number'}
 													onChangeTextPhone={onChangeTextPhone}

@@ -76,6 +76,7 @@ const PhoneVerificationCode = observer(({ navigation }: PhoneVerificationProps) 
 							 borderRadius={16} alignItems={'center'}
 							 justifyContent={'center'}>
 						<Text
+							fontFamily={'semiBold'}
 							style={[styles.cell, isFocused && styles.focusCell]}
 							onLayout={getCellOnLayoutHandler(index)}>
 							{symbol || (isFocused ? <Cursor /> : null)}
@@ -84,7 +85,7 @@ const PhoneVerificationCode = observer(({ navigation }: PhoneVerificationProps) 
 				)}
 			/>
 			{
-				!isValid && <Text mt={2} fontSize={15} color={colors.red}>Incorrect confirmation code</Text>
+				!isValid && <Text mt={2} fontFamily={'regular'} fontSize={15} color={colors.red}>Incorrect confirmation code</Text>
 			}
 
 		</View>

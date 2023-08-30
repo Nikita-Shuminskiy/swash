@@ -38,15 +38,15 @@ const GivePermissions = ({visible, askLocationPermissionHandler, askNotification
 						<Image style={{ width: '100%' }} source={imgBack} />
 						{
 							errorPermission &&
-							<Text fontSize={15} color={colors.red} position={'absolute'} bottom={32}>Error in getting
+							<Text fontSize={15} fontFamily={'regular'} color={colors.red} position={'absolute'} bottom={32}>Error in getting
 								permissions</Text>
 						}
 					</Box>
 					<Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
 							 backgroundColor={colors.white}>
 						<Box flex={1} alignItems={'center'}>
-							<Text fontSize={28} fontWeight={'700'}>Give permissions</Text>
-							<Text textAlign={'center'} color={colors.grayLight}>
+							<Text fontSize={28} fontFamily={'semiBold'}>Give permissions</Text>
+							<Text textAlign={'center'} fontSize={15} fontFamily={'regular'} color={colors.grayLight}>
 								We need to ask you for camera, geo, push permissions. Without them application wouldn’t work properly
 							</Text>
 						</Box>

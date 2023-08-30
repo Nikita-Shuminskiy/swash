@@ -35,12 +35,12 @@ const TimerComponent = ({ onPressSendCodeAgain }: TimerComponentProps) => {
 				<Box>
 					{isRunning ? (
 						<Box>
-							<Text fontSize={15} color={colors.grayLight}>Send the code again after <Text
-								fontSize={15} color={colors.black}>{seconds} seconds</Text></Text>
+							<Text fontSize={15} fontFamily={'regular'} color={colors.grayLight}>Send the code again after <Text
+								fontSize={15} fontFamily={'regular'} color={colors.black}>{seconds} seconds</Text></Text>
 						</Box>
 					) : (
 						<TouchableOpacity onPress={onPress}>
-							<Text fontSize={15} color={colors.blue}>Send the code again</Text>
+							<Text fontSize={15} fontFamily={'regular'} color={colors.blue}>Send the code again</Text>
 						</TouchableOpacity>
 					)}
 				</Box>

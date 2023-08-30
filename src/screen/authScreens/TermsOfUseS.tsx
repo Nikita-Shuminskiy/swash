@@ -59,7 +59,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 					<Box paddingX={2} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
 							 backgroundColor={colors.white}>
 						<Box flex={1} w={'100%'} alignItems={'center'}>
-							<Text fontSize={28} fontWeight={'700'}>Terms of Use</Text>
+							<Text fontSize={28} fontFamily={'semiBold'}>Terms of Use</Text>
 							<Box mt={3} w={'100%'}>
 								<Box borderRadius={16} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'center'}
 										 p={3} backgroundColor={colors.blueLight}>
@@ -67,9 +67,9 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 
 									<Box flexDirection={'row'} justifyContent={'flex-start'}
 											 alignItems={'center'}>
-										<Text ml={2} fontSize={15}>I agree with{' '}</Text>
+										<Text ml={2} fontSize={15} fontFamily={'regular'}>I agree with{' '}</Text>
 										<TouchableOpacity style={styles.link}>
-											<Text color={colors.blue}>TOS</Text>
+											<Text color={colors.blue} fontFamily={'regular'}>TOS</Text>
 										</TouchableOpacity>
 									</Box>
 								</Box>
@@ -79,9 +79,9 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 									<CheckBoxs value={checkLegal} onPress={onPressLegalHandler} />
 									<Box flexDirection={'row'} justifyContent={'flex-start'}
 											 alignItems={'center'}>
-										<Text ml={2} fontSize={15}>I agree with{' '}</Text>
+										<Text ml={2} fontSize={15} fontFamily={'regular'}>I agree with{' '}</Text>
 										<TouchableOpacity style={styles.link}>
-											<Text color={colors.blue}>Legal Notice</Text>
+											<Text color={colors.blue} fontFamily={'regular'}>Legal Notice</Text>
 										</TouchableOpacity>
 									</Box>
 								</Box>

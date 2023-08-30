@@ -36,7 +36,7 @@ const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
 					}}
 					textContainerStyle={{ borderRadius: 16, backgroundColor: 'transparent', height: 50 }}
 					codeTextStyle={{ color: colors.black, height: 23, fontWeight: '400', fontSize: 16 }}
-					textInputStyle={{ color: colors.black, fontSize: 16, fontWeight: '400' }}
+					textInputStyle={{ color: colors.black, fontSize: 16, fontFamily: 'regular' }}
 					defaultCode={'PL'}
 					placeholder={'Phone'}
 					layout='first'
@@ -45,7 +45,7 @@ const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
 					}}
 					{...rest}
 				/>
-				<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size='xs' />}>
+				<FormControl.ErrorMessage  fontFamily={'regular'} leftIcon={<WarningOutlineIcon size='xs' />}>
 					{errorMessage ? errorMessage : 'Field is required'}
 				</FormControl.ErrorMessage>
 			</FormControl>
