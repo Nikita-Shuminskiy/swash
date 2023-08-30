@@ -73,19 +73,19 @@ const PriceS = ({ navigation }: PriceSProps) => {
 								borderRadius={16}>
 			<Image style={styles.img} source={DATA_IMG[item.type_of_units_id]?.img} />
 			<Box ml={2} alignItems={'flex-start'}>
-				<Text fontSize={17} fontWeight={'500'}>{item.name}</Text>
-				<Text fontSize={17} fontWeight={'500'} color={colors.blue}>{item.price_basic} zł</Text>
+				<Text fontSize={17}  fontFamily={'semiBold'}>{item.name}</Text>
+				<Text fontSize={17}  fontFamily={'semiBold'} color={colors.blue}>{item.price_basic} zł</Text>
 			</Box>
 			<Box flexDirection={'row'} position={'absolute'} bottom={2} right={2}>
 				<Box mr={2} style={{ width: 75, height: 24 }} flexDirection={'row'} alignItems={'center'}
 						 justifyContent={'center'} borderWidth={1} borderColor={colors.grayBright} borderRadius={16}>
 					<Image style={{ width: 16, height: 16 }} source={hypoallergenicBlueImg} />
-					<Text fontSize={13} color={colors.blue} fontWeight={'400'}> +{item.price_add_hypo} zł</Text>
+					<Text fontSize={13} color={colors.blue}  fontFamily={'regular'}> +{item.price_add_hypo} zł</Text>
 				</Box>
 				<Box style={{ width: 75, height: 24 }} flexDirection={'row'} alignItems={'center'} justifyContent={'center'}
 						 borderWidth={1} borderColor={colors.grayBright} borderRadius={16}>
 					<Image style={{ width: 16, height: 16 }} source={ironBlueImg} />
-					<Text fontSize={13} color={colors.blue} fontWeight={'400'}> +{item.price_add_iron} zł</Text>
+					<Text fontSize={13} color={colors.blue}  fontFamily={'regular'}> +{item.price_add_iron} zł</Text>
 				</Box>
 			</Box>
 		</Box>
@@ -98,7 +98,7 @@ const PriceS = ({ navigation }: PriceSProps) => {
 						<ArrowBack goBackPress={goBackPress} />
 					</Box>
 					<Box>
-						<Text fontSize={22} fontWeight={'600'}>Prices</Text>
+						<Text fontSize={17}  fontFamily={'semiBold'}>Prices</Text>
 					</Box>
 				</Box>
 				<Box mt={5}>

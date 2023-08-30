@@ -45,7 +45,7 @@ const Button = ({
 						color={colorText}
 						style={{
 							fontSize: 15,
-							fontWeight: '600',
+							fontFamily: 'semiBold',
 							...styleText,
 						}}
 					>

@@ -73,7 +73,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 				<CustomCheckbox checked={chousenPaczkomat} onPress={onPressPaczkomat} />
 			</Box>
 			<Box ml={2}>
-				<Text fontSize={15}>{item.address.trim()}</Text>
+				<Text fontFamily={'regular'} fontSize={15}>{item.address.trim()}</Text>
 			</Box>
 		</Box>
 	}
@@ -83,11 +83,11 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 				<Box style={{ paddingHorizontal: 16 }}>
 					<Header updateOrder={updateOrder} onPressDeleteOrder={onPressDeleteOrder} orderDetail={orderDetail} />
 					<Box mt={2}>
-						<Text fontSize={22} fontWeight={'600'}>Photo</Text>
+						<Text fontSize={22} fontFamily={'semiBold'}>Photo</Text>
 						<AddPhotoComponent />
 					</Box>
 					<Box>
-						<Text mb={2} fontSize={22} fontWeight={'600'}>Paczkomat</Text>
+						<Text mb={2} fontSize={22}  fontFamily={'semiBold'}>Paczkomat</Text>
 
 						<FlatList keyExtractor={(item, index) => index.toString()} scrollEnabled={false} data={logisticPoints}
 											renderItem={renderItem} />
@@ -99,12 +99,12 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 					</Box>
 					<Box mt={3} borderBottomWidth={1} borderColor={colors.grayBright} />
 					<Box mt={4}>
-						<Text mb={3} fontSize={22} fontWeight={'600'}>Payment method</Text>
+						<Text mb={3} fontSize={22} fontFamily={'semiBold'}>Payment method</Text>
 						<TouchableOpacity onPress={onPressChangePayment}>
 							<Box paddingY={18} borderRadius={16} paddingX={5} flexDirection={'row'} alignItems={'center'}
 									 justifyContent={'space-between'}
 									 backgroundColor={colors.grayBright}>
-								<Text fontSize={15} fontWeight={'500'}>Google Pay</Text>
+								<Text fontSize={15} fontFamily={'regular'}>Google Pay</Text>
 								<Image source={arrowBlue} alt={'arrow'} />
 							</Box>
 						</TouchableOpacity>

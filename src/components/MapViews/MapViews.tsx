@@ -16,7 +16,6 @@ type MapViewsProps = {
 }
 export const MapViews = ({ logisticPoints }: MapViewsProps) => {
 	const { setIsLoading } = NotificationStore
-	const navigation = useNavigation<any>()
 	const [mapRef, setMapRef] = useState(null)
 	const [myPosition, setMyPosition] = useState<{ latitude: number, longitude: number }>({
 		latitude: 54.34544523458879,

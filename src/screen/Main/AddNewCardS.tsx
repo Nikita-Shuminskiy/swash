@@ -52,14 +52,14 @@ const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
 	return (
 		<BaseWrapperComponent>
 			<Box paddingX={5}>
-				<Box flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-					<Box position={'relative'} bottom={1}>
+				<Box flexDirection={'row'} alignItems={'center'} justifyContent={'center'}>
+					<Box flex={1} position={'relative'} bottom={1}>
 						<ArrowBack goBackPress={goBackPress} />
 					</Box>
-					<Box>
-						<Text fontSize={22} fontWeight={'600'}>Add new card</Text>
+					<Box flex={2} alignItems={'center'} >
+						<Text fontSize={22} fontFamily={'semiBold'}>Add new card</Text>
 					</Box>
-					<Box />
+					<Box flex={1} />
 				</Box>
 
 				<Box mt={10} borderWidth={1} borderColor={colors.grayBright} borderRadius={16} padding={5}>

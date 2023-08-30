@@ -22,7 +22,7 @@ const PaymentMethodPopUp = ({ visible, onClose, navigation }: PaymentMethodPopUp
 		<ModalPopup style={{}} visible={visible} onClose={onClose}>
 			<Box>
 				<Box mb={5} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-					<Text fontSize={22} fontWeight={'600'}>Payment method</Text>
+					<Text fontSize={22} fontFamily={'semiBold'}>Payment method</Text>
 					<TouchableOpacity onPress={onClose}>
 						<Image alt={'close'} source={closeCircleGrayImg} />
 					</TouchableOpacity>

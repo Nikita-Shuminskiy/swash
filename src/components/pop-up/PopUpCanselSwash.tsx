@@ -20,7 +20,7 @@ const PopUpCanselSwash = ({ visible, onClose, onDelete }: PopUpCanselSwashProps)
 		<ModalPopup modalHeight={Math.round(Dimensions.get('window').height *  0.2)} style={{}} visible={visible} onClose={onClose}>
 			<Box>
 				<Box flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-					<Text fontSize={22} fontWeight={'600'}>Cancel Swash ?</Text>
+					<Text fontSize={22} fontFamily={'semiBold'}>Cancel Swash ?</Text>
 					<TouchableOpacity onPress={onClose}>
 						<Image alt={'close-img'} source={closeImage} />
 					</TouchableOpacity>

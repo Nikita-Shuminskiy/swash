@@ -11,7 +11,7 @@ const BtnAddNewCard = ({onPressNewPayment}) => {
 					 justifyContent={'flex-start'}
 					 backgroundColor={colors.grayBright}>
 				<Image style={{ width: 24, height: 24 }} source={addCircleImage} alt={'arrow'} />
-				<Text ml={2} fontSize={15} color={colors.blue}>Add new card</Text>
+				<Text ml={2} fontSize={15} fontFamily={'regular'} color={colors.blue}>Add new card</Text>
 
 			</Box>
 		</TouchableOpacity>

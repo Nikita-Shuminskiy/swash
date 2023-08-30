@@ -26,7 +26,7 @@ const LogisticsPointS = observer(({ navigation }: LogisticsPointProps) => {
 					<ArrowBack goBackPress={goBackPress} />
 				</Box>
 				<Box>
-					<Text fontSize={22} fontWeight={'600'}>Select Paczkomat</Text>
+					<Text fontSize={22}  fontFamily={'semiBold'}>Select Paczkomat</Text>
 				</Box>
 				<Box/>
 			</Box>

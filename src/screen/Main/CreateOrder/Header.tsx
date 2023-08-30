@@ -44,8 +44,8 @@ const Header = ({ orderDetail, onPressDeleteOrder, updateOrder }: HeaderProps) =
 				<BergerMenuImg />
 				<BtnDelete onPress={onPressDeleteOrder} />
 			</Box>
-			<Text fontSize={28} mt={3} fontWeight={'600'} color={colors.black}>Swash #{orderDetail?.id}</Text>
-			<Text fontSize={22} mt={3} fontWeight={'600'}>Services</Text>
+			<Text fontSize={28} mt={3} fontFamily={'semiBold'} color={colors.black}>Swash #{orderDetail?.id}</Text>
+			<Text fontSize={22} mt={3} fontFamily={'semiBold'} fontWeight={'600'}>Services</Text>
 			<Box mt={2} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
 				<Box flex={1}>
 					<Button
@@ -61,7 +61,7 @@ const Header = ({ orderDetail, onPressDeleteOrder, updateOrder }: HeaderProps) =
 							alt={'iron'}
 							source={isIron ? ironBlueImg : ironImg}
 						/>
-						<Text ml={2} color={isIron ? colors.blue : colors.grayLight}>
+						<Text fontFamily={'regular'} ml={2} color={isIron ? colors.blue : colors.grayLight}>
 							With iron
 						</Text>
 					</Button>
@@ -80,7 +80,7 @@ const Header = ({ orderDetail, onPressDeleteOrder, updateOrder }: HeaderProps) =
 							alt={'iron'}
 							source={isHypoallergenic ? hypoallergenicBlueImg : hypoallergenicImg}
 						/>
-						<Text ml={2} color={isHypoallergenic ? colors.blue : colors.grayLight}>
+						<Text fontFamily={'regular'} ml={2} color={isHypoallergenic ? colors.blue : colors.grayLight}>
 							Hypoallergenic
 						</Text>
 					</Button>

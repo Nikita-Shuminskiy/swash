@@ -22,10 +22,10 @@ const OrderConfirmationS = observer(({ navigation }: OrderConfirmationSProps) =>
 					<ArrowBack goBackPress={goBackPress} />
 				</Box>
 				<Box mt={5} justifyContent={'flex-start'}>
-					<Text fontSize={28} fontWeight={'600'}>Swash #{orderDetail?.id}</Text>
+					<Text fontSize={28}  fontFamily={'semiBold'}>Swash #{orderDetail?.id}</Text>
 				</Box>
 				<Box mt={10}>
-					<Text fontSize={32} fontWeight={'600'}>Looking for executor</Text>
+					<Text fontSize={32}  fontFamily={'semiBold'}>Looking for executor</Text>
 				</Box>
 				<Box mt={10} alignItems={'center'}>
 					<Image alt={'logo'} source={loadingGif} />

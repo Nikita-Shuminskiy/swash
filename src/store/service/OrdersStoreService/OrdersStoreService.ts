@@ -18,6 +18,7 @@ export class OrdersStoreService {
 			if (!data.client.consent_datetime) {
 				return navigate && navigate(routerConstants.TERMS_OF_USE)
 			}
+			this.rootStore.AuthStore.setAuth(true)
 			if (!!data.client.phone_verify_datetime && !!data.client.consent_datetime) {
 				if (!data.orders.length) {
 					const idOrder = await this.rootStore.OrdersStore.createOrderClient({
@@ -46,11 +47,10 @@ export class OrdersStoreService {
 					//this.rootStore.OrdersStore.setOrders(data.orders)
 					await this.rootStore.OrdersStore.getOrderReportDetail(data.orders[0].id) // временно
 				}
-				this.rootStore.AuthStore.setAuth(true)
 				navigate && navigate(routerConstants.CREATE_ORDER)
 			}
 		} catch (e) {
-			console.log(e, 'getClientBaseInfo')
+			console.log(e, 'getSettingClient')
 		} finally {
 			this.rootStore.Notification.setIsLoading(LoadingEnum.success)
 		}

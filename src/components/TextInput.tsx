@@ -39,12 +39,12 @@ const InputCustom = forwardRef(({
         <Box mt={2} width={'100%'}>
             <FormControl isInvalid={isInvalid} isRequired={isRequired}>
                 {label && <FormControl.Label ml={1}>
-                  <Text fontWeight={'400'}>{label}</Text>
+                  <Text fontFamily={'regular'} fontSize={13}>{label}</Text>
                 </FormControl.Label>}
                 <Input
                     ref={ref}
                     value={value}
-                    style={style}
+                    style={[{fontSize: 15, fontFamily: 'regular',   }, style]}
                     borderColor={colors.grayLight}
                     keyboardType={keyboardType}
                     onBlur={onBlur}

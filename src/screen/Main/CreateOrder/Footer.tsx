@@ -19,12 +19,12 @@ const Footer = ({ onSave, navigate, orderDetail }: FooterProps) => {
 	const isDisableBtn = !orderDetail.client_logistic_partners_points_id || !orderDetail.photos.length || !orderDetail.executors_id
 	return (
 		<Box alignItems={'center'}>
-			<Text fontSize={22} fontWeight={'500'}>We will ask you to pay later</Text>
-			<Text textAlign={'center'} fontSize={17} fontWeight={'400'}>Our executor will count your clothes and
+			<Text fontSize={22} fontFamily={'semiBold'}>We will ask you to pay later</Text>
+			<Text textAlign={'center'} fontSize={17} fontFamily={'regular'}>Our executor will count your clothes and
 				put up a payment for you after that
 				You will get push-notification</Text>
 			<Box mb={3} w={'100%'}>
-				<Link styleText={{ color: colors.blue, fontSize: 24, fontWeight: '400' }} onPress={onPressPrises}
+				<Link styleText={{ color: colors.blue, fontSize: 24, fontFamily: 'regular' }} onPress={onPressPrises}
 							text={'Prices'} />
 				<Box mt={2} alignItems={'center'}>
 					<Button backgroundColor={isDisableBtn ? colors.bluePale : colors.blue} colorText={colors.white}

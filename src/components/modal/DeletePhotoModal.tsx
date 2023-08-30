@@ -23,7 +23,7 @@ const DeletePhotoModal = ({ visible, onClose, deleteOrderPhoto }: BaseModalProps
 				<Box style={{ paddingHorizontal: 16 }} borderRadius={16} justifyContent={'space-evenly'} flex={1} backgroundColor={colors.white}
 						 maxHeight={186}>
 					<Box flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-						<Text fontSize={22} fontWeight={'600'}>Delete photo ?</Text>
+						<Text fontSize={22}  fontFamily={'semiBold'}>Delete photo ?</Text>
 						<TouchableOpacity onPress={onClose}>
 							<Image source={closeImage} />
 						</TouchableOpacity>
