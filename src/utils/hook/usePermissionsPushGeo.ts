@@ -1,8 +1,6 @@
 import * as Notifications from 'expo-notifications'
 import * as Location from 'expo-location'
 import { useEffect, useState } from 'react'
-import NotificationStore from '../../store/NotificationStore/notification-store'
-import { LoadingEnum } from '../../store/types/types'
 
 
 export const usePermissionsPushGeo = () => {

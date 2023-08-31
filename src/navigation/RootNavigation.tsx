@@ -5,7 +5,7 @@ import AuthStore from '../store/AuthStore'
 import NotificationStore from '../store/NotificationStore/notification-store'
 import { NavigationContainer } from '@react-navigation/native'
 import { LoadingEnum } from '../store/types/types'
-import Loading from '../components/Loading'
+import LoadingGlobal from '../components/LoadingGlobal'
 import { routerConstants } from '../constants/routerConstants'
 import LoginS from '../screen/authScreens/LoginS'
 import Alerts from '../components/Alert'
@@ -13,7 +13,6 @@ import GivePermissions from '../components/GivePermissions'
 import VerifyNumberS from '../screen/authScreens/VerifyNumberS'
 import AddPhoneS from '../screen/authScreens/AddPhoneS'
 import WifiReconnect from '../components/WifiReconnect'
-import NetInfo from '@react-native-community/netinfo'
 import TermsOfUseS from '../screen/authScreens/TermsOfUseS'
 import { usePermissionsPushGeo } from '../utils/hook/usePermissionsPushGeo'
 import CreateOrder from '../screen/Main/CreateOrder/CreateOrder'
@@ -22,11 +21,13 @@ import OrderConfirmationS from '../screen/Main/OrderConfirmationS'
 import PriceS from '../screen/Main/PriceS'
 import LogisticsPointS from '../screen/LogisticsPointS'
 import LoadingLocal from '../components/LoadingLocal'
+import { useInternetConnected } from '../utils/hook/useInternetConnected'
+import OrdersS from '../screen/Main/Orders/OrdersS'
 
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
-	const { isLoading, serverResponseText, setIsLoading, isLocalLoading } = NotificationStore
+	const { isLoading, serverResponseText, isLocalLoading } = NotificationStore
 	const { isAuth } = AuthStore
 	const {
 		askNotificationPermissionHandler,
@@ -34,35 +35,12 @@ const RootNavigation = observer(() => {
 		locationStatus,
 	} = usePermissionsPushGeo()
 	const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
-	const [isConnected, setIsConnected] = useState(true)
-
-
-	const checkInternetConnection = async () => {
-		setIsLoading(LoadingEnum.fetching)
-		try {
-			const netInfoState = await NetInfo.fetch()
-			setIsConnected(netInfoState.isConnected)
-		} catch (e) {
-
-		} finally {
-			setIsLoading(LoadingEnum.success)
-		}
-	}
-
-	useEffect(() => {
-		const unsubscribe = NetInfo.addEventListener(state => {
-			setIsConnected(state.isConnected)
-		})
-		return () => {
-			unsubscribe()
-		}
-
-	}, [])
+	const { checkInternetConnection, isConnected } = useInternetConnected()
 
 
 	return (
 		<NavigationContainer>
-			{isLoading === LoadingEnum.fetching && <Loading visible={true} />}
+			{isLoading === LoadingEnum.fetching && <LoadingGlobal visible={true} />}
 			{isLocalLoading === LoadingEnum.fetching && <LoadingLocal visible={true} />}
 			{serverResponseText && <Alerts text={serverResponseText} />}
 			{!isConnected && <WifiReconnect checkInternet={checkInternetConnection} visible={!isConnected} />}
@@ -76,6 +54,11 @@ const RootNavigation = observer(() => {
 							options={{ headerShown: false }}
 							name={routerConstants.CREATE_ORDER}
 							component={CreateOrder}
+						/>
+						<RootStack.Screen
+							options={{ headerShown: false }}
+							name={routerConstants.ORDERS}
+							component={OrdersS}
 						/>
 						<RootStack.Screen
 							options={{ headerShown: false }}

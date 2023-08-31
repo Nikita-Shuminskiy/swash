@@ -7,7 +7,7 @@ import { Box, Image } from 'native-base'
 import { colors } from '../assets/colors/colors'
 import { StatusBar } from 'expo-status-bar'
 
-const Loading = ({ visible }) => {
+const LoadingGlobal = ({ visible }) => {
 	return (
 		<Modal visible={visible}>
 			<StatusBar backgroundColor={colors.blueLight} />
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 })
-export default Loading
+export default LoadingGlobal

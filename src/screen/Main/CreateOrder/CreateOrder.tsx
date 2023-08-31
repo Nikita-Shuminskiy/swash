@@ -57,7 +57,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 	}
 	const renderItem = ({ item }: { item: LogisticsPointType }) => {
 		const chousenPaczkomat = orderDetail.client_logistic_partners_points_id === item.logistic_partners_id
-		console.log(orderDetail.client_logistic_partners_points_id)
+
 
 		const onPressPaczkomat= () => {
 			OrdersStoreService.updateOrder({

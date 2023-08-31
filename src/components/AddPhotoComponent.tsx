@@ -28,7 +28,7 @@ const AddPhotoComponent = observer(() => {
 	const [isOpenCamera, setIsOpenCamera] = useState(false)
 	const [isDeleteModal, setIsDeleteModal] = useState(false)
 	const [deletedPhotoId, setDeletedPhotoId] = useState('')
-
+	const [flashMode, setFlashMode] = React.useState<FlashMode>(FlashMode.off)
 
 	const cameraRef = useRef(null)
 
@@ -108,7 +108,7 @@ const AddPhotoComponent = observer(() => {
 			</ImageBackground>
 		)
 	}
-	const [flashMode, setFlashMode] = React.useState<FlashMode>(FlashMode.off)
+
 
 	const flashModeHandler = () => {
 		if (flashMode === FlashMode.torch) {

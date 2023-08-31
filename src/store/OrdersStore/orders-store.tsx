@@ -23,6 +23,7 @@ export class OrdersStore {
 			clients_id: clients_id,
 			token: token,
 		})
+		console.log(data)
 		return data.order_id
 	}
 
