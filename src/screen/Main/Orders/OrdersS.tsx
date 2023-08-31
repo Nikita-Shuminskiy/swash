@@ -12,6 +12,7 @@ import Button from '../../../components/Button'
 import { colors } from '../../../assets/colors/colors'
 import addCircleImage from '../../../assets/Images/plus-circle-white.png'
 import { routerConstants } from '../../../constants/routerConstants'
+import AlertFeedBack from '../../../components/AlertFeedBack'
 
 type OrdersSProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -25,7 +26,7 @@ const OrdersS = observer(({ navigation }: OrdersSProps) => {
 
 	}
 	useEffect(() => {
-		navigation.navigate(routerConstants.FEEDBACK)
+		navigation.navigate(routerConstants.NAVIGATION_TO_CHECKPOINT)
 	}, [])
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={true}>
@@ -48,6 +49,7 @@ const OrdersS = observer(({ navigation }: OrdersSProps) => {
 					</Button>
 				</Box>
 			</Box>
+	{/*		<AlertFeedBack />*/}
 		</BaseWrapperComponent>
 	)
 })

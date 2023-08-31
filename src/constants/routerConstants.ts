@@ -15,4 +15,5 @@ export const routerConstants = {
     PRICE: 'price',
     ORDERS: 'orders',
     FEEDBACK: 'feedback',
+    NAVIGATION_TO_CHECKPOINT: 'navigation-to-checkpoint',
 }

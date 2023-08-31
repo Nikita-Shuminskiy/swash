@@ -24,6 +24,7 @@ import LoadingLocal from '../components/LoadingLocal'
 import { useInternetConnected } from '../utils/hook/useInternetConnected'
 import OrdersS from '../screen/Main/Orders/OrdersS'
 import FeedbackS from '../screen/Main/FeedbackS'
+import NavigatingToCheckpointS from '../screen/Main/NavigatingToCheckpointS'
 
 
 const RootStack = createNativeStackNavigator()
@@ -81,10 +82,16 @@ const RootNavigation = observer(() => {
 							name={routerConstants.PRICE}
 							component={PriceS}
 						/>
+
 						<RootStack.Screen
 							options={{ headerShown: false }}
 							name={routerConstants.LOGISTIC_POINT}
 							component={LogisticsPointS}
+						/>
+						<RootStack.Screen
+							options={{ headerShown: false }}
+							name={routerConstants.NAVIGATION_TO_CHECKPOINT}
+							component={NavigatingToCheckpointS}
 						/>
 					</>
 				}

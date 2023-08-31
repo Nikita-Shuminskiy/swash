@@ -6,7 +6,6 @@ import { Box, Text } from 'native-base'
 import { colors } from '../../assets/colors/colors'
 import Rating from '../../components/Raiting'
 import Button from '../../components/Button'
-import TextInput from '../../components/TextInput'
 import InputMultiLine from '../../components/InputMultiLine'
 
 type FeedbackSProps = {
@@ -64,7 +63,6 @@ const FeedbackS = ({ navigation }: FeedbackSProps) => {
 									}} onPress={onPressSendFeedback} title={'Send feedback'} />
 				</Box>
 			</Box>
-
 		</BaseWrapperComponent>
 	)
 }

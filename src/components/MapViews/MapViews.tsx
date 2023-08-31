@@ -2,37 +2,30 @@ import React, { useEffect, useState } from 'react'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Box } from 'native-base'
-import * as Location from 'expo-location'
-import { useNavigation } from '@react-navigation/native'
 import NotificationStore from '../../store/NotificationStore/notification-store'
-import { allowLocation } from './utils'
+import { getCurrentPositionHandler } from './utils'
 import AddressAutocomplete from '../AddressAutocomplete'
 import myPositionImg from '../../assets/Images/Map/MyPosition.png'
 import { LogisticsPointType } from '../../api/Client/type'
 import MarkerCustom from './MarkerCustom'
 
 type MapViewsProps = {
-	logisticPoints: LogisticsPointType[]
+	logisticPoints?: LogisticsPointType[]
 }
 export const MapViews = ({ logisticPoints }: MapViewsProps) => {
 	const { setIsLoading } = NotificationStore
 	const [mapRef, setMapRef] = useState(null)
 	const [myPosition, setMyPosition] = useState<{ latitude: number, longitude: number }>({
 		latitude: 54.34544523458879,
-		longitude: 18.66879642843845
+		longitude: 18.66879642843845,
 	})
 
-	const getCurrentPositionHandler = async () => {
+	const getCurrentPosition = async () => {
 		try {
-			const status = await allowLocation()
-			if (status) {
-				let currentLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation })
-				const { latitude, longitude } = currentLocation.coords
-				setMyPosition({ latitude, longitude })
-			}
+			const { latitude, longitude } = await getCurrentPositionHandler()
+			setMyPosition({ latitude, longitude })
 		} catch (e) {
-			console.log('err', e)
-		} finally {
+
 		}
 	}
 	useEffect(() => {
@@ -44,7 +37,7 @@ export const MapViews = ({ logisticPoints }: MapViewsProps) => {
 		}
 	}, [myPosition])
 	useEffect(() => {
-		getCurrentPositionHandler()
+		getCurrentPosition()
 	}, [])
 
 	const onSaveAutoCompleteHandler = () => {
@@ -81,7 +74,7 @@ export const MapViews = ({ logisticPoints }: MapViewsProps) => {
 						title={''}
 					/>
 				}
-				{logisticPoints.map(point => (
+				{logisticPoints.length && logisticPoints.map(point => (
 					<MarkerCustom point={point} key={point.id} />
 				))}
 			</MapView>
