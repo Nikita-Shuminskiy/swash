@@ -44,7 +44,7 @@ const InputCustom = forwardRef(({
                 <Input
                     ref={ref}
                     value={value}
-                    style={[{fontSize: 15, fontFamily: 'regular',   }, style]}
+                    style={[{fontSize: 15, fontFamily: 'regular'}]}
                     borderColor={colors.grayLight}
                     keyboardType={keyboardType}
                     onBlur={onBlur}

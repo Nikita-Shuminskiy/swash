@@ -41,22 +41,19 @@ export class OrdersStoreService {
 			if (data.orders.length > 1) {
 				const checkInDoneOrder = data.orders.filter(order => order.status === StatusOrder.IN_PROCESS)
 
-				if (data.orders.length >= checkInDoneOrder.length) { // проверка есть ли в массиве заказ с editable
-					const checkInEditOrder = data.orders.filter(order => order.status === StatusOrder.EDITABLE)
-
-					if (checkInEditOrder.length === 1) { // если в orders все заказы in_process и есть один editable
-						await this.rootStore.OrdersStore.getOrderReportDetail(checkInEditOrder[0].id)
+				if (data.orders.length > checkInDoneOrder.length) { // проверка есть ли в массиве заказ с editable
+					/*const orderEditable = data.orders.find(order => order.status === StatusOrder.EDITABLE)
+					if (orderEditable) {
+						await this.rootStore.OrdersStore.getOrderReportDetail(orderEditable.id)
 						navigate && navigate(routerConstants.CREATE_ORDER)
 						return
-					}
-
+					}*/
+					this.rootStore.OrdersStore.setOrders(data.orders) // временно
+					navigate && navigate(routerConstants.ORDERS)
+				} else {
 					this.rootStore.OrdersStore.setOrders(data.orders)
 					navigate && navigate(routerConstants.ORDERS)
 				}
-
-				//this.rootStore.OrdersStore.setOrder(data.orders[0])
-				//this.rootStore.OrdersStore.setOrders(data.orders)
-				// временно
 			}
 
 

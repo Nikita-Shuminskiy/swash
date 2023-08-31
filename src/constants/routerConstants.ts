@@ -14,4 +14,5 @@ export const routerConstants = {
     LOGISTIC_POINT: 'logistic-point',
     PRICE: 'price',
     ORDERS: 'orders',
+    FEEDBACK: 'feedback',
 }
