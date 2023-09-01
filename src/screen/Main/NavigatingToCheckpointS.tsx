@@ -5,16 +5,34 @@ import Button from '../../components/Button'
 import { colors } from '../../assets/colors/colors'
 import ArrowBack from '../../components/ArrowBack'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
-import { StyleSheet, View } from 'react-native'
+import { Image, Linking, StyleSheet, View } from 'react-native'
 import { getCurrentPositionHandler } from '../../components/MapViews/utils'
+import { observer } from 'mobx-react-lite'
+import takeYourThingsImg from '../../assets/Images/orders/takeThings.png'
+import takeYourThingsFromImg from '../../assets/Images/orders/takeThingsFrom.png'
+import OrdersStore from '../../store/OrdersStore/orders-store'
 
-const NavigatingToCheckpointS = ({ navigation }) => {
+type NavigatingToCheckpointSProps = {
+	navigation: any
+	route: any
+}
+const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToCheckpointSProps) => {
+	const {orderDetail} = OrdersStore
+	const isFromExecutorPerfomed = route.params.from === 'takeIt'
+
 	const [myPosition, setMyPosition] = useState<{ latitude: number, longitude: number }>()
 	const goBackPress = () => {
 		navigation.goBack()
 	}
 	const onPressNavigate = () => {
+		const startLocation = 'Your starting location' // Замените на начальное местоположение
+		const endLocation = 'Your destination' // Замените на местоназначение
 
+		const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${startLocation}&destination=${endLocation}`
+
+		Linking.openURL(googleMapsUrl).catch((err) =>
+			console.error('Error opening Google Maps: ', err),
+		)
 	}
 	const getCurrentPosition = async () => {
 		try {
@@ -44,14 +62,31 @@ const NavigatingToCheckpointS = ({ navigation }) => {
 					<ArrowBack goBackPress={goBackPress} />
 					<Box mt={2} mb={2}>
 						<Text fontSize={28} fontFamily={'semiBold'}>
-							Swash #221
+							Swash #{orderDetail.orders_id}
 						</Text>
 					</Box>
-					<Box p={3} backgroundColor={`rgba(255, 170, 4, 0.2)`} borderRadius={16}>
-						<Text fontSize={15} fontFamily={'regular'}>
-							It's time to take things to the pachkomat! The cell is waiting for you until <Text
-							color={colors.orangeVivid}>08/20/2023 15:00</Text>
-						</Text>
+					<Box p={3}
+							 backgroundColor={isFromExecutorPerfomed ? `rgba(255, 170, 4, 0.2)` : `rgba(25, 215, 44, 0.08)`}
+							 borderRadius={16}>
+						<Box
+							flexDirection={'row'}
+							alignItems={'flex-start'}>
+							<Image style={{ width: 40, height: 40 }}
+										 source={isFromExecutorPerfomed ? takeYourThingsImg : takeYourThingsFromImg} />
+							<Box ml={2} flex={1}>
+								<Text fontSize={15} fontFamily={'regular'}>
+									{
+										isFromExecutorPerfomed ? `It's time to take things to the pachkomat! The cell is waiting for you until`
+											: `It's time to pick up things from the pachkomat, they are waiting for you until`
+									}
+									<Text
+										color={isFromExecutorPerfomed ? colors.orangeVivid : colors.greenBright}>{' '}
+										{orderDetail.last_step_datetime}
+										</Text>
+								</Text>
+							</Box>
+						</Box>
+
 					</Box>
 
 					<Box mt={4}>
@@ -93,7 +128,7 @@ const NavigatingToCheckpointS = ({ navigation }) => {
 			</Box>
 		</BaseWrapperComponent>
 	)
-}
+})
 
 const styles = StyleSheet.create({
 	container: {

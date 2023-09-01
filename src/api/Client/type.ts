@@ -33,34 +33,73 @@ type OrderType = {
 	add_hypo: string;
 	add_iron: string;
 	amount: string;
-	client_logistic_partners_points_id: string | null;
 	clients_id: string;
+	client_logistic_partners_points_id: string | null;
 	country: string;
 	date_estimated_ready: string | null;
 	datetime_closed: string | null;
 	datetime_register: string;
 	executors_id: string | null;
 	id: string;
-	last_step: string | null;
+	last_step: LastStep;
 	status: StatusOrder;
 };
-
+type OrderReportDetailType = {
+	amount: string;
+	client_logistic_partners_points_id: string;
+	country: string;
+	datetime_closed: null | string;
+	datetime_register: string;
+	last_step: LastStep;
+	last_step_datetime: string;
+	orders_id: string;
+	photos: PhotoType[];
+	post_deadline: string;
+	status: string;
+	units_order: UntilsOrderType[];
+};
 export enum StatusOrder {
 	EDITABLE = 'editable',
 	IN_PROCESS = 'in_process'
 }
+export enum LastStep {
+	client_received = 'client_received', // просим оценки
+	auction_open = 'auction_open', // ищем исполнителя
+	executor_perfomed = 'executor_perfomed',// отнеси и сдай
+	client_must_get = 'client_must_get',// забери
 
-type OrderReportDetailType = OrderType & {
-	units_order: any[];
-	photos: PhotoType[]
-};
+	executor_confirm_client_must_pay = 'executor_confirm&client_must_pay',// оплати
+	executor_done_client_must_pay = 'executor_done&client_must_pay',// оплати
+
+
+	client_sent = 'client_sent',// в процессе
+	executor_must_get = 'executor_must_get',// в процессе
+	executor_received = 'executor_received',// в процессе
+	executor_confirm = 'executor_confirm',// в процессе
+	executor_done = 'executor_done',// в процессе
+	executor_sent = 'executor_sent',// в процессе
+
+	admin_closed_order = 'admin_closed_order',// не показывать
+	client_confirm = 'client_confirm',// не показывать
+
+
+}
+
+export type UntilsOrderType = {
+	count: string
+	id: string
+	order_id: string
+	type_of_units_id: string
+}
+
+
 export type PhotoType = { 'filename': string, 'id': string }
 type DataSettingClientType = {
 	client: ClientType;
 	countries: CountryType[];
 	languages: string[];
 	orders: OrderType[];
-	status: string;
+	status: StatusOrder;
 	units: UnitType[];
 };
 type LogisticsPointType = {

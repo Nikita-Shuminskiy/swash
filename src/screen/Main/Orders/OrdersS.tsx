@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { BaseWrapperComponent } from '../../../components/baseWrapperComponent'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import BurgerMenuImg from '../../../components/burgerMenuImg'
@@ -6,28 +6,44 @@ import { observer } from 'mobx-react-lite'
 import OrdersStore from '../../../store/OrdersStore/orders-store'
 import { FlatList } from 'react-native'
 import { Box, Image, Text } from 'native-base'
-import { OrderType } from '../../../api/Client/type'
-import OrderViewer from '../../../components/list-viewer/OrderViewer'
+import { LastStep, OrderType } from '../../../api/Client/type'
+import OrderViewer from '../../../components/list-viewer/OrderViewer/OrderViewer'
 import Button from '../../../components/Button'
 import { colors } from '../../../assets/colors/colors'
 import addCircleImage from '../../../assets/Images/plus-circle-white.png'
 import { routerConstants } from '../../../constants/routerConstants'
-import AlertFeedBack from '../../../components/AlertFeedBack'
+import rootStore from '../../../store/RootStore/root-store'
 
 type OrdersSProps = {
 	navigation: NavigationProp<ParamListBase>
 }
 const OrdersS = observer(({ navigation }: OrdersSProps) => {
 	const { orders } = OrdersStore
+	const { OrdersStoreService } = rootStore
 	const renderItem = ({ item }: { item: OrderType }) => {
-		return <OrderViewer order={item} />
+		const onPressDetails = () => {
+			OrdersStoreService.getOrderReportDetail(item.id)
+		/*	EXECUTOR_PERFORMED: 'executor_perfomed', // отнеси и сдай
+				CLIENT_MUST_GET: 'client_must_get', // забери*/
+			switch (item.last_step) {
+				case LastStep.client_must_get: {
+					return navigation.navigate(routerConstants.EXECUTOR_MAP, {from: 'get'})
+				}
+				case LastStep.executor_perfomed: {
+					return navigation.navigate(routerConstants.EXECUTOR_MAP, {from: 'takeIt'})
+				}
+			}
+
+		}
+		if(item.last_step === LastStep.admin_closed_order || item.last_step === LastStep.client_confirm) return
+		return <OrderViewer onPressDetails={onPressDetails} order={item} />
 	}
 	const onPressSwash = () => {
 
 	}
-	useEffect(() => {
+/*	useEffect(() => {
 		navigation.navigate(routerConstants.NAVIGATION_TO_CHECKPOINT)
-	}, [])
+	}, [])*/
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={true}>
 			<Box style={{ paddingHorizontal: 16 }}>

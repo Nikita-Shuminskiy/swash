@@ -31,7 +31,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 
 
 	const deleteOrder = () => {
-		OrdersStoreService.deleteOrder('', orderDetail.id, navigation.navigate)
+		OrdersStoreService.deleteOrder('', orderDetail.orders_id, navigation.navigate)
 	}
 
 
@@ -61,7 +61,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 
 		const onPressPaczkomat= () => {
 			OrdersStoreService.updateOrder({
-				orders_id: orderDetail.id,
+				orders_id: orderDetail.orders_id,
 				client_logistic_partners_points_id: item.logistic_partners_id
 			})
 		}

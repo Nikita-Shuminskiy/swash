@@ -16,7 +16,7 @@ const Footer = ({ onSave, navigate, orderDetail }: FooterProps) => {
 	const onPressPrises = () => {
 		navigate(routerConstants.PRICE)
 	}
-	const isDisableBtn = !orderDetail.client_logistic_partners_points_id || !orderDetail.photos.length || !orderDetail.executors_id
+	const isDisableBtn = !orderDetail.client_logistic_partners_points_id || !orderDetail.photos.length // || !orderDetail.executors_id
 	return (
 		<Box alignItems={'center'}>
 			<Text fontSize={22} fontFamily={'semiBold'}>We will ask you to pay later</Text>

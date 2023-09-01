@@ -12,4 +12,5 @@ export const colors: { [key: string]: string } = {
     bluePale: '#99D4FF',
     blue: '#0094FF',
     orangeVivid : '#FFAA04',
+    greenBright : '#19D72C',
 }

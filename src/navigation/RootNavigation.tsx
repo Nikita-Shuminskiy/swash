@@ -64,11 +64,6 @@ const RootNavigation = observer(() => {
 						/>
 						<RootStack.Screen
 							options={{ headerShown: false }}
-							name={routerConstants.FEEDBACK}
-							component={FeedbackS}
-						/>
-						<RootStack.Screen
-							options={{ headerShown: false }}
 							name={routerConstants.ADD_NEW_CARD}
 							component={AddNewCardS}
 						/>
@@ -88,9 +83,17 @@ const RootNavigation = observer(() => {
 							name={routerConstants.LOGISTIC_POINT}
 							component={LogisticsPointS}
 						/>
+
+
+
 						<RootStack.Screen
 							options={{ headerShown: false }}
-							name={routerConstants.NAVIGATION_TO_CHECKPOINT}
+							name={routerConstants.CLIENT_RECEIVED}
+							component={FeedbackS}
+						/>
+						<RootStack.Screen
+							options={{ headerShown: false }}
+							name={routerConstants.EXECUTOR_MAP}
 							component={NavigatingToCheckpointS}
 						/>
 					</>

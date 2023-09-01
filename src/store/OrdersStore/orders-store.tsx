@@ -23,7 +23,7 @@ export class OrdersStore {
 			clients_id: clients_id,
 			token: token,
 		})
-		console.log(data)
+
 		return data.order_id
 	}
 
@@ -54,7 +54,7 @@ export class OrdersStore {
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
 		await clientApi.saveOrderPhoto({
-			orders_id: this.orderDetail?.id,
+			orders_id: this.orderDetail?.orders_id,
 			clients_id,
 			token,
 			photo,
@@ -79,7 +79,7 @@ export class OrdersStore {
 			token,
 			clients_id,
 			photo_id,
-			order_number: this.orderDetail.id,
+			order_number: this.orderDetail.orders_id,
 		})
 	}
 

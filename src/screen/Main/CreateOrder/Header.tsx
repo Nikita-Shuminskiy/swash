@@ -44,7 +44,7 @@ const Header = ({ orderDetail, onPressDeleteOrder, updateOrder }: HeaderProps) =
 				<BergerMenuImg />
 				<BtnDelete onPress={onPressDeleteOrder} />
 			</Box>
-			<Text fontSize={28} mt={3} fontFamily={'semiBold'} color={colors.black}>Swash #{orderDetail?.id}</Text>
+			<Text fontSize={28} mt={3} fontFamily={'semiBold'} color={colors.black}>Swash #{orderDetail?.orders_id}</Text>
 			<Text fontSize={22} mt={3} fontFamily={'semiBold'} fontWeight={'600'}>Services</Text>
 			<Box mt={2} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
 				<Box flex={1}>

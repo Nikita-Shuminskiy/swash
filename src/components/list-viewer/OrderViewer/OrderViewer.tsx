@@ -1,25 +1,27 @@
 import React from 'react'
 import { Box, Text } from 'native-base'
-import { colors } from '../../assets/colors/colors'
-import { OrderType } from '../../api/Client/type'
+import { colors } from '../../../assets/colors/colors'
+import { OrderType } from '../../../api/Client/type'
 import { Image, TouchableOpacity } from 'react-native'
-import paymentImg from '../../assets/Images/orders/payment-red.png'
-import arrowBlue from '../../assets/Images/order/arrowRightBlue.png'
+import arrowBlue from '../../../assets/Images/order/arrowRightBlue.png'
+import { getLastStepStatusOrder } from './utils'
+
 type OrderViewerProps = {
 	order: OrderType
 	onPressDetails: () => void
 }
-const OrderViewer = ({order, onPressDetails}: OrderViewerProps) => {
+const OrderViewer = ({ order, onPressDetails }: OrderViewerProps) => {
+	const getCurrData = getLastStepStatusOrder(order.last_step?.trim())
 
 	return (
 		<Box borderWidth={1} p={2} mb={2} borderColor={colors.grayBright} borderRadius={20}>
 			<Box flexDirection={'row'} mb={2} alignItems={'center'} justifyContent={'flex-start'}>
 				<Box mr={2}>
-					<Image style={{ width: 40, height: 40 }} source={paymentImg} />
+					<Image style={{ width: 40, height: 40 }} source={getCurrData?.img} />
 				</Box>
 				<Box>
 					<Text fontFamily={'semiBold'} fontSize={17}>Swash{' '}#{order.id}</Text>
-					<Text fontFamily={'regular'} fontSize={13} color={colors.grayLight}>{order.status}</Text>
+					<Text fontFamily={'regular'} fontSize={13}>{getCurrData?.text}</Text>
 				</Box>
 			</Box>
 			<Box>
