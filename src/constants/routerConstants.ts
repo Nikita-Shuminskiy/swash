@@ -9,15 +9,14 @@ export const routerConstants = {
     ADD_NEW_CARD: 'add-new-card',
     ORDER_CONFIRMATION: 'order-confirmation',
     LOGISTIC_POINT: 'logistic-point',
+
     PRICE: 'price',
     ORDERS: 'orders',
 
     CLIENT_RECEIVED: 'client_received', // просим оценки
-
     EXECUTOR_MAP: 'executor_map', // отнеси и сдай
-    CLIENT_MUST_GET: 'client_must_get', // забери
-
-
+    CLIENT_PAY: 'client_pay',
+/*
 
     EXECUTOR_CONFIRM_CLIENT_MUST_PAY: 'executor_confirm&client_must_pay', // оплати
 
@@ -30,5 +29,5 @@ export const routerConstants = {
     EXECUTOR_RECEIVED: 'executor_received', // в процессе
     EXECUTOR_CONFIRM: 'executor_confirm', // в процессе
     EXECUTOR_DONE: 'executor_done', // в процессе
-    EXECUTOR_SENT: 'executor_sent', // в процессе
+    EXECUTOR_SENT: 'executor_sent', // в процессе*/
 };

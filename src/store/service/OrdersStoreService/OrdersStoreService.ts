@@ -36,7 +36,6 @@ export class OrdersStoreService {
 				navigate && navigate(routerConstants.CREATE_ORDER)
 				return
 			}
-			console.log(data.orders.length)
 
 			if (data.orders.length > 1) {
 				const checkInDoneOrder = data.orders.filter(order => order.status === StatusOrder.IN_PROCESS)
@@ -77,7 +76,7 @@ export class OrdersStoreService {
 	async deleteOrderPhoto(photo_id: string) {
 		try {
 			await this.rootStore.OrdersStore.deleteOrderPhoto(photo_id)
-			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.id)
+			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
 		} catch (e) {
 			console.log(e, 'deleteOrderPhoto')
 		} finally {
@@ -88,7 +87,7 @@ export class OrdersStoreService {
 	async saveOrderPhoto(photo) {
 		try {
 			await this.rootStore.OrdersStore.saveOrderPhoto(photo)
-			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.id)
+			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
 		} catch (e) {
 			console.log(e)
 		} finally {
@@ -110,7 +109,7 @@ export class OrdersStoreService {
 		this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
 		try {
 			await this.rootStore.OrdersStore.updateOrder(payload)
-			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.id)
+			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
 		} catch (e) {
 			console.log(e)
 		} finally {

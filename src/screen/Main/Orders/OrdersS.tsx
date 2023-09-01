@@ -19,18 +19,26 @@ type OrdersSProps = {
 }
 const OrdersS = observer(({ navigation }: OrdersSProps) => {
 	const { orders } = OrdersStore
+
 	const { OrdersStoreService } = rootStore
 	const renderItem = ({ item }: { item: OrderType }) => {
 		const onPressDetails = () => {
 			OrdersStoreService.getOrderReportDetail(item.id)
-		/*	EXECUTOR_PERFORMED: 'executor_perfomed', // отнеси и сдай
-				CLIENT_MUST_GET: 'client_must_get', // забери*/
 			switch (item.last_step) {
 				case LastStep.client_must_get: {
 					return navigation.navigate(routerConstants.EXECUTOR_MAP, {from: 'get'})
 				}
 				case LastStep.executor_perfomed: {
 					return navigation.navigate(routerConstants.EXECUTOR_MAP, {from: 'takeIt'})
+				}
+				case LastStep.client_received: {
+					return navigation.navigate(routerConstants.CLIENT_RECEIVED)
+				}
+				case LastStep.auction_open: {
+					return navigation.navigate(routerConstants.ORDER_CONFIRMATION, {from: 'action_open'})
+				}
+				case LastStep.executor_confirm_client_must_pay: {
+					return navigation.navigate(routerConstants.CLIENT_PAY, {from: 'client_must_pay'})
 				}
 			}
 

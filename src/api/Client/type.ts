@@ -46,7 +46,12 @@ type OrderType = {
 };
 type OrderReportDetailType = {
 	amount: string;
+	services_pay?: string;
+	discount?: string;
+	basic_pay?: string;
 	client_logistic_partners_points_id: string;
+	client_logistic_partners_points_lat: string;
+	client_logistic_partners_points_lon: string;
 	country: string;
 	datetime_closed: null | string;
 	datetime_register: string;

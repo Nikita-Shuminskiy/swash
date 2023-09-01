@@ -24,11 +24,8 @@ export function getLastStepStatusOrder(lastStep) {
 				img: paymentRedImg,
 				text: <Text color={colors.red}>Payment required</Text>,
 			}
+
 		case LastStep.executor_done_client_must_pay:
-			return {
-				img: takeYourThingsFromImg,
-				text: <Text color={colors.greenBright}>Will be ready</Text>,
-			}
 		case LastStep.auction_open:
 		case LastStep.client_received:
 		case LastStep.client_sent:

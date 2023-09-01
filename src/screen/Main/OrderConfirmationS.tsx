@@ -9,8 +9,10 @@ import loadingGif from '../../assets/Gif/loadingGif.gif'
 
 type OrderConfirmationSProps = {
 	navigation: NavigationProp<ParamListBase>
+	route: any
 }
-const OrderConfirmationS = observer(({ navigation }: OrderConfirmationSProps) => {
+const OrderConfirmationS = observer(({ navigation, route }: OrderConfirmationSProps) => {
+	const isFrom = route.params.from === 'action_open'
 	const { orderDetail } = OrdersStore
 	const goBackPress = () => {
 		navigation.goBack()
@@ -22,7 +24,7 @@ const OrderConfirmationS = observer(({ navigation }: OrderConfirmationSProps) =>
 					<ArrowBack goBackPress={goBackPress} />
 				</Box>
 				<Box mt={5} justifyContent={'flex-start'}>
-					<Text fontSize={28}  fontFamily={'semiBold'}>Swash #{orderDetail?.id}</Text>
+					<Text fontSize={28}  fontFamily={'semiBold'}>Swash #{orderDetail?.orders_id}</Text>
 				</Box>
 				<Box mt={10}>
 					<Text fontSize={32}  fontFamily={'semiBold'}>Looking for executor</Text>

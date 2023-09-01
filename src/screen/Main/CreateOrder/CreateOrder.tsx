@@ -18,6 +18,7 @@ import { routerConstants } from '../../../constants/routerConstants'
 import CustomCheckbox from '../../../components/CustomCheckbox'
 import { LogisticsPointType, payloadUpdOrderType } from '../../../api/Client/type'
 import AuthStore from '../../../store/AuthStore/auth-store'
+import PaymentMethod from '../../../components/PaymentMethod'
 
 type CreateOrderProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -99,15 +100,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 					</Box>
 					<Box mt={3} borderBottomWidth={1} borderColor={colors.grayBright} />
 					<Box mt={4}>
-						<Text mb={3} fontSize={22} fontFamily={'semiBold'}>Payment method</Text>
-						<TouchableOpacity onPress={onPressChangePayment}>
-							<Box paddingY={18} borderRadius={16} paddingX={5} flexDirection={'row'} alignItems={'center'}
-									 justifyContent={'space-between'}
-									 backgroundColor={colors.grayBright}>
-								<Text fontSize={15} fontFamily={'regular'}>Google Pay</Text>
-								<Image source={arrowBlue} alt={'arrow'} />
-							</Box>
-						</TouchableOpacity>
+						<PaymentMethod onPressChangePayment={onPressChangePayment} />
 					</Box>
 					<Box mt={4}>
 						<Footer orderDetail={orderDetail} navigate={navigation.navigate} onSave={onSendOrder} />

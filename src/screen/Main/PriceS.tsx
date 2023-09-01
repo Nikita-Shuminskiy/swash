@@ -20,47 +20,12 @@ import { colors } from '../../assets/colors/colors' // 7
 import hypoallergenicBlueImg from '../../assets/Images/order/quill-blue.png'
 import ironBlueImg from '../../assets/Images/order/iron-blue.png'
 import Button from '../../components/Button'
+import { DATA_IMG } from '../../utils/constants'
 
 type PriceSProps = {
 	navigation: NavigationProp<ParamListBase>
 }
-/*{
-	detailed_description: "Coats, jackets, and Outerwear",
-		name: "Outerwear",
-	price_add_hypo: "0.20",
-	price_add_iron: "0.30",
-	price_basic: "2.00",
-	type_of_units_id: "1"
-},*/
-const DATA_IMG = {
-	'1': {
-		img: Outerwear,
-	},
-	'2': {
-		img: ShirtsJackets,
-	},
-	'3': {
-		img: tShirtTop,
-	},
-	'4': {
-		img: PulloversSweaters,
-	},
-	'5': {
-		img: PantsShorts,
-	},
-	'6': {
-		img: SkirtsDresses,
-	},
-	'7': {
-		img: UnderWearSocks,
-	},
-	'8': {
-		img: ChildrenClothing,
-	},
-	'9': {
-		img: Bedding,
-	},
-}
+
 const PriceS = ({ navigation }: PriceSProps) => {
 	const { clientSettings } = AuthStore
 

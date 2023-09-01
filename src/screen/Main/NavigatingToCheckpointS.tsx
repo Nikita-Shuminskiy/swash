@@ -11,7 +11,10 @@ import { observer } from 'mobx-react-lite'
 import takeYourThingsImg from '../../assets/Images/orders/takeThings.png'
 import takeYourThingsFromImg from '../../assets/Images/orders/takeThingsFrom.png'
 import OrdersStore from '../../store/OrdersStore/orders-store'
-
+type Coordinates = {
+	latitude: number;
+	longitude: number;
+}
 type NavigatingToCheckpointSProps = {
 	navigation: any
 	route: any
@@ -19,17 +22,15 @@ type NavigatingToCheckpointSProps = {
 const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToCheckpointSProps) => {
 	const {orderDetail} = OrdersStore
 	const isFromExecutorPerfomed = route.params.from === 'takeIt'
-
-	const [myPosition, setMyPosition] = useState<{ latitude: number, longitude: number }>()
+	const [myPosition, setMyPosition] = useState<Coordinates>()
 	const goBackPress = () => {
 		navigation.goBack()
 	}
 	const onPressNavigate = () => {
-		const startLocation = 'Your starting location' // Замените на начальное местоположение
-		const endLocation = 'Your destination' // Замените на местоназначение
+		const endLocation = [+orderDetail.client_logistic_partners_points_lat, +orderDetail.client_logistic_partners_points_lon]
+		const startLocation = [myPosition.latitude, myPosition.longitude]
 
 		const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${startLocation}&destination=${endLocation}`
-
 		Linking.openURL(googleMapsUrl).catch((err) =>
 			console.error('Error opening Google Maps: ', err),
 		)

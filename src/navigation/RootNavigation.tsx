@@ -25,6 +25,7 @@ import { useInternetConnected } from '../utils/hook/useInternetConnected'
 import OrdersS from '../screen/Main/Orders/OrdersS'
 import FeedbackS from '../screen/Main/FeedbackS'
 import NavigatingToCheckpointS from '../screen/Main/NavigatingToCheckpointS'
+import ClientPayS from '../screen/Main/ClientPay/ClientPayS'
 
 
 const RootStack = createNativeStackNavigator()
@@ -85,7 +86,11 @@ const RootNavigation = observer(() => {
 						/>
 
 
-
+						<RootStack.Screen
+							options={{ headerShown: false }}
+							name={routerConstants.CLIENT_PAY}
+							component={ClientPayS}
+						/>
 						<RootStack.Screen
 							options={{ headerShown: false }}
 							name={routerConstants.CLIENT_RECEIVED}
