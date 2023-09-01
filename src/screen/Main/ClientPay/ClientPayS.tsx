@@ -96,7 +96,7 @@ const ClientPayS = observer(({ navigation, route }: ClientPaySProps) => {
 
 				<Box>
 					<Text mt={4} mb={2} fontSize={22} fontFamily={'semiBold'}>Order info</Text>
-					<OrderInfoItem nameField={'Order'} price={'1'} />
+					<OrderInfoItem nameField={'Order'} price={orderDetail.basic_pay} />
 					<OrderInfoItem nameField={'Paczkomat'} price={'1'} />
 					<OrderInfoItem nameField={'Services'} price={orderDetail.services_pay} />
 					<OrderInfoItem color={colors.greenBright} nameField={'Discount'} price={`-${orderDetail.discount}`} />
