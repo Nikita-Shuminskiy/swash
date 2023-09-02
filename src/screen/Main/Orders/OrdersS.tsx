@@ -25,7 +25,7 @@ const OrdersS = observer(({ navigation }: OrdersSProps) => {
 	const renderItem = ({ item }: { item: OrderType }) => {
 		const onPressDetails = () => {
 			OrdersStoreService.getOrderReportDetail(item.id)
-			switch (item.last_step) {
+			switch (item.last_step?.trim()) {
 				case LastStep.client_must_get: {
 					return navigation.navigate(routerConstants.EXECUTOR_MAP, { from: 'get' })
 				}
