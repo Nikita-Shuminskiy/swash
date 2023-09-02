@@ -13,6 +13,7 @@ import { colors } from '../../../assets/colors/colors'
 import addCircleImage from '../../../assets/Images/plus-circle-white.png'
 import { routerConstants } from '../../../constants/routerConstants'
 import rootStore from '../../../store/RootStore/root-store'
+import AlertFeedBack from '../../../components/AlertFeedBack'
 
 type OrdersSProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -73,7 +74,7 @@ const OrdersS = observer(({ navigation }: OrdersSProps) => {
 					</Button>
 				</Box>
 			</Box>
-	{/*		<AlertFeedBack />*/}
+			<AlertFeedBack />
 		</BaseWrapperComponent>
 	)
 })
