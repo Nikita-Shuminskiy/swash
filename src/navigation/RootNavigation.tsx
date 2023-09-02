@@ -26,6 +26,7 @@ import OrdersS from '../screen/Main/Orders/OrdersS'
 import FeedbackS from '../screen/Main/FeedbackS'
 import NavigatingToCheckpointS from '../screen/Main/NavigatingToCheckpointS'
 import ClientPayS from '../screen/Main/ClientPay/ClientPayS'
+import ExecutorStatusS from '../screen/Main/ExecutorStatusS'
 
 
 const RootStack = createNativeStackNavigator()
@@ -85,7 +86,11 @@ const RootNavigation = observer(() => {
 							component={LogisticsPointS}
 						/>
 
-
+						<RootStack.Screen
+							options={{ headerShown: false }}
+							name={routerConstants.EXECUTOR_STATUSES}
+							component={ExecutorStatusS}
+						/>
 						<RootStack.Screen
 							options={{ headerShown: false }}
 							name={routerConstants.CLIENT_PAY}

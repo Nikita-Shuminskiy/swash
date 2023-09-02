@@ -27,32 +27,45 @@ const OrdersS = observer(({ navigation }: OrdersSProps) => {
 			OrdersStoreService.getOrderReportDetail(item.id)
 			switch (item.last_step) {
 				case LastStep.client_must_get: {
-					return navigation.navigate(routerConstants.EXECUTOR_MAP, {from: 'get'})
+					return navigation.navigate(routerConstants.EXECUTOR_MAP, { from: 'get' })
 				}
 				case LastStep.executor_perfomed: {
-					return navigation.navigate(routerConstants.EXECUTOR_MAP, {from: 'takeIt'})
+					return navigation.navigate(routerConstants.EXECUTOR_MAP, { from: 'takeIt' })
 				}
 				case LastStep.client_received: {
 					return navigation.navigate(routerConstants.CLIENT_RECEIVED)
 				}
 				case LastStep.auction_open: {
-					return navigation.navigate(routerConstants.ORDER_CONFIRMATION, {from: 'action_open'})
+					return navigation.navigate(routerConstants.ORDER_CONFIRMATION, { from: 'action_open' })
 				}
 				case LastStep.executor_confirm_client_must_pay: {
-					return navigation.navigate(routerConstants.CLIENT_PAY, {from: 'client_must_pay'})
+					return navigation.navigate(routerConstants.CLIENT_PAY, { from: 'client_must_pay' })
 				}
+				case LastStep.client_sent: {
+					return navigation.navigate(routerConstants.EXECUTOR_STATUSES, { from: '1' })
+				}
+				case LastStep.executor_received: {
+					return navigation.navigate(routerConstants.EXECUTOR_STATUSES, { from: '2' })
+				}
+				case LastStep.executor_confirm: {
+					return navigation.navigate(routerConstants.EXECUTOR_STATUSES, { from: '3' })
+				}
+				case LastStep.executor_sent: {
+					return navigation.navigate(routerConstants.EXECUTOR_STATUSES, { from: '4' })
+				}
+
 			}
 
 		}
-		if(item.last_step === LastStep.admin_closed_order || item.last_step === LastStep.client_confirm) return
+		if (item.last_step === LastStep.admin_closed_order || item.last_step === LastStep.client_confirm) return
 		return <OrderViewer onPressDetails={onPressDetails} order={item} />
 	}
 	const onPressSwash = () => {
 
 	}
-/*	useEffect(() => {
-		navigation.navigate(routerConstants.NAVIGATION_TO_CHECKPOINT)
-	}, [])*/
+	/*	useEffect(() => {
+			navigation.navigate(routerConstants.NAVIGATION_TO_CHECKPOINT)
+		}, [])*/
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={true}>
 			<Box style={{ paddingHorizontal: 16 }}>
@@ -66,11 +79,11 @@ const OrdersS = observer(({ navigation }: OrdersSProps) => {
 										borderRadius: 28,
 										maxWidth: 280,
 										width: '100%',
-									}} onPress={onPressSwash} title={'Swash'} >
-					<Box flexDirection={'row'} alignItems={'center'}>
-						<Image style={{ width: 24, height: 24 }} source={addCircleImage} alt={'arrow'} />
-						<Text fontSize={15} ml={1} fontFamily={'semiBold'} color={colors.white}>Swash</Text>
-					</Box>
+									}} onPress={onPressSwash} title={'Swash'}>
+						<Box flexDirection={'row'} alignItems={'center'}>
+							<Image style={{ width: 24, height: 24 }} source={addCircleImage} alt={'arrow'} />
+							<Text fontSize={15} ml={1} fontFamily={'semiBold'} color={colors.white}>Swash</Text>
+						</Box>
 					</Button>
 				</Box>
 			</Box>
