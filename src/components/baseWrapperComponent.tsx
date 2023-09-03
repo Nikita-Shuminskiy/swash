@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { GestureResponderEvent, Platform, SafeAreaView } from 'react-native'
 import { colors } from '../assets/colors/colors'
@@ -19,12 +19,16 @@ export const BaseWrapperComponent = ({
 																			 isKeyboardAwareScrollView = false,
 																			 styleSafeArea,
 																			 isBackdrop = false,
+
 																		 }: BaseWrapperComponentType) => {
+	const ref = React.useRef(null)
 
 	return (
-		<SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 10 : 40, backgroundColor: colors.white, ...styleSafeArea }}>
+		<SafeAreaView
+			style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 10 : 40, backgroundColor: colors.white, ...styleSafeArea }}>
 			{isKeyboardAwareScrollView ? (
 				<KeyboardAwareScrollView
+					ref={ref}
 					enableOnAndroid={true}
 					keyboardShouldPersistTaps={'handled'}
 					contentContainerStyle={{

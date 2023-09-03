@@ -1,10 +1,15 @@
 import * as Location from 'expo-location'
+import { createAlert } from '../CreateAlert'
 
 export const allowLocation = async () => {
 	try {
 		let { status } = await Location.requestForegroundPermissionsAsync()
 		if (status !== 'granted') {
-			console.error('Permission to access location was denied')
+			createAlert({
+				title: 'Message',
+				message: 'Permission to access location was denied',
+				buttons: [{ text: 'Exit' }],
+			})
 			return
 		}
 		return status
@@ -22,7 +27,11 @@ export const getCurrentPositionHandler = async () => {
 			return { latitude, longitude }
 		}
 	} catch (e) {
-		console.log('getCurrentPositionHandler', e)
+/*		createAlert({
+			title: 'Message',
+			message: 'Permission to access location was denied',
+			buttons: [{ text: 'Exit'}],
+		})*/
 	} finally {
 	}
 }

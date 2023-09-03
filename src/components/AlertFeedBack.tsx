@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Image, Text, StyleSheet, Dimensions } from 'react-native'
 import { PanGestureHandler } from 'react-native-gesture-handler'
 import Animated, {
@@ -7,17 +7,27 @@ import Animated, {
 	useSharedValue,
 	useAnimatedStyle,
 	useAnimatedGestureHandler,
-	withTiming,
-	runOnJS,
+	withTiming, runOnJS,
 } from 'react-native-reanimated'
 import heartBlueImg from '../assets/Images/heartBlue.png'
 import { colors } from '../assets/colors/colors'
+import { NavigationProp, ParamListBase } from '@react-navigation/native'
 
 const { width } = Dimensions.get('window')
+type AlertFeedbackProps = {
+	navigation: NavigationProp<ParamListBase>
+	route: any
+}
+const AlertFeedback = ({ route, navigation }: AlertFeedbackProps) => {
+	const [showFeedback, setShowAlertFeedback] = useState(false)
 
-const AlertFeedback = () => {
-	const translateX = useSharedValue(-width) // Начальное значение за пределами экрана слева
+	const translateX = useSharedValue(-width - 20) // Начальное значение за пределами экрана слева
 
+	const showAlertHandler = (value) => {
+		translateX.value = withTiming(value, {
+			duration: 500,
+		})
+	}
 	const gestureHandler = useAnimatedGestureHandler<any, { startX: number }>({
 		onStart: (_, context) => {
 			context.startX = translateX.value
@@ -26,41 +36,42 @@ const AlertFeedback = () => {
 			translateX.value = context.startX + event.translationX
 		},
 		onEnd: (event) => {
-			if (Math.abs(event.translationX) > width / 3) {
-				translateX.value = withTiming(
-					event.translationX > 0 ? width : -width,
-					{
-						duration: 500,
-						easing: Easing.inOut(Easing.ease),
-					}
-				);
+			if (Math.abs(event.translationX) > width / 4) {
+				translateX.value = withTiming(event.translationX > 0 ? width + 20 : -width - 20, {
+					duration: 500,
+				}, () => {
+					runOnJS(setShowAlertFeedback)(false)
+					translateX.value = -width - 20
+				})
 			} else {
 				translateX.value = withTiming(0, {
-					duration: 500,
-					easing: Easing.inOut(Easing.ease),
+					duration: 200,
 				})
 			}
 		},
 	})
-
 	useEffect(() => {
+		if (route.params?.showFeedback) {
+			setShowAlertFeedback(true)
+			navigation.setParams({ showFeedback: false })
+		}
+	}, [route.params])
+	useEffect(() => {
+		if (showFeedback) {
+			setTimeout(() => {
+				showAlertHandler(0)
+			}, 1000)
+		}
 		setTimeout(() => {
-			translateX.value = withTiming(0, {
-				duration: 500,
-				easing: Easing.inOut(Easing.ease),
-			})
-		}, 1000)
-		setTimeout(() => {
-			translateX.value = withTiming(1000, {
-				duration: 500,
-				easing: Easing.inOut(Easing.ease),
-			})
+			if (showFeedback && translateX.value === 0) {
+				showAlertHandler(1000)
+			}
+			setTimeout(() => {
+				setShowAlertFeedback(false)
+			}, 500)
 		}, 5000)
-	}, [])
 
-	const hideAlert = () => {
-
-	}
+	}, [showFeedback, translateX.value])
 
 	const animatedStyle = useAnimatedStyle(() => {
 		return {
@@ -89,7 +100,7 @@ const AlertFeedback = () => {
 const styles = StyleSheet.create({
 	container: {
 		position: 'absolute',
-		top: 5,
+		top: '5%',
 		width: '92%',
 		left: '5%',
 		height: 75,

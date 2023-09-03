@@ -7,6 +7,7 @@ import { colors } from '../../assets/colors/colors'
 import Rating from '../../components/Raiting'
 import Button from '../../components/Button'
 import InputMultiLine from '../../components/InputMultiLine'
+import { routerConstants } from '../../constants/routerConstants'
 
 type FeedbackSProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -15,11 +16,13 @@ const FeedbackS = ({ navigation }: FeedbackSProps) => {
 	const [stars, setStars] = useState<number>(0)
 	const [comment, setComment] = useState<string>('')
 	const goBackPress = () => {
-		navigation.goBack()
+		navigation.navigate(routerConstants.ORDERS, {showFeedback: true})
+
 	}
 	const isDisableBtn = !comment.trim() || !stars
 	const onPressSendFeedback = () => {
 		if (isDisableBtn) return
+
 	}
 	const onChangeTextComment = (text: string) => {
 		setComment(text)

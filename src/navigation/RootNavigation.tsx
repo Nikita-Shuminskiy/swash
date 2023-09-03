@@ -62,6 +62,7 @@ const RootNavigation = observer(() => {
 						<RootStack.Screen
 							options={{ headerShown: false }}
 							name={routerConstants.ORDERS}
+							initialParams={{ showFeedback: false }}
 							component={OrdersS}
 						/>
 						<RootStack.Screen

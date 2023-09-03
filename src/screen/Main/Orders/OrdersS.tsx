@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { BaseWrapperComponent } from '../../../components/baseWrapperComponent'
-import { NavigationProp, ParamListBase } from '@react-navigation/native'
+import { NavigationProp, ParamListBase, useNavigation, useScrollToTop } from '@react-navigation/native'
 import BurgerMenuImg from '../../../components/burgerMenuImg'
 import { observer } from 'mobx-react-lite'
 import OrdersStore from '../../../store/OrdersStore/orders-store'
@@ -14,11 +14,13 @@ import addCircleImage from '../../../assets/Images/plus-circle-white.png'
 import { routerConstants } from '../../../constants/routerConstants'
 import rootStore from '../../../store/RootStore/root-store'
 import AlertFeedBack from '../../../components/AlertFeedBack'
+import { getCurrentPositionHandler } from '../../../components/MapViews/utils'
 
 type OrdersSProps = {
 	navigation: NavigationProp<ParamListBase>
+	route: any
 }
-const OrdersS = observer(({ navigation }: OrdersSProps) => {
+const OrdersS = observer(({ navigation, route }: OrdersSProps) => {
 	const { orders } = OrdersStore
 
 	const { OrdersStoreService } = rootStore
@@ -27,10 +29,20 @@ const OrdersS = observer(({ navigation }: OrdersSProps) => {
 			OrdersStoreService.getOrderReportDetail(item.id)
 			switch (item.last_step?.trim()) {
 				case LastStep.client_must_get: {
-					return navigation.navigate(routerConstants.EXECUTOR_MAP, { from: 'get' })
+					getCurrentPositionHandler().then((data) => {
+						if (data) {
+							return navigation.navigate(routerConstants.EXECUTOR_MAP, { from: 'get' })
+						}
+					})
+					return
 				}
 				case LastStep.executor_perfomed: {
-					return navigation.navigate(routerConstants.EXECUTOR_MAP, { from: 'takeIt' })
+					getCurrentPositionHandler().then((data) => {
+						if (data) {
+							return navigation.navigate(routerConstants.EXECUTOR_MAP, { from: 'takeIt' })
+						}
+					})
+					return
 				}
 				case LastStep.client_received: {
 					return navigation.navigate(routerConstants.CLIENT_RECEIVED)
@@ -63,32 +75,32 @@ const OrdersS = observer(({ navigation }: OrdersSProps) => {
 	const onPressSwash = () => {
 
 	}
-	/*	useEffect(() => {
-			navigation.navigate(routerConstants.NAVIGATION_TO_CHECKPOINT)
-		}, [])*/
+
 	return (
-		<BaseWrapperComponent isKeyboardAwareScrollView={true}>
-			<Box style={{ paddingHorizontal: 16 }}>
-				<BurgerMenuImg />
-				<Box mt={4}>
-					<FlatList scrollEnabled={false} data={orders} renderItem={renderItem} />
+		<>
+			<AlertFeedBack navigation={navigation} route={route} />
+			<BaseWrapperComponent isKeyboardAwareScrollView={true}>
+				<Box style={{ paddingHorizontal: 16 }}>
+					<BurgerMenuImg />
+					<Box mt={4}>
+						<FlatList scrollEnabled={false} data={orders} renderItem={renderItem} />
+					</Box>
+					<Box mt={2} mb={5} alignItems={'center'}>
+						<Button backgroundColor={colors.blue} colorText={colors.white}
+										styleContainer={{
+											borderRadius: 28,
+											maxWidth: 280,
+											width: '100%',
+										}} onPress={onPressSwash} title={'Swash'}>
+							<Box flexDirection={'row'} alignItems={'center'}>
+								<Image style={{ width: 24, height: 24 }} source={addCircleImage} alt={'arrow'} />
+								<Text fontSize={15} ml={1} fontFamily={'semiBold'} color={colors.white}>Swash</Text>
+							</Box>
+						</Button>
+					</Box>
 				</Box>
-				<Box mt={2} mb={5} alignItems={'center'}>
-					<Button backgroundColor={colors.blue} colorText={colors.white}
-									styleContainer={{
-										borderRadius: 28,
-										maxWidth: 280,
-										width: '100%',
-									}} onPress={onPressSwash} title={'Swash'}>
-						<Box flexDirection={'row'} alignItems={'center'}>
-							<Image style={{ width: 24, height: 24 }} source={addCircleImage} alt={'arrow'} />
-							<Text fontSize={15} ml={1} fontFamily={'semiBold'} color={colors.white}>Swash</Text>
-						</Box>
-					</Button>
-				</Box>
-			</Box>
-			<AlertFeedBack />
-		</BaseWrapperComponent>
+			</BaseWrapperComponent>
+		</>
 	)
 })
 
