@@ -61,6 +61,8 @@ type OrderReportDetailType = {
 	photos: PhotoType[];
 	post_deadline: string;
 	status: string;
+	add_hypo: '0' | '1'
+	add_iron: '0' | '1'
 	units_order: UntilsOrderType[];
 };
 export enum StatusOrder {

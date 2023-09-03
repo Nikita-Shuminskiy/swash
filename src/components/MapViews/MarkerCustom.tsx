@@ -8,10 +8,12 @@ import { colors } from '../../assets/colors/colors'
 
 type MarkerCustomProps = {
 	point: LogisticsPointType
+	onPressCheckPoint: () => void
 }
-const MarkerCustom = ({ point }: MarkerCustomProps) => {
+const MarkerCustom = ({ point, onPressCheckPoint }: MarkerCustomProps) => {
+
 	return (
-		<Marker title={point.point_name} description={point.address} coordinate={{
+		<Marker onPress={onPressCheckPoint} title={point.point_name} description={point.address} coordinate={{
 			latitude: +point.lat,
 			longitude: +point.lon,
 		}}>
@@ -19,7 +21,6 @@ const MarkerCustom = ({ point }: MarkerCustomProps) => {
 				<Box>
 					<Text  fontFamily={'regular'} fontSize={7} color={colors.white}>{point.hours}</Text>
 				</Box>
-
 			</ImageBackground>
 
 		</Marker>

@@ -2,6 +2,7 @@ import RootStore from '../../RootStore'
 import { LoadingEnum } from '../../types/types'
 import { routerConstants } from '../../../constants/routerConstants'
 import { payloadUpdOrderType, StatusOrder } from '../../../api/Client/type'
+import { ReviewOrderPayload, StartOrderPayload } from '../../../api/Client/clientApi'
 
 
 export class OrdersStoreService {
@@ -40,14 +41,14 @@ export class OrdersStoreService {
 			if (data.orders.length > 1) {
 				const checkInDoneOrder = data.orders.filter(order => order.status === StatusOrder.IN_PROCESS)
 
-				if (data.orders.length > checkInDoneOrder.length) { // проверка есть ли в массиве заказ с editable
-					/*const orderEditable = data.orders.find(order => order.status === StatusOrder.EDITABLE)
+				if (data.orders.length > checkInDoneOrder.length) { // есть ли в массиве заказ с editable
+					const orderEditable = data.orders.find(order => order.status === StatusOrder.EDITABLE)
 					if (orderEditable) {
 						await this.rootStore.OrdersStore.getOrderReportDetail(orderEditable.id)
 						navigate && navigate(routerConstants.CREATE_ORDER)
 						return
-					}*/
-					this.rootStore.OrdersStore.setOrders(data.orders) // временно
+					}
+					//	this.rootStore.OrdersStore.setOrders(data.orders) // временно
 					navigate && navigate(routerConstants.ORDERS)
 				} else {
 					this.rootStore.OrdersStore.setOrders(data.orders)
@@ -70,6 +71,41 @@ export class OrdersStoreService {
 		} catch (e) {
 			console.log(e)
 		} finally {
+		}
+	}
+
+	async getOrderReportClient() {
+		try {
+			await this.rootStore.OrdersStoreService.getOrderReportClient()
+		} catch (e) {
+			console.log(e, 'getOrderReportClient')
+		} finally {
+		}
+	}
+
+	async startOrder() {
+		this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
+		try {
+			await this.rootStore.OrdersStore.startOrder()
+			return true
+		} catch (e) {
+			console.log(e, 'startOrder')
+		} finally {
+			this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
+		}
+	}
+
+	async reviewOrder(payload: Omit<ReviewOrderPayload, 'orders_id'>) {
+		this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
+		try {
+			await this.rootStore.OrdersStore.reviewOrder(payload)
+			const data = await this.rootStore.AuthStore.getSettingsClient()
+			this.rootStore.OrdersStore.setOrders(data.orders)
+			return true
+		} catch (e) {
+			console.log(e, 'reviewOrder')
+		} finally {
+			this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
 		}
 	}
 

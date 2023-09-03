@@ -153,7 +153,7 @@ const LoginS = ({ navigation }: LoginSProps) => {
 							source={uriGoogleAuth}
 							renderLoading={LoadingIndicatorView}
 							startInLoadingState={true}
-							userAgent='Chrome'
+							userAgent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
 							onMessage={onMessageWebView}
 						/>
 						{/*	<Box paddingX={10}>

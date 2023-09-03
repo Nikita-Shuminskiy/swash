@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx'
 import { deviceStorage } from '../../utils/storage/storage'
-import { clientApi } from '../../api/Client/clientApi'
+import { clientApi, ReviewOrderPayload } from '../../api/Client/clientApi'
 import { CreateServicesDataType, OrderReportDetailType, OrderType, payloadUpdOrderType } from '../../api/Client/type'
 
 export class OrdersStore {
@@ -23,7 +23,6 @@ export class OrdersStore {
 			clients_id: clients_id,
 			token: token,
 		})
-
 		return data.order_id
 	}
 
@@ -41,6 +40,8 @@ export class OrdersStore {
 	async getOrderReportDetail(orders_id: string): Promise<OrderReportDetailType> {
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
+
+
 		const { data } = await clientApi.getOrderReportDetail({
 			token,
 			clients_id,
@@ -61,6 +62,21 @@ export class OrdersStore {
 		})
 	}
 
+	async startOrder() {
+		const token = await deviceStorage.getItem('token')
+		const clients_id = await deviceStorage.getItem('clients_id')
+		const {data} = await clientApi.startOrder({
+			token,
+			orders_id: this.orderDetail.orders_id,
+			clients_id,
+			client_logistic_parents_points_id: this.orderDetail.client_logistic_partners_points_id,
+			services: {
+				iron: +this.orderDetail.add_iron,
+				hypo: +this.orderDetail.add_hypo,
+			},
+		})
+	}
+
 	async updateOrder(payload: payloadUpdOrderType) {
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
@@ -69,7 +85,17 @@ export class OrdersStore {
 			token,
 			clients_id,
 		})
-
+	}
+	async reviewOrder(payload: Omit<ReviewOrderPayload, 'orders_id'>) {
+		const token = await deviceStorage.getItem('token')
+		const clients_id = await deviceStorage.getItem('clients_id')
+		const data = await clientApi.reviewOrder({
+			token,
+			orders_id: this.orderDetail.orders_id,
+			clients_id,
+			...payload
+		})
+		console.log(data.data)
 	}
 
 	async deleteOrderPhoto(photo_id) {
@@ -81,6 +107,15 @@ export class OrdersStore {
 			photo_id,
 			order_number: this.orderDetail.orders_id,
 		})
+	}
+	async getOrderReportClient() {
+		const token = await deviceStorage.getItem('token')
+		const clients_id = await deviceStorage.getItem('clients_id')
+		const {data}  = await clientApi.getOrderReportClient({
+			token,
+			clients_id,
+		})
+		this.setOrders(data)
 	}
 
 	constructor() {
@@ -94,11 +129,17 @@ export class OrdersStore {
 			deleteOrderPhoto: action,
 			setOrders: action,
 			deleteOrder: action,
+			startOrder: action,
+			reviewOrder: action,
 			getOrderReportDetail: action,
+			getOrderReportClient: action,
 		})
 
 		this.createOrderClient = this.createOrderClient.bind(this)
 		this.updateOrder = this.updateOrder.bind(this)
+		this.getOrderReportClient = this.getOrderReportClient.bind(this)
+		this.reviewOrder = this.reviewOrder.bind(this)
+		this.startOrder = this.startOrder.bind(this)
 		this.saveOrderPhoto = this.saveOrderPhoto.bind(this)
 		this.getOrderReportDetail = this.getOrderReportDetail.bind(this)
 		this.setOrderDetail = this.setOrderDetail.bind(this)

@@ -8,21 +8,25 @@ import Rating from '../../components/Raiting'
 import Button from '../../components/Button'
 import InputMultiLine from '../../components/InputMultiLine'
 import { routerConstants } from '../../constants/routerConstants'
+import rootStore from '../../store/RootStore/root-store'
 
 type FeedbackSProps = {
 	navigation: NavigationProp<ParamListBase>
 }
 const FeedbackS = ({ navigation }: FeedbackSProps) => {
 	const [stars, setStars] = useState<number>(0)
+	const { OrdersStoreService } = rootStore
 	const [comment, setComment] = useState<string>('')
 	const goBackPress = () => {
-		navigation.navigate(routerConstants.ORDERS, {showFeedback: true})
+		navigation.navigate(routerConstants.ORDERS)
 
 	}
 	const isDisableBtn = !comment.trim() || !stars
 	const onPressSendFeedback = () => {
 		if (isDisableBtn) return
-
+		OrdersStoreService.reviewOrder({ comment, points: String(stars)}).then((data) => {
+			navigation.navigate(routerConstants.ORDERS, { showFeedback: true })
+		})
 	}
 	const onChangeTextComment = (text: string) => {
 		setComment(text)

@@ -58,10 +58,8 @@ export class AuthStore {
 		const { data } = await clientApi.getLogisticPoints({ country: 'PL' }) // временно
 
 		this.setLogisticPoints(data.points)
-		//const dataPushMessages = await clientApi.getClientPushMessages(payload) // не коректный метод*/
-		/*const { data: dataDictionary } = await clientApi.getDictionary({ language }) // basik auth failed
-		console.log(dataDictionary)
-	*/
+/*		const { data: dataDictionary } = await clientApi.getDictionary({ language })
+		const dataPushMessages = await clientApi.getClientPushMessages(payload)*/
 	}
 
 	async getSettingsClient() {

@@ -6,16 +6,24 @@ import ArrowBack from '../../components/ArrowBack'
 import { observer } from 'mobx-react-lite'
 import OrdersStore from '../../store/OrdersStore/orders-store'
 import loadingGif from '../../assets/Gif/loadingGif.gif'
+import rootStore from '../../store/RootStore/root-store'
 
 type OrderConfirmationSProps = {
 	navigation: NavigationProp<ParamListBase>
 	route: any
 }
 const OrderConfirmationS = observer(({ navigation, route }: OrderConfirmationSProps) => {
-	const isFrom = route.params.from === 'action_open'
+	const isFromSendOrder = route.params?.from === 'send_order'
+	const { OrdersStoreService } = rootStore
 	const { orderDetail } = OrdersStore
 	const goBackPress = () => {
-		navigation.goBack()
+		if (isFromSendOrder) {
+			OrdersStoreService.getSettingClient(navigation.navigate)
+			return
+		} else {
+			navigation.goBack()
+		}
+
 	}
 	return (
 		<BaseWrapperComponent>
@@ -24,10 +32,10 @@ const OrderConfirmationS = observer(({ navigation, route }: OrderConfirmationSPr
 					<ArrowBack goBackPress={goBackPress} />
 				</Box>
 				<Box mt={5} justifyContent={'flex-start'}>
-					<Text fontSize={28}  fontFamily={'semiBold'}>Swash #{orderDetail?.orders_id}</Text>
+					<Text fontSize={28} fontFamily={'semiBold'}>Swash #{orderDetail?.orders_id}</Text>
 				</Box>
 				<Box mt={10}>
-					<Text fontSize={32}  fontFamily={'semiBold'}>Looking for executor</Text>
+					<Text fontSize={32} fontFamily={'semiBold'}>Looking for executor</Text>
 				</Box>
 				<Box mt={10} alignItems={'center'}>
 					<Image alt={'logo'} source={loadingGif} />

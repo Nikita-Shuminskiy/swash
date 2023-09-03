@@ -73,12 +73,34 @@ export const clientApi = {
 			},
 		})
 	},
-
+	async startOrder(payload: StartOrderPayload) {
+		return await instance.post(`washapi.php/order_client_start`, payload)
+	},
 	async updOrder(payload: payloadUpdOrderType) {
 		return await instance.post(`washapi.php/order_client_register`, payload)
 	},
+	async reviewOrder(payload: ReviewOrderPayload) {
+		return await instance.post(`washapi.php/order_client_review`, {}, {params: payload})
+	}
 }
 type ResponseLogisticsPoints = {
 	status: string;
 	points: LogisticsPointType[];
 };
+export type ReviewOrderPayload = InfoIdTokenType & {
+	orders_id: string
+	points: string
+	comment: string
+}
+export type InfoIdTokenType = {
+	clients_id?: string,
+	token?: string,
+}
+export type StartOrderPayload = InfoIdTokenType & {
+	orders_id: string
+	client_logistic_parents_points_id: string
+	services: {
+		hypo: number
+		iron: number
+	}
+}

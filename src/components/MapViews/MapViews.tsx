@@ -6,14 +6,18 @@ import NotificationStore from '../../store/NotificationStore/notification-store'
 import { getCurrentPositionHandler } from './utils'
 import AddressAutocomplete from '../AddressAutocomplete'
 import myPositionImg from '../../assets/Images/Map/MyPosition.png'
-import { LogisticsPointType } from '../../api/Client/type'
+import { LogisticsPointType, OrderReportDetailType } from '../../api/Client/type'
 import MarkerCustom from './MarkerCustom'
+import rootStore from '../../store/RootStore/root-store'
+
 
 type MapViewsProps = {
 	logisticPoints?: LogisticsPointType[]
+	orderDetail: OrderReportDetailType
 }
-export const MapViews = ({ logisticPoints }: MapViewsProps) => {
+export const MapViews = ({ logisticPoints, orderDetail }: MapViewsProps) => {
 	const { setIsLoading } = NotificationStore
+	const { OrdersStoreService } = rootStore
 	const [mapRef, setMapRef] = useState(null)
 	const [myPosition, setMyPosition] = useState<{ latitude: number, longitude: number }>({
 		latitude: 54.34544523458879,
@@ -74,12 +78,18 @@ export const MapViews = ({ logisticPoints }: MapViewsProps) => {
 						title={''}
 					/>
 				}
-				{logisticPoints.length && logisticPoints.map(point => (
-					<MarkerCustom point={point} key={point.id} />
-				))}
+				{logisticPoints.length && logisticPoints.map((point) => {
+					const onPressCheckPoint = () => {
+						OrdersStoreService.updateOrder({
+							orders_id: orderDetail.orders_id,
+							client_logistic_partners_points_id: point.logistic_partners_id,
+						})
+					}
+					return <MarkerCustom onPressCheckPoint={onPressCheckPoint} point={point} key={point.id} />
+				})}
 			</MapView>
 			<Box mt={5} zIndex={10} position={'absolute'} right={0} bottom={10}>
-				<TouchableOpacity onPress={getCurrentPositionHandler}>
+				<TouchableOpacity onPress={getCurrentPosition}>
 					<Image style={{ width: 88, height: 88 }} source={myPositionImg} />
 				</TouchableOpacity>
 			</Box>

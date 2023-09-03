@@ -20,7 +20,7 @@ type HeaderProps = {
 const Header = ({ orderDetail, onPressDeleteOrder, updateOrder }: HeaderProps) => {
 	const onPressWithIron = () => {
 		updateOrder({
-			orders_id: orderDetail.id,
+			orders_id: orderDetail.orders_id,
 			services: {
 				hypo: +orderDetail.add_hypo,
 				iron: orderDetail.add_iron === '1' ? 0 : 1,
@@ -29,7 +29,7 @@ const Header = ({ orderDetail, onPressDeleteOrder, updateOrder }: HeaderProps) =
 	}
 	const onPressHypoallergenic = () => {
 		updateOrder({
-			orders_id: orderDetail.id,
+			orders_id: orderDetail.orders_id,
 			services: {
 				iron: +orderDetail.add_iron,
 				hypo: orderDetail.add_hypo === '1' ? 0 : 1,

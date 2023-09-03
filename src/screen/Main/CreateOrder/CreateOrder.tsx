@@ -3,9 +3,8 @@ import { BaseWrapperComponent } from '../../../components/baseWrapperComponent'
 import { Box, Text } from 'native-base'
 import Button from '../../../components/Button'
 import { colors } from '../../../assets/colors/colors'
-import { FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { FlatList, StyleSheet } from 'react-native'
 import PaymentMethodPopUp from '../../../components/pop-up/PaymentMethod/PaymentMethodPopUp'
-import arrowBlue from '../../../assets/Images/order/arrowRightBlue.png'
 import { observer } from 'mobx-react-lite'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import OrdersStore from '../../../store/OrdersStore/orders-store'
@@ -30,7 +29,6 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 	const [isShowModalPayment, setIsShowModalPayment] = useState<boolean>(false)
 	const [isShowPopUpCanselSwash, setIsShowPopUpCanselSwash] = useState<boolean>(false)
 
-
 	const deleteOrder = () => {
 		OrdersStoreService.deleteOrder('', orderDetail.orders_id, navigation.navigate)
 	}
@@ -43,12 +41,11 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 		setIsShowModalPayment(prevState => !prevState)
 	}
 	const onSendOrder = () => {
-		navigation.navigate(routerConstants.ORDER_CONFIRMATION)
-		/*	OrdersStoreService.updateOrder({
-				orders_id,
-				units_order,
-				amount,
-			})*/
+		OrdersStoreService.startOrder().then((data) => {
+			if (data) {
+				navigation.navigate(routerConstants.ORDER_CONFIRMATION, {from: 'send_order'})
+			}
+		})
 	}
 	const onPressDeleteOrder = () => {
 		setIsShowPopUpCanselSwash(true)
@@ -60,10 +57,10 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 		const chousenPaczkomat = orderDetail.client_logistic_partners_points_id === item.logistic_partners_id
 
 
-		const onPressPaczkomat= () => {
+		const onPressPaczkomat = () => {
 			OrdersStoreService.updateOrder({
 				orders_id: orderDetail.orders_id,
-				client_logistic_partners_points_id: item.logistic_partners_id
+				client_logistic_partners_points_id: item.logistic_partners_id,
 			})
 		}
 		return <Box paddingY={5} mb={2} minHeight={70} backgroundColor={colors.grayBright} borderRadius={16}
@@ -88,7 +85,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 						<AddPhotoComponent />
 					</Box>
 					<Box>
-						<Text mb={2} fontSize={22}  fontFamily={'semiBold'}>Paczkomat</Text>
+						<Text mb={2} fontSize={22} fontFamily={'semiBold'}>Paczkomat</Text>
 
 						<FlatList keyExtractor={(item, index) => index.toString()} scrollEnabled={false} data={logisticPoints}
 											renderItem={renderItem} />

@@ -10,12 +10,14 @@ import myPositionImg from '../assets/Images/Map/MyPosition.png'
 import rootStore from '../store/RootStore/root-store'
 import { observer } from 'mobx-react-lite'
 import AuthStore from '../store/AuthStore/auth-store'
+import OrdersStore from '../store/OrdersStore/orders-store'
 
 type LogisticsPointProps = {
 	navigation: NavigationProp<ParamListBase>
 }
 const LogisticsPointS = observer(({ navigation }: LogisticsPointProps) => {
 	const { logisticPoints } = AuthStore
+	const { orderDetail } = OrdersStore
 	const goBackPress = () => {
 		navigation.goBack()
 	}
@@ -30,7 +32,7 @@ const LogisticsPointS = observer(({ navigation }: LogisticsPointProps) => {
 				</Box>
 				<Box/>
 			</Box>
-			<MapViews logisticPoints={logisticPoints} />
+			<MapViews orderDetail={orderDetail} logisticPoints={logisticPoints} />
 		</BaseWrapperComponent>
 	)
 })
