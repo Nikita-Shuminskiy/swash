@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite'
 import OrdersStore from '../../store/OrdersStore/orders-store'
 import loadingGif from '../../assets/Gif/loadingGif.gif'
 import rootStore from '../../store/RootStore/root-store'
+import { routerConstants } from '../../constants/routerConstants'
 
 type OrderConfirmationSProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -21,7 +22,7 @@ const OrderConfirmationS = observer(({ navigation, route }: OrderConfirmationSPr
 			OrdersStoreService.getSettingClient(navigation.navigate)
 			return
 		} else {
-			navigation.goBack()
+			navigation.navigate(routerConstants.ORDERS)
 		}
 
 	}

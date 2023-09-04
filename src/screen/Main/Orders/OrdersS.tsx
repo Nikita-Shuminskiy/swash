@@ -84,7 +84,7 @@ const OrdersS = observer(({ navigation, route }: OrdersSProps) => {
 		return <OrderViewer onPressDetails={onPressDetails} order={item} />
 	}
 	const onPressSwash = () => {
-		OrdersStoreService.getSettingClient(navigation.navigate)
+		OrdersStoreService.checkOrdersEditable(navigation.navigate)
 	}
 
 	return (

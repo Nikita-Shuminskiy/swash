@@ -78,7 +78,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 	return (
 		<>
 			<BaseWrapperComponent isKeyboardAwareScrollView={true}>
-				<Box style={{ paddingHorizontal: 16 }}>
+				<Box paddingX={4}>
 					<Header updateOrder={updateOrder} onPressDeleteOrder={onPressDeleteOrder} orderDetail={orderDetail} />
 					<Box mt={2}>
 						<Text fontSize={22} fontFamily={'semiBold'}>Photo</Text>

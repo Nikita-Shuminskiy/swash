@@ -23,13 +23,14 @@ export class OrdersStore {
 			clients_id: clients_id,
 			token: token,
 		})
+		console.log(data)
 		return data.order_id
 	}
 
 	async deleteOrder(comment: string, orders_id: string) {
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
-		await clientApi.deleteOrder({
+	const {data}= 	await clientApi.deleteOrder({
 			orders_id,
 			comment,
 			clients_id: clients_id,
@@ -54,12 +55,13 @@ export class OrdersStore {
 	async saveOrderPhoto(photo) {
 		const token = await deviceStorage.getItem('token')
 		const clients_id = await deviceStorage.getItem('clients_id')
-		await clientApi.saveOrderPhoto({
+		const { data} = await clientApi.saveOrderPhoto({
 			orders_id: this.orderDetail?.orders_id,
 			clients_id,
 			token,
 			photo,
 		})
+		console.log(data)
 	}
 
 	async startOrder() {
@@ -95,7 +97,6 @@ export class OrdersStore {
 			clients_id,
 			...payload
 		})
-		console.log(data.data)
 	}
 
 	async deleteOrderPhoto(photo_id) {

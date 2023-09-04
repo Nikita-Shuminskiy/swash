@@ -1,4 +1,5 @@
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const BASE_URL = 'https://s-wash.com/'
 
@@ -16,11 +17,18 @@ instance.interceptors.request.use(
 )
 
 // Response interceptor for API calls
-instance.interceptors.response.use(
-	(response) => {
-		return response
+instance.interceptors.request.use(
+	async (config) => {
+		const token = await AsyncStorage.getItem('token');
+		if (token) {
+			//@ts-ignore
+			config.headers = {
+				Authorization: `Authorization": "Bearer ${token}`,
+			};
+		}
+		return config;
 	},
-	async function(error) {
-		return Promise.reject(error)
+	(error) => {
+		Promise.reject(error);
 	},
-)
+);

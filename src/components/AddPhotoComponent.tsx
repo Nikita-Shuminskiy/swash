@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, Image, ImageBackground, Modal, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Camera, CameraType, FlashMode } from 'expo-camera'
+import { Camera, CameraType, FlashMode,  } from 'expo-camera'
 import addPhotoImage from '../assets/Images/order/add_photo.png'
 import { observer } from 'mobx-react-lite'
 import OrdersStore from '../store/OrdersStore/orders-store'
@@ -34,7 +34,6 @@ const AddPhotoComponent = observer(() => {
 
 	useEffect(() => {
 		getCameraPermission()
-
 	}, [])
 
 	const getCameraPermission = async () => {
@@ -117,28 +116,42 @@ const AddPhotoComponent = observer(() => {
 			setFlashMode(FlashMode.torch)
 		}
 	}
+	/*useEffect(() => {
+		console.log(cameraPermission)
+		if (cameraPermission && cameraRef.current) {
+			cameraRef.current.getAvailablePictureSizesAsync('4:3').then(sizes => {
+				console.log(sizes)
+			});
+		}
+	}, [cameraPermission]);*/
+
 	return (
-		<View style={styles.container}>
-			<FlatList
-				horizontal
-				data={orderDetail.photos ? [{
-					filename: '',
-					id: 'add_photo_button',
-				}, ...orderDetail.photos] : [{ id: 'add_photo_button', filename: '' }]}
-				renderItem={renderItem}
-				contentContainerStyle={{
-					flexGrow: 1,
-					alignItems: 'flex-start',
-					paddingBottom: 15,
-				}}
-				style={{ width: '100%' }}
-				showsHorizontalScrollIndicator={true}
-				/*	persistentScrollbar={true}*/
-				keyExtractor={(item) => item.id}
-			/>
+		<>
+			<View style={styles.container}>
+				<FlatList
+					horizontal
+					data={orderDetail.photos ? [{
+						filename: '',
+						id: 'add_photo_button',
+					}, ...orderDetail.photos] : [{ id: 'add_photo_button', filename: '' }]}
+					renderItem={renderItem}
+					contentContainerStyle={{
+						flexGrow: 1,
+						alignItems: 'flex-start',
+						paddingBottom: 15,
+					}}
+					style={{ width: '100%' }}
+					showsHorizontalScrollIndicator={true}
+					/*	persistentScrollbar={true}*/
+					keyExtractor={(item) => item.id}
+				/>
+				<DeletePhotoModal deleteOrderPhoto={() => OrdersStoreService.deleteOrderPhoto(deletedPhotoId)}
+													visible={isDeleteModal}
+													onClose={onCloseModalDelete} />
+			</View>
 			{cameraPermission && isOpenCamera && (
 				<Modal visible={isOpenCamera}>
-					<Camera type={CameraType.back} flashMode={flashMode} style={styles.camera} ref={cameraRef}>
+					<Camera pictureSize={'320x240'} type={CameraType.back} flashMode={flashMode} style={styles.camera} ref={cameraRef}>
 						<Box position={'absolute'} top={5} left={5}>
 							<TouchableOpacity onPress={() => setIsOpenCamera(false)}>
 								<Image source={closeCameraImg} alt={'delete'} />
@@ -170,10 +183,7 @@ const AddPhotoComponent = observer(() => {
 					</Camera>
 				</Modal>
 			)}
-			<DeletePhotoModal deleteOrderPhoto={() => OrdersStoreService.deleteOrderPhoto(deletedPhotoId)}
-												visible={isDeleteModal}
-												onClose={onCloseModalDelete} />
-		</View>
+		</>
 	)
 })
 

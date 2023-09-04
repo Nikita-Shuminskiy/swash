@@ -12,6 +12,28 @@ export class OrdersStoreService {
 		this.rootStore = rootStore
 	}
 
+	async checkOrdersEditable(navigate) {
+		this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
+		try {
+			const data = await this.rootStore.AuthStore.getSettingsClient()
+			const orderEditable = data.orders.find(order => order.status.trim() === StatusOrder.EDITABLE)
+			if(orderEditable) {
+				await this.rootStore.OrdersStore.getOrderReportDetail(orderEditable.id)
+			} else {
+				const idOrder = await this.rootStore.OrdersStore.createOrderClient({
+					hypo: 0,
+					iron: 0,
+				})
+				await this.rootStore.OrdersStore.getOrderReportDetail(idOrder)
+			}
+			navigate && navigate(routerConstants.CREATE_ORDER)
+		} catch (e) {
+
+		} finally {
+			this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
+		}
+	}
+
 	async getSettingClient(navigate) {
 		this.rootStore.Notification.setIsLoading(LoadingEnum.fetching)
 		try {
@@ -40,10 +62,10 @@ export class OrdersStoreService {
 			}
 
 			if (data.orders.length > 1) {
-				const checkInDoneOrder = data.orders.filter(order => order.status === StatusOrder.IN_PROCESS)
+				const checkInDoneOrder = data.orders.filter(order => order.status.trim() === StatusOrder.IN_PROCESS)
 
 				if (data.orders.length > checkInDoneOrder.length) { // есть ли в массиве заказ с editable
-					const orderEditable = data.orders.find(order => order.status === StatusOrder.EDITABLE)
+					const orderEditable = data.orders.find(order => order.status.trim() === StatusOrder.EDITABLE)
 					if (orderEditable) {
 						await this.rootStore.OrdersStore.getOrderReportDetail(orderEditable.id)
 						navigate && navigate(routerConstants.CREATE_ORDER)
