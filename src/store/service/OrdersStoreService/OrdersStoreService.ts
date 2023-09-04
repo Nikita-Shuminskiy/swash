@@ -16,6 +16,7 @@ export class OrdersStoreService {
 		this.rootStore.Notification.setIsLoading(LoadingEnum.fetching)
 		try {
 			const data = await this.rootStore.AuthStore.getSettingsClient()
+
 			if (!data.client.phone_verify_datetime) return navigate && navigate(routerConstants.PHONE_VERIFY)
 			if (!data.client.consent_datetime) return navigate && navigate(routerConstants.TERMS_OF_USE)
 
@@ -47,16 +48,15 @@ export class OrdersStoreService {
 						await this.rootStore.OrdersStore.getOrderReportDetail(orderEditable.id)
 						navigate && navigate(routerConstants.CREATE_ORDER)
 						return
+					} else {
+						this.rootStore.OrdersStore.setOrders(data.orders)
+						navigate && navigate(routerConstants.ORDERS)
 					}
-					//	this.rootStore.OrdersStore.setOrders(data.orders) // временно
-					navigate && navigate(routerConstants.ORDERS)
 				} else {
 					this.rootStore.OrdersStore.setOrders(data.orders)
 					navigate && navigate(routerConstants.ORDERS)
 				}
 			}
-
-
 		} catch (e) {
 			console.log(e, 'getSettingClient')
 		} finally {

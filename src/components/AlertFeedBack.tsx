@@ -20,8 +20,8 @@ type AlertFeedbackProps = {
 }
 const AlertFeedback = ({ route, navigation }: AlertFeedbackProps) => {
 	const [showFeedback, setShowAlertFeedback] = useState(false)
-
-	const translateX = useSharedValue(-width - 20) // Начальное значение за пределами экрана слева
+	const START_WIDTH = -width - 20
+	const translateX = useSharedValue(START_WIDTH) // Начальное значение за пределами экрана слева
 
 	const showAlertHandler = (value) => {
 		translateX.value = withTiming(value, {
@@ -37,11 +37,11 @@ const AlertFeedback = ({ route, navigation }: AlertFeedbackProps) => {
 		},
 		onEnd: (event) => {
 			if (Math.abs(event.translationX) > width / 4) {
-				translateX.value = withTiming(event.translationX > 0 ? width + 20 : -width - 20, {
+				translateX.value = withTiming(event.translationX > 0 ? width + 20 : START_WIDTH, {
 					duration: 500,
 				}, () => {
 					runOnJS(setShowAlertFeedback)(false)
-					translateX.value = -width - 20
+					translateX.value = START_WIDTH
 				})
 			} else {
 				translateX.value = withTiming(0, {
@@ -68,6 +68,9 @@ const AlertFeedback = ({ route, navigation }: AlertFeedbackProps) => {
 			}
 			setTimeout(() => {
 				setShowAlertFeedback(false)
+				setTimeout(() => {
+					translateX.value = START_WIDTH
+				}, 100)
 			}, 500)
 		}, 5000)
 

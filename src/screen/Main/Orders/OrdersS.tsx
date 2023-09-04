@@ -53,15 +53,26 @@ const OrdersS = observer(({ navigation, route }: OrdersSProps) => {
 				case LastStep.executor_confirm_client_must_pay: {
 					return navigation.navigate(routerConstants.CLIENT_PAY, { from: 'client_must_pay' })
 				}
+				case LastStep.executor_done_client_must_pay: {
+					return navigation.navigate(routerConstants.CLIENT_PAY, { from: 'done_client_must_pay' })
+				}
 				case LastStep.client_sent: {
 					return navigation.navigate(routerConstants.EXECUTOR_STATUSES, { from: '1' })
 				}
+				case LastStep.executor_must_get: {
+					return navigation.navigate(routerConstants.EXECUTOR_STATUSES, { from: '1' })
+				}
+
 				case LastStep.executor_received: {
 					return navigation.navigate(routerConstants.EXECUTOR_STATUSES, { from: '2' })
 				}
 				case LastStep.executor_confirm: {
 					return navigation.navigate(routerConstants.EXECUTOR_STATUSES, { from: '3' })
 				}
+				case LastStep.executor_done: {
+					return navigation.navigate(routerConstants.EXECUTOR_STATUSES, { from: '3' })
+				}
+
 				case LastStep.executor_sent: {
 					return navigation.navigate(routerConstants.EXECUTOR_STATUSES, { from: '4' })
 				}

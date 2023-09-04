@@ -67,7 +67,8 @@ type OrderReportDetailType = {
 };
 export enum StatusOrder {
 	EDITABLE = 'editable',
-	IN_PROCESS = 'in_process'
+	IN_PROCESS = 'in_process',
+	COMPLETED = 'completed'
 }
 export enum LastStep {
 	client_received = 'client_received', // просим оценки
