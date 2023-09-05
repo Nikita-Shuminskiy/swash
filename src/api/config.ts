@@ -22,9 +22,9 @@ instance.interceptors.request.use(
 		const token = await AsyncStorage.getItem('token');
 		if (token) {
 			//@ts-ignore
-			config.headers = {
+			/*config.headers = {
 				Authorization: `Authorization": "Bearer ${token}`,
-			};
+			};*/
 		}
 		return config;
 	},

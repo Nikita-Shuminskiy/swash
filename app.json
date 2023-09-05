@@ -53,10 +53,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "f8d3d5f4-10a1-4ba5-95cf-fbb2254c65cb"
+        "projectId": "ceb8faaf-be57-4fc2-9cb5-32d6fc5355e2"
       }
     },
-    "owner": "nick_12345",
+    "owner": "nick_11112",
     "scheme": "swash",
     "plugins": [
       "expo-localization"

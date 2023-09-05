@@ -8,6 +8,7 @@ import OrdersStore from '../../store/OrdersStore/orders-store'
 import loadingGif from '../../assets/Gif/loadingGif.gif'
 import rootStore from '../../store/RootStore/root-store'
 import { routerConstants } from '../../constants/routerConstants'
+import { BackHandler } from 'react-native'
 
 type OrderConfirmationSProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -20,12 +21,22 @@ const OrderConfirmationS = observer(({ navigation, route }: OrderConfirmationSPr
 	const goBackPress = () => {
 		if (isFromSendOrder) {
 			OrdersStoreService.getSettingClient(navigation.navigate)
-			return
 		} else {
 			navigation.navigate(routerConstants.ORDERS)
 		}
-
+		return true
 	}
+
+	// Определите обработчик события, когда компонент монтируется
+	React.useEffect(() => {
+		// Добавляем слушатель события нажатия на кнопку "назад"
+		BackHandler.addEventListener('hardwareBackPress', goBackPress)
+
+		// Очистите слушателя события, когда компонент размонтируется
+		return () => {
+			BackHandler.removeEventListener('hardwareBackPress', goBackPress)
+		}
+	}, [])
 	return (
 		<BaseWrapperComponent>
 			<Box paddingX={3}>

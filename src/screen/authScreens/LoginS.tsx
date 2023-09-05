@@ -119,7 +119,7 @@ const LoginS = ({ navigation }: LoginSProps) => {
 							<Text fontSize={15} color={colors.grayLight}>Choose the login method that is convenient for you</Text>
 						</Box>
 					</Box>
-					<Box w={'100%'}>
+					<Box alignItems={'center'} w={'100%'}>
 						<Button styleContainer={styles.styleContainerBtn} backgroundColor={colors.blue}
 										onPress={onPressSingFacebook}
 						>
@@ -153,11 +153,11 @@ const LoginS = ({ navigation }: LoginSProps) => {
 							source={uriGoogleAuth}
 							renderLoading={LoadingIndicatorView}
 							startInLoadingState={true}
-							userAgent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+							userAgent="Chrome"
 							onMessage={onMessageWebView}
 						/>
 						{/*	<Box paddingX={10}>
-							<Button backgroundColor={colors.blue} colorText={colors.white} onPress={onPressExitAuthGoogle}
+							<Button backgroundColor={colors.blue} colorText={colors.white} onPress={() => setWebViewVisible(false)}
 											title={'Exit'} />
 						</Box>*/}
 					</Box>

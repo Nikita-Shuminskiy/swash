@@ -5,12 +5,13 @@ import Button from '../../components/Button'
 import { colors } from '../../assets/colors/colors'
 import ArrowBack from '../../components/ArrowBack'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
-import { Image, Linking, StyleSheet, View } from 'react-native'
+import { Image, Linking, StyleSheet } from 'react-native'
 import { getCurrentPositionHandler } from '../../components/MapViews/utils'
 import { observer } from 'mobx-react-lite'
 import takeYourThingsImg from '../../assets/Images/orders/takeThings.png'
 import takeYourThingsFromImg from '../../assets/Images/orders/takeThingsFrom.png'
 import OrdersStore from '../../store/OrdersStore/orders-store'
+
 type Coordinates = {
 	latitude: number;
 	longitude: number;
@@ -20,12 +21,13 @@ type NavigatingToCheckpointSProps = {
 	route: any
 }
 const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToCheckpointSProps) => {
-	const {orderDetail} = OrdersStore
+	const { orderDetail } = OrdersStore
 	const isFromExecutorPerfomed = route.params.from === 'takeIt'
 	const [myPosition, setMyPosition] = useState<Coordinates>()
 	const goBackPress = () => {
 		navigation.goBack()
 	}
+
 	const onPressNavigate = () => {
 		const endLocation = [+orderDetail.client_logistic_partners_points_lat, +orderDetail.client_logistic_partners_points_lon]
 		const startLocation = [myPosition.latitude, myPosition.longitude]
@@ -40,15 +42,11 @@ const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToChe
 			const { latitude, longitude } = await getCurrentPositionHandler()
 			setMyPosition({ latitude, longitude })
 		} catch (e) {
-
 		}
 	}
 	useEffect(() => {
 		getCurrentPosition()
 	}, [])
-	if (!myPosition) {
-		return <View style={styles.container} />
-	}
 	const initialRegion = {
 		latitude: myPosition?.latitude,
 		longitude: myPosition?.longitude,
@@ -82,30 +80,32 @@ const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToChe
 									}
 									<Text
 										color={isFromExecutorPerfomed ? colors.orangeVivid : colors.greenBright}>{' '}
-										{orderDetail.last_step_datetime}
-										</Text>
+										{orderDetail.post_deadline}
+									</Text>
 								</Text>
 							</Box>
 						</Box>
 
 					</Box>
 
-					<Box mt={4}>
-						<MapView
-							style={styles.map}
-							provider={PROVIDER_GOOGLE}
-							initialRegion={initialRegion}
-						>
-							{
-								!!myPosition?.latitude && <Marker
-									focusable={true}
-									style={{ width: 30, height: 30 }}
-									image={require('../../assets/Images/Map/user.png')}
-									coordinate={myPosition}
-									title={''}
-								/>
-							}
-						</MapView>
+					<Box mt={4} h={200}>
+						{
+							myPosition && <MapView
+								style={styles.map}
+								provider={PROVIDER_GOOGLE}
+								initialRegion={initialRegion}
+							>
+								{
+									!!myPosition?.latitude && <Marker
+										focusable={true}
+										style={{ width: 30, height: 30 }}
+										image={require('../../assets/Images/Map/user.png')}
+										coordinate={myPosition}
+										title={''}
+									/>
+								}
+							</MapView>
+						}
 					</Box>
 
 					<Box mt={4}>

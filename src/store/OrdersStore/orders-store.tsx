@@ -61,7 +61,6 @@ export class OrdersStore {
 			token,
 			photo,
 		})
-		console.log(data)
 	}
 
 	async startOrder() {

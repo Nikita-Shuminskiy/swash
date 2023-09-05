@@ -152,14 +152,14 @@ const AddPhotoComponent = observer(() => {
 			{cameraPermission && isOpenCamera && (
 				<Modal visible={isOpenCamera}>
 					<Camera pictureSize={'320x240'} type={CameraType.back} flashMode={flashMode} style={styles.camera} ref={cameraRef}>
-						<Box position={'absolute'} top={5} left={5}>
+						<Box position={'absolute'} top={'5%'} left={5}>
 							<TouchableOpacity onPress={() => setIsOpenCamera(false)}>
 								<Image source={closeCameraImg} alt={'delete'} />
 							</TouchableOpacity>
 						</Box>
 						<Box borderRadius={50} w={50} h={50} alignItems={'center'} justifyContent={'center'}
 								 position={'absolute'}
-								 top={5}
+								 top={'5%'}
 								 right={5}
 								 backgroundColor={flashMode === FlashMode.off ? '#000' : '#fff'}>
 							<TouchableOpacity

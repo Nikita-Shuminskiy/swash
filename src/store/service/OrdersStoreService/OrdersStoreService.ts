@@ -60,12 +60,12 @@ export class OrdersStoreService {
 				navigate && navigate(routerConstants.CREATE_ORDER)
 				return
 			}
-
 			if (data.orders.length > 1) {
 				const checkInDoneOrder = data.orders.filter(order => order.status.trim() === StatusOrder.IN_PROCESS)
 
 				if (data.orders.length > checkInDoneOrder.length) { // есть ли в массиве заказ с editable
 					const orderEditable = data.orders.find(order => order.status.trim() === StatusOrder.EDITABLE)
+
 					if (orderEditable) {
 						await this.rootStore.OrdersStore.getOrderReportDetail(orderEditable.id)
 						navigate && navigate(routerConstants.CREATE_ORDER)
