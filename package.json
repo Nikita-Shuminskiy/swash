@@ -1,5 +1,5 @@
 {
-  "name": "sosnative",
+  "name": "swash",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -31,6 +31,7 @@
     "expo-notifications": "~0.20.1",
     "expo-permissions": "^14.2.1",
     "expo-status-bar": "~1.6.0",
+    "expo-web-browser": "~12.3.2",
     "formik": "^2.2.9",
     "mobx": "^6.6.1",
     "mobx-react-lite": "^3.4.0",

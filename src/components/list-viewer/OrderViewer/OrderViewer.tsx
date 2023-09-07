@@ -5,13 +5,15 @@ import { OrderType } from '../../../api/Client/type'
 import { Image, TouchableOpacity } from 'react-native'
 import arrowBlue from '../../../assets/Images/order/arrowRightBlue.png'
 import { getLastStepStatusOrder } from './utils'
+import { format } from 'date-fns'
 
 type OrderViewerProps = {
 	order: OrderType
 	onPressDetails: () => void
 }
 const OrderViewer = ({ order, onPressDetails }: OrderViewerProps) => {
-	const getCurrData = getLastStepStatusOrder(order.last_step?.trim())
+
+	const getCurrData = getLastStepStatusOrder(order.last_step?.trim(), order.date_estimated_ready)
 
 	return (
 		<Box borderWidth={1} p={2} mb={2} borderColor={colors.grayBright} borderRadius={20}>

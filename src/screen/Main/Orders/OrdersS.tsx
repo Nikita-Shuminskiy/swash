@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import { BaseWrapperComponent } from '../../../components/baseWrapperComponent'
-import { NavigationProp, ParamListBase, useNavigation, useScrollToTop } from '@react-navigation/native'
+import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import BurgerMenuImg from '../../../components/burgerMenuImg'
 import { observer } from 'mobx-react-lite'
 import OrdersStore from '../../../store/OrdersStore/orders-store'
@@ -14,7 +14,6 @@ import addCircleImage from '../../../assets/Images/plus-circle-white.png'
 import { routerConstants } from '../../../constants/routerConstants'
 import rootStore from '../../../store/RootStore/root-store'
 import AlertFeedBack from '../../../components/AlertFeedBack'
-import { getCurrentPositionHandler } from '../../../components/MapViews/utils'
 
 type OrdersSProps = {
 	navigation: NavigationProp<ParamListBase>

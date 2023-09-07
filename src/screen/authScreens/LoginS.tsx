@@ -156,10 +156,10 @@ const LoginS = ({ navigation }: LoginSProps) => {
 							userAgent="Chrome"
 							onMessage={onMessageWebView}
 						/>
-						{/*	<Box paddingX={10}>
+							<Box paddingX={10}>
 							<Button backgroundColor={colors.blue} colorText={colors.white} onPress={() => setWebViewVisible(false)}
 											title={'Exit'} />
-						</Box>*/}
+						</Box>
 					</Box>
 				)
 			}

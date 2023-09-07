@@ -31,6 +31,7 @@ type UnitType = {
 
 type OrderType = {
 	add_hypo: string;
+	approximated_date: string;
 	add_iron: string;
 	amount: string;
 	clients_id: string;
@@ -46,6 +47,7 @@ type OrderType = {
 };
 type OrderReportDetailType = {
 	amount: string;
+	approximated_date: string;
 	services_pay?: string;
 	balance?: string;
 	basic_pay?: string;

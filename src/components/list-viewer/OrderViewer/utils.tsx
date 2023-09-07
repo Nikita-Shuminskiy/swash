@@ -5,9 +5,12 @@ import waitingImg from '../../../assets/Images/orders/waiting.png'
 import { Text } from 'native-base'
 import { colors } from '../../../assets/colors/colors'
 import { LastStep } from '../../../api/Client/type'
+import { format } from 'date-fns'
+import { enUS } from 'date-fns/locale'
+import { dateStringFormat } from '../../../utils/commonUtils'
 
 
-export function getLastStepStatusOrder(lastStep) {
+export function getLastStepStatusOrder(lastStep, date_esimated: string) {
 	switch (lastStep) {
 		case LastStep.executor_perfomed:
 			return {
@@ -36,7 +39,7 @@ export function getLastStepStatusOrder(lastStep) {
 		case LastStep.executor_sent:
 			return {
 				img: takeYourThingsFromImg,
-				text: <Text color={colors.greenBright}>Will be ready</Text>,
+				text: <Text color={colors.greenBright}>Will be ready {dateStringFormat('dd MMMM yyyy', date_esimated)}</Text>,
 			}
 		case LastStep.admin_closed_order:
 		case LastStep.client_confirm:
