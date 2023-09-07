@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestHeaders } from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const BASE_URL = 'https://s-wash.com/'
@@ -21,8 +21,9 @@ instance.interceptors.request.use(
 	async (config) => {
 		const token = await AsyncStorage.getItem('token');
 		if (token) {
-			//@ts-ignore
+			// @ts-ignore
 			config.headers = {
+				...config.headers,
 				Authorization: `Bearer ${token}`,
 			};
 		}

@@ -16,36 +16,23 @@ export class OrdersStore {
 	}
 
 	async createOrderClient(payload: CreateServicesDataType) {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
 		const { data } = await clientApi.createOrderClientPrev({
 			services: { ...payload },
-			clients_id: clients_id,
-			token: token,
 		})
-		console.log(data)
 		return data.order_id
 	}
 
 	async deleteOrder(comment: string, orders_id: string) {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
-	const {data}= 	await clientApi.deleteOrder({
+		const { data } = await clientApi.deleteOrder({
 			orders_id,
 			comment,
-			clients_id: clients_id,
-			token: token,
 		})
 	}
 
 	async getOrderReportDetail(orders_id: string): Promise<OrderReportDetailType> {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
 
 
 		const { data } = await clientApi.getOrderReportDetail({
-			token,
-			clients_id,
 			orders_id,
 		})
 		this.setOrderDetail(data)
@@ -53,23 +40,15 @@ export class OrdersStore {
 	}
 
 	async saveOrderPhoto(photo) {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
-		const { data} = await clientApi.saveOrderPhoto({
+		const { data } = await clientApi.saveOrderPhoto({
 			orders_id: this.orderDetail?.orders_id,
-			clients_id,
-			token,
 			photo,
 		})
 	}
 
 	async startOrder() {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
-		const {data} = await clientApi.startOrder({
-			token,
+		const { data } = await clientApi.startOrder({
 			orders_id: this.orderDetail.orders_id,
-			clients_id,
 			client_logistic_parents_points_id: this.orderDetail.client_logistic_partners_points_id,
 			services: {
 				iron: +this.orderDetail.add_iron,
@@ -79,42 +58,31 @@ export class OrdersStore {
 	}
 
 	async updateOrder(payload: payloadUpdOrderType) {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
 		const data = await clientApi.updOrder({
 			...payload,
-			token,
-			clients_id,
 		})
 	}
+
 	async reviewOrder(payload: Omit<ReviewOrderPayload, 'orders_id'>) {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
+
 		const data = await clientApi.reviewOrder({
-			token,
 			orders_id: this.orderDetail.orders_id,
-			clients_id,
-			...payload
+			...payload,
 		})
 	}
 
 	async deleteOrderPhoto(photo_id) {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
+
 		await clientApi.deleteOrderPhoto({
-			token,
-			clients_id,
+
 			photo_id,
 			order_number: this.orderDetail.orders_id,
 		})
 	}
+
 	async getOrderReportClient() {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
-		const {data}  = await clientApi.getOrderReportClient({
-			token,
-			clients_id,
-		})
+
+		const { data } = await clientApi.getOrderReportClient({})
 		this.setOrders(data)
 	}
 

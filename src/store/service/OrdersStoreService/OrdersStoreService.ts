@@ -125,7 +125,6 @@ export class OrdersStoreService {
 			this.rootStore.OrdersStore.setOrders(data.orders)
 			return true
 		} catch (e) {
-			console.log(e, 'reviewOrder')
 		} finally {
 			this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
 		}
@@ -144,7 +143,8 @@ export class OrdersStoreService {
 
 	async saveOrderPhoto(photo) {
 		try {
-			await this.rootStore.OrdersStore.saveOrderPhoto(photo)
+		const data =	await this.rootStore.OrdersStore.saveOrderPhoto(photo)
+
 			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
 		} catch (e) {
 			console.log(e)

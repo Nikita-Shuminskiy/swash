@@ -12,8 +12,6 @@ import onTheWayImg from '../../assets/Images/Executor/OnTheWay.png'
 import { Image } from 'react-native'
 import { colors } from '../../assets/colors/colors'
 import locationImg from '../../assets/Images/locationBlue.png'
-import { format } from 'date-fns'
-import { enUS } from 'date-fns/locale'
 import { dateStringFormat } from '../../utils/commonUtils'
 
 const STATUS_DATA = {
@@ -41,6 +39,7 @@ type ExecutorStatusSPorps = {
 const ExecutorStatusS = observer(({ navigation, route }: ExecutorStatusSPorps) => {
 	const { orderDetail } = OrdersStore
 	const statusData = STATUS_DATA[route.params.from]
+
 	return (
 		<BaseWrapperComponent>
 			<Box paddingX={4}>
@@ -54,7 +53,7 @@ const ExecutorStatusS = observer(({ navigation, route }: ExecutorStatusSPorps) =
 				<Box borderRadius={16} mb={3} p={3} alignItems={'flex-start'} backgroundColor={'#E8F5FE'}>
 					<Text fontSize={15} fontFamily={'semiBold'}>Estimated time of arrival</Text>
 					<Text fontSize={15}
-								fontFamily={'regular'}>{dateStringFormat('dd MMMM yyyy HH:mm', orderDetail.approximated_date)}</Text>
+								fontFamily={'regular'}>{dateStringFormat('dd MMMM yyyy HH:mm', orderDetail.date_estimated_ready)}</Text>
 				</Box>
 				<Box borderRadius={16} mb={3} p={3} alignItems={'flex-start'} backgroundColor={'#E8F5FE'}>
 					<Text fontSize={15} fontFamily={'semiBold'}>Paczkomat</Text>

@@ -47,7 +47,7 @@ type OrderType = {
 };
 type OrderReportDetailType = {
 	amount: string;
-	approximated_date: string;
+	date_estimated_ready: string;
 	services_pay?: string;
 	balance?: string;
 	basic_pay?: string;
@@ -128,8 +128,6 @@ type LogisticsPointType = {
 
 type DeleteOrderPayload = {
 	orders_id: string;
-	clients_id: string;
-	token: string;
 	comment: string;
 };
 type payloadUpdOrderType = {
@@ -160,8 +158,6 @@ type ClientRegisterType = {
 };
 
 type CreateOrderClientPrevType = {
-	clients_id: string;
-	token: string;
 	services: CreateServicesDataType;
 };
 
