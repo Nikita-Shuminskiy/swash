@@ -68,7 +68,7 @@ export class AuthStore {
 	}
 
 	async logout() {
-		await authApi.logout()
+		const {data}= await authApi.logout()
 	}
 
 	clearStore() {

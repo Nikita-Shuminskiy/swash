@@ -30,6 +30,7 @@ import ExecutorStatusS from '../screen/Main/ExecutorStatusS'
 import { BurgerMenuProvider } from '../components/BurgerMenu/BurgerMenuContext'
 import BurgerMenu from '../components/BurgerMenu/BurgerMenu'
 import { SafeAreaView } from 'react-native'
+import ProfileUserS from '../screen/Main/ProfileUserS'
 
 
 const RootStack = createNativeStackNavigator()
@@ -112,6 +113,11 @@ const RootNavigation = observer(() => {
 								options={{ headerShown: false }}
 								name={routerConstants.EXECUTOR_MAP}
 								component={NavigatingToCheckpointS}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.PROFILE}
+								component={ProfileUserS}
 							/>
 						</>
 					}

@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native'
 import { Image } from 'native-base'
 import deleteImg from '../assets/Images/order/delete.png'
 type BtnDeleteProps =   {
-	onPress: () => void
+	onPress?: () => void
 }
 const BtnDelete = ({onPress}: BtnDeleteProps) => {
 	return (

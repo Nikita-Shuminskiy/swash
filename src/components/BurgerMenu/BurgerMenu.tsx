@@ -13,12 +13,14 @@ import Button from '../Button'
 import Avatar from './Avatar'
 import mockImg from './imgMock.png'
 import BaseBottomPopUp from '../pop-up/BaseBottomPopUp'
+import rootStore from '../../store/RootStore/root-store'
 
 const BurgerMenu = () => {
 	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
 	const [isOpenLogout, setIsLogout] = useState<boolean>(false)
 	const toValue = isMenuOpen ? 0 : -1000
 	const menuPosition = useRef(new Animated.Value(toValue)).current
+	const { AuthStoreService } = rootStore
 
 	const toggleMenu = () => {
 		Animated.timing(menuPosition, {
@@ -35,7 +37,11 @@ const BurgerMenu = () => {
 		setIsLogout(true)
 	}
 	const logOutHandler = () => {
-
+		AuthStoreService.logout().then((data) => {
+			if (data) {
+				setIsMenuOpen(false)
+			}
+		})
 	}
 	return (
 		<>
@@ -67,7 +73,7 @@ const BurgerMenu = () => {
 					]}
 				>
 					<Box pt={8}>
-						<Avatar name={'Miguel Miguel'} img={mockImg} />
+						<Avatar name={'Miguel Miguel'} onClose={() => setIsMenuOpen(false)} img={mockImg} />
 						<BurgerLink img={countryImg} countryName={'Poland'} text={'Country'} />
 						<BurgerLink img={repeatImg} text={'Order history'} />
 						<BurgerLink img={questionMarkImg} text={'Contact support'} />
@@ -87,8 +93,9 @@ const BurgerMenu = () => {
 				</Animated.View>
 			</Animated.View>
 			{
-				isOpenLogout && <BaseBottomPopUp text={'Do you really want to log off?'} onDelete={logOutHandler} visible={isOpenLogout}
-																				 onClose={() => setIsLogout(false)} />
+				isOpenLogout &&
+				<BaseBottomPopUp text={'Do you really want to log off?'} onDelete={logOutHandler} visible={isOpenLogout}
+												 onClose={() => setIsLogout(false)} />
 			}
 
 		</>

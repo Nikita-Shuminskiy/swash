@@ -17,6 +17,7 @@ export const routerConstants = {
     EXECUTOR_MAP: 'executor_map', // отнеси и сдай
     CLIENT_PAY: 'client_pay',
     EXECUTOR_STATUSES: 'executor_statuses',
+    PROFILE: 'profile'
 /*
 
     EXECUTOR_CONFIRM_CLIENT_MUST_PAY: 'executor_confirm&client_must_pay', // оплати
