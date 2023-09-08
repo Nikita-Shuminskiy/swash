@@ -1,7 +1,7 @@
 import React from 'react'
 import { BaseWrapperComponent } from '../../../components/baseWrapperComponent'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
-import BurgerMenuImg from '../../../components/burgerMenuImg'
+import BurgerMenuImg from '../../../components/BurgerMenu/BurgerMenuBtn'
 import { observer } from 'mobx-react-lite'
 import OrdersStore from '../../../store/OrdersStore/orders-store'
 import { FlatList } from 'react-native'

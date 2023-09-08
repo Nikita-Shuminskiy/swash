@@ -9,7 +9,7 @@ import ironImg from '../../../assets/Images/order/iron.png'
 import hypoallergenicBlueImg from '../../../assets/Images/order/quill-blue.png'
 import hypoallergenicImg from '../../../assets/Images/order/quil-gray.png'
 import { OrderReportDetailType, payloadUpdOrderType } from '../../../api/Client/type'
-import BergerMenuImg from '../../../components/burgerMenuImg'
+import BergerMenuImg from '../../../components/BurgerMenu/BurgerMenuBtn'
 
 type HeaderProps = {
 	orderDetail: OrderReportDetailType

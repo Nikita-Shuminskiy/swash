@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { observer } from 'mobx-react-lite'
 import AuthStore from '../store/AuthStore'
@@ -27,11 +27,15 @@ import FeedbackS from '../screen/Main/FeedbackS'
 import NavigatingToCheckpointS from '../screen/Main/NavigatingToCheckpointS'
 import ClientPayS from '../screen/Main/ClientPay/ClientPayS'
 import ExecutorStatusS from '../screen/Main/ExecutorStatusS'
+import { BurgerMenuProvider } from '../components/BurgerMenu/BurgerMenuContext'
+import BurgerMenu from '../components/BurgerMenu/BurgerMenu'
+import { SafeAreaView } from 'react-native'
 
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
 	const { isLoading, serverResponseText, isLocalLoading } = NotificationStore
+
 	const { isAuth } = AuthStore
 	const {
 		askNotificationPermissionHandler,
@@ -41,9 +45,10 @@ const RootNavigation = observer(() => {
 	const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
 	const { checkInternetConnection, isConnected } = useInternetConnected()
 
-
 	return (
+
 		<NavigationContainer>
+			<BurgerMenuProvider>
 			{isLoading === LoadingEnum.fetching && <LoadingGlobal visible={true} />}
 			{isLocalLoading === LoadingEnum.fetching && <LoadingLocal visible={true} />}
 			{serverResponseText && <Alerts text={serverResponseText} />}
@@ -51,85 +56,87 @@ const RootNavigation = observer(() => {
 			{checkStatusPermissions && <GivePermissions askLocationPermissionHandler={askLocationPermissionHandler}
 																									askNotificationPermissionHandler={askNotificationPermissionHandler}
 																									visible={checkStatusPermissions} />}
-			<RootStack.Navigator>
-				{
-					isAuth && <>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.CREATE_ORDER}
-							component={CreateOrder}
-						/>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.ORDERS}
-							initialParams={{ showFeedback: false }}
-							component={OrdersS}
-						/>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.ADD_NEW_CARD}
-							component={AddNewCardS}
-						/>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.ORDER_CONFIRMATION}
-							component={OrderConfirmationS}
-						/>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.PRICE}
-							component={PriceS}
-						/>
+				<BurgerMenu />
+				<RootStack.Navigator>
+					{
+						isAuth && <>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.CREATE_ORDER}
+								component={CreateOrder}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.ORDERS}
+								initialParams={{ showFeedback: false }}
+								component={OrdersS}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.ADD_NEW_CARD}
+								component={AddNewCardS}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.ORDER_CONFIRMATION}
+								component={OrderConfirmationS}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.PRICE}
+								component={PriceS}
+							/>
 
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.LOGISTIC_POINT}
-							component={LogisticsPointS}
-						/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.LOGISTIC_POINT}
+								component={LogisticsPointS}
+							/>
 
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.EXECUTOR_STATUSES}
-							component={ExecutorStatusS}
-						/>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.CLIENT_PAY}
-							component={ClientPayS}
-						/>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.CLIENT_RECEIVED}
-							component={FeedbackS}
-						/>
-						<RootStack.Screen
-							options={{ headerShown: false }}
-							name={routerConstants.EXECUTOR_MAP}
-							component={NavigatingToCheckpointS}
-						/>
-					</>
-				}
-				<RootStack.Screen
-					options={{ headerShown: false }}
-					name={routerConstants.LOGIN}
-					component={LoginS}
-				/>
-				<RootStack.Screen
-					options={{ headerShown: false }}
-					name={routerConstants.VERIFY_NUMBER}
-					component={VerifyNumberS}
-				/>
-				<RootStack.Screen
-					options={{ headerShown: false }}
-					name={routerConstants.PHONE_VERIFY}
-					component={AddPhoneS}
-				/>
-				<RootStack.Screen
-					options={{ headerShown: false }}
-					name={routerConstants.TERMS_OF_USE}
-					component={TermsOfUseS}
-				/>
-			</RootStack.Navigator>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.EXECUTOR_STATUSES}
+								component={ExecutorStatusS}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.CLIENT_PAY}
+								component={ClientPayS}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.CLIENT_RECEIVED}
+								component={FeedbackS}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.EXECUTOR_MAP}
+								component={NavigatingToCheckpointS}
+							/>
+						</>
+					}
+					<RootStack.Screen
+						options={{ headerShown: false }}
+						name={routerConstants.LOGIN}
+						component={LoginS}
+					/>
+					<RootStack.Screen
+						options={{ headerShown: false }}
+						name={routerConstants.VERIFY_NUMBER}
+						component={VerifyNumberS}
+					/>
+					<RootStack.Screen
+						options={{ headerShown: false }}
+						name={routerConstants.PHONE_VERIFY}
+						component={AddPhoneS}
+					/>
+					<RootStack.Screen
+						options={{ headerShown: false }}
+						name={routerConstants.TERMS_OF_USE}
+						component={TermsOfUseS}
+					/>
+				</RootStack.Navigator>
+			</BurgerMenuProvider>
 		</NavigationContainer>
 	)
 })
