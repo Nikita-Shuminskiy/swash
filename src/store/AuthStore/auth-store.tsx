@@ -56,25 +56,25 @@ export class AuthStore {
 
 	async getLogisticPoints() {
 		const { data } = await clientApi.getLogisticPoints({ country: 'PL' }) // временно
-
 		this.setLogisticPoints(data.points)
-/*		const { data: dataDictionary } = await clientApi.getDictionary({ language })
-		const dataPushMessages = await clientApi.getClientPushMessages(payload)*/
+		/*		const { data: dataDictionary } = await clientApi.getDictionary({ language })
+				const dataPushMessages = await clientApi.getClientPushMessages(payload)*/
 	}
 
 	async getSettingsClient() {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
-		const { data } = await clientApi.getSettingsClient(
-			{
-				token,
-				clients_id,
-			},
-		)
-
-
+		const { data } = await clientApi.getSettingsClient()
 		this.setClientSettings(data)
 		return data
+	}
+
+	async logout() {
+		await authApi.logout()
+	}
+
+	clearStore() {
+		this.phone = ''
+		this.logisticPoints = []
+		this.clientSettings = {} as DataSettingClientType
 	}
 
 	async sendClientRegister(payload: {
@@ -103,6 +103,8 @@ export class AuthStore {
 			setAuth: action,
 			setUserAuthData: action,
 			sendClientCode: action,
+			clearStore: action,
+			logout: action,
 			setLogisticPoints: action,
 		})
 		this.setAuth = this.setAuth.bind(this)
@@ -110,6 +112,8 @@ export class AuthStore {
 		this.getSettingsClient = this.getSettingsClient.bind(this)
 		this.sendClientCode = this.sendClientCode.bind(this)
 		this.setPhone = this.setPhone.bind(this)
+		this.logout = this.logout.bind(this)
+		this.clearStore = this.clearStore.bind(this)
 		this.sendClientVerifyCode = this.sendClientVerifyCode.bind(this)
 		this.getLogisticPoints = this.getLogisticPoints.bind(this)
 		this.setUserAuthData = this.setUserAuthData.bind(this)

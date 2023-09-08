@@ -35,9 +35,6 @@
       },
       "package": "com.nick.swash",
       "config": {
-        "googleSignIn": {
-          "certificateHash": "71:9C:0B:34:99:34:20:3F:1D:18:7C:97:1C:6E:42:05:77:0F:B3:AA"
-        },
         "googleMaps": {
           "apiKey": "AIzaSyD-3PKe63YHjDDaxjVahTekuyvvOFfwKp4"
         }

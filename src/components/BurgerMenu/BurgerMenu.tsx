@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Animated, SafeAreaView, StyleSheet } from 'react-native'
 import { Box, Pressable } from 'native-base'
 import { colors } from '../../assets/colors/colors'
@@ -12,8 +12,11 @@ import walletImg from '../../assets/Images/BurgerMenu/walletBlue.png'
 import Button from '../Button'
 import Avatar from './Avatar'
 import mockImg from './imgMock.png'
+import BaseBottomPopUp from '../pop-up/BaseBottomPopUp'
+
 const BurgerMenu = () => {
 	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
+	const [isOpenLogout, setIsLogout] = useState<boolean>(false)
 	const toValue = isMenuOpen ? 0 : -1000
 	const menuPosition = useRef(new Animated.Value(toValue)).current
 
@@ -29,56 +32,66 @@ const BurgerMenu = () => {
 		toggleMenu()
 	}, [isMenuOpen])
 	const onPressLogOut = () => {
+		setIsLogout(true)
+	}
+	const logOutHandler = () => {
 
 	}
 	return (
-		<Animated.View style={[
-			styles.container,
-			{
-				transform: [
-					{
-						translateX: menuPosition,
-					},
-				],
-			},
-		]}>
-			<Pressable
-				onPress={() => setIsMenuOpen(false)}
-				style={styles.background}
-			/>
+		<>
+			<Animated.View style={[
+				styles.container,
+				{
+					transform: [
+						{
+							translateX: menuPosition,
+						},
+					],
+				},
+			]}>
+				<Pressable
+					onPress={() => setIsMenuOpen(false)}
+					style={styles.background}
+				/>
 
-			<Animated.View
-				style={[
-					styles.menu,
-					{
-						transform: [
-							{
-								translateX: menuPosition,
-							},
-						],
-					},
-				]}
-			>
-				<Box pt={8}>
-					<Avatar name={'Miguel Miguel'} img={mockImg}/>
-					<BurgerLink img={countryImg} countryName={'Poland'} text={'Country'} />
-					<BurgerLink img={repeatImg} text={'Order history'} />
-					<BurgerLink img={questionMarkImg} text={'Contact support'} />
-					<BurgerLink img={walletImg} text={'Payment methods'} />
-					<BurgerLink img={exclamationMarkImg} text={'About Swash'} />
-				</Box>
-				<Box mt={2} mb={5} alignItems={'center'}>
-					<Button backgroundColor={colors.white} colorText={colors.black}
-									styleContainer={{
-										borderWidth: 1,
-										borderColor: colors.blue,
-										borderRadius: 28,
-										maxWidth: 280,
-										width: '100%',
-									}} styleText={{ fontFamily: 'regular' }} onPress={onPressLogOut} title={'Log off'} />
-				</Box>
+				<Animated.View
+					style={[
+						styles.menu,
+						{
+							transform: [
+								{
+									translateX: menuPosition,
+								},
+							],
+						},
+					]}
+				>
+					<Box pt={8}>
+						<Avatar name={'Miguel Miguel'} img={mockImg} />
+						<BurgerLink img={countryImg} countryName={'Poland'} text={'Country'} />
+						<BurgerLink img={repeatImg} text={'Order history'} />
+						<BurgerLink img={questionMarkImg} text={'Contact support'} />
+						<BurgerLink img={walletImg} text={'Payment methods'} />
+						<BurgerLink img={exclamationMarkImg} text={'About Swash'} />
+					</Box>
+					<Box mt={2} mb={5} alignItems={'center'}>
+						<Button backgroundColor={colors.white} colorText={colors.black}
+										styleContainer={{
+											borderWidth: 1,
+											borderColor: colors.blue,
+											borderRadius: 28,
+											maxWidth: 280,
+											width: '100%',
+										}} styleText={{ fontFamily: 'regular' }} onPress={onPressLogOut} title={'Log off'} />
+					</Box>
+				</Animated.View>
 			</Animated.View>
-		</Animated.View>
+			{
+				isOpenLogout && <BaseBottomPopUp text={'Do you really want to log off?'} onDelete={logOutHandler} visible={isOpenLogout}
+																				 onClose={() => setIsLogout(false)} />
+			}
+
+		</>
 	)
 }
 

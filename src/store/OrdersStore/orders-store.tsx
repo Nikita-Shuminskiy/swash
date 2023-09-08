@@ -14,7 +14,10 @@ export class OrdersStore {
 	setOrders(orders: OrderType[]) {
 		this.orders = orders
 	}
-
+	clearStore() {
+		this.orders = []
+		this.orderDetail = {} as OrderReportDetailType
+	}
 	async createOrderClient(payload: CreateServicesDataType) {
 		const { data } = await clientApi.createOrderClientPrev({
 			services: { ...payload },
@@ -101,6 +104,7 @@ export class OrdersStore {
 			reviewOrder: action,
 			getOrderReportDetail: action,
 			getOrderReportClient: action,
+			clearStore: action,
 		})
 
 		this.createOrderClient = this.createOrderClient.bind(this)
@@ -108,6 +112,7 @@ export class OrdersStore {
 		this.getOrderReportClient = this.getOrderReportClient.bind(this)
 		this.reviewOrder = this.reviewOrder.bind(this)
 		this.startOrder = this.startOrder.bind(this)
+		this.clearStore = this.clearStore.bind(this)
 		this.saveOrderPhoto = this.saveOrderPhoto.bind(this)
 		this.getOrderReportDetail = this.getOrderReportDetail.bind(this)
 		this.setOrderDetail = this.setOrderDetail.bind(this)

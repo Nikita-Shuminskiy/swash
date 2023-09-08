@@ -10,7 +10,7 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import OrdersStore from '../../../store/OrdersStore/orders-store'
 import rootStore from '../../../store/RootStore/root-store'
 import AddPhotoComponent from '../../../components/AddPhotoComponent'
-import PopUpCanselSwash from '../../../components/pop-up/PopUpCanselSwash'
+import BaseBottomPopUp from '../../../components/pop-up/BaseBottomPopUp'
 import Footer from './Footer'
 import Header from './Header'
 import { routerConstants } from '../../../constants/routerConstants'
@@ -106,8 +106,8 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 			</BaseWrapperComponent>
 			{
 				isShowPopUpCanselSwash &&
-				<PopUpCanselSwash onDelete={deleteOrder} visible={isShowPopUpCanselSwash}
-													onClose={() => setIsShowPopUpCanselSwash(false)} />
+				<BaseBottomPopUp text={'Cancel Swash ?'} onDelete={deleteOrder} visible={isShowPopUpCanselSwash}
+												 onClose={() => setIsShowPopUpCanselSwash(false)} />
 			}
 			{
 				isShowModalPayment &&

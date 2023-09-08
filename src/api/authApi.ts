@@ -8,8 +8,10 @@ export const authApi = {
 	},
 	async sendClientCode(payload: { clients_id: string, token: string, phone: string }) {
 		return await instance.post(`washapi.php/client_code_send`, {}, {
-			params: payload
+			params: payload,
 		})
 	},
-
+	async logout() {
+		return await instance.post(`washapi.php/client_forget_about_device`)
+	},
 }

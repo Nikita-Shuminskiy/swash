@@ -8,19 +8,21 @@ import { colors } from '../../assets/colors/colors'
 
 type PopUpCanselSwashProps = {
 	visible: boolean
+	text: string
 	onClose: () => void
 	onDelete: () => void
 }
-const PopUpCanselSwash = ({ visible, onClose, onDelete }: PopUpCanselSwashProps) => {
+const BaseBottomPopUp = ({ visible, onClose, onDelete, text }: PopUpCanselSwashProps) => {
 	const onPressDelete = () => {
 		onDelete()
 		onClose()
 	}
 	return (
-		<ModalPopup modalHeight={Math.round(Dimensions.get('window').height *  0.2)} style={{}} visible={visible} onClose={onClose}>
+		<ModalPopup modalHeight={Math.round(Dimensions.get('window').height * 0.2)} style={{}} visible={visible}
+								onClose={onClose}>
 			<Box>
 				<Box flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-					<Text fontSize={22} fontFamily={'semiBold'}>Cancel Swash ?</Text>
+					<Text fontSize={22} fontFamily={'semiBold'}>{text}</Text>
 					<TouchableOpacity onPress={onClose}>
 						<Image alt={'close-img'} source={closeImage} />
 					</TouchableOpacity>
@@ -46,11 +48,11 @@ const styles = StyleSheet.create({
 		maxWidth: 168,
 		minWidth: 0,
 		height: 56,
-		borderRadius: 28
+		borderRadius: 28,
 	},
 	btnYes: {
 		borderWidth: 1,
 		borderColor: colors.blue,
 	},
 })
-export default PopUpCanselSwash
+export default BaseBottomPopUp
