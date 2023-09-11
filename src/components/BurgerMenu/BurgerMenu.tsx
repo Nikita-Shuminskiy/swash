@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Animated, SafeAreaView, StyleSheet } from 'react-native'
+import { Animated, StyleSheet } from 'react-native'
 import { Box, Pressable } from 'native-base'
 import { colors } from '../../assets/colors/colors'
 import { useBurgerMenu } from './BurgerMenuContext'

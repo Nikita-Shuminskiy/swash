@@ -148,14 +148,15 @@ type payloadUpdOrderType = {
 	amount?: string;
 };
 
-type ClientRegisterType = {
-	clients_id: string;
-	token: string;
-	phone?: string;
-	country?: string;
-	language?: string;
-	consent_datetime?: string;
-};
+type ClientRegisterPayloadType = {
+	phone?: string,
+	country?: string,
+	first_name?: string,
+	last_name?: string,
+	language?: string,
+	email?: string,
+	consent_datetime?: string
+}
 
 type CreateOrderClientPrevType = {
 	services: CreateServicesDataType;
@@ -169,7 +170,7 @@ type CreateServicesDataType = {
 export {
 	payloadUpdOrderType,
 	DeleteOrderPayload,
-	ClientRegisterType,
+	ClientRegisterPayloadType,
 	CreateOrderClientPrevType,
 	CreateServicesDataType,
 	LogisticsPointType,

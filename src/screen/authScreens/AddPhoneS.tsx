@@ -71,7 +71,7 @@ const AddPhoneS = ({ navigation }: PhoneVerifySProps) => {
 				<PhoneNumberField onChangeCountry={onChangeCountry} defaultValue={phone} errorMessage={'Incorrect phone number'}
 													onChangeTextPhone={onChangeTextPhone}
 													isRequired={true} isInvalid={disabledBtn} />
-				<Box mt={10}>
+				<Box mt={10} w={'100%'} alignItems={'center'}>
 					<Button styleContainer={{ maxWidth: 280, width: '100%' }} backgroundColor={colors.blue} colorText={colors.white}
 									onPress={onPressSendSMS} title={'Send SMS'} />
 				</Box>

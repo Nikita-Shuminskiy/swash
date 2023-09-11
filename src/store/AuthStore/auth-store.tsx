@@ -3,7 +3,7 @@ import { authApi } from '../../api/authApi'
 import { deviceStorage } from '../../utils/storage/storage'
 import { UserAuthGoogleData } from '../../screen/authScreens/LoginS'
 import { clientApi } from '../../api/Client/clientApi'
-import { DataSettingClientType, LogisticsPointType } from '../../api/Client/type'
+import { ClientRegisterPayloadType, DataSettingClientType, LogisticsPointType } from '../../api/Client/type'
 
 export class AuthStore {
 	isAuth: boolean = false
@@ -33,22 +33,14 @@ export class AuthStore {
 	}
 
 	async sendClientCode(formattedPhoneNumber?: string) {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
 		const payload = {
-			clients_id: clients_id,
-			token: token,
 			phone: formattedPhoneNumber ?? this.phone,
 		}
-		await authApi.sendClientCode(payload)
+		return await authApi.sendClientCode(payload)
 	}
 
 	async sendClientVerifyCode(code: string) {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
 		const payload = {
-			clients_id: clients_id,
-			token: token,
 			phone_verify_code: code,
 		}
 		return await authApi.sendClientCodeVerify(payload)
@@ -68,7 +60,11 @@ export class AuthStore {
 	}
 
 	async logout() {
-		const {data}= await authApi.logout()
+		const { data } = await authApi.logout()
+	}
+
+	async forgotAboutDevice() {
+		const { data } = await authApi.forgotAboutDevice()
 	}
 
 	clearStore() {
@@ -77,15 +73,8 @@ export class AuthStore {
 		this.clientSettings = {} as DataSettingClientType
 	}
 
-	async sendClientRegister(payload: {
-		phone?: string,
-		country?: string,
-		language?: string,
-		consent_datetime?: string
-	}) {
-		const token = await deviceStorage.getItem('token')
-		const clients_id = await deviceStorage.getItem('clients_id')
-		const { data } = await clientApi.sendClientRegister({ ...payload, clients_id, token })
+	async sendClientRegister(payload: ClientRegisterPayloadType) {
+		const { data } = await clientApi.sendClientRegister(payload)
 		return data
 	}
 
@@ -104,7 +93,6 @@ export class AuthStore {
 			setUserAuthData: action,
 			sendClientCode: action,
 			clearStore: action,
-			logout: action,
 			setLogisticPoints: action,
 		})
 		this.setAuth = this.setAuth.bind(this)
@@ -112,7 +100,6 @@ export class AuthStore {
 		this.getSettingsClient = this.getSettingsClient.bind(this)
 		this.sendClientCode = this.sendClientCode.bind(this)
 		this.setPhone = this.setPhone.bind(this)
-		this.logout = this.logout.bind(this)
 		this.clearStore = this.clearStore.bind(this)
 		this.sendClientVerifyCode = this.sendClientVerifyCode.bind(this)
 		this.getLogisticPoints = this.getLogisticPoints.bind(this)

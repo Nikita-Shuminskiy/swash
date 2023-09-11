@@ -1,6 +1,6 @@
 import { instance } from '../config'
 import {
-	ClientRegisterType,
+	ClientRegisterPayloadType,
 	CreateOrderClientPrevType,
 	DataSettingClientType,
 	DeleteOrderPayload,
@@ -19,7 +19,7 @@ export const clientApi = {
 	async getSettingsClient() {
 		return await instance.get<DataSettingClientType>(`washapi.php/get_settings_client`)
 	},
-	async sendClientRegister(payload: ClientRegisterType) {
+	async sendClientRegister(payload: ClientRegisterPayloadType) {
 		return await instance.post(`washapi.php/client_register`, {}, {
 			params: payload,
 		})
@@ -33,7 +33,6 @@ export const clientApi = {
 	async clientRegister(payload: { phone: string, language: string, country: string }) {
 		return await instance.post(`washapi.php/client_register`, payload)
 	},
-
 
 	//order
 	async deleteOrderPhoto(payload: { photo_id: string, order_number: string }) {
