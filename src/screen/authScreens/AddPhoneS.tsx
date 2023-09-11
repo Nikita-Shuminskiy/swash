@@ -45,15 +45,16 @@ const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 			return setDisableBtn(true)
 		}
 		const formattedPhoneNumber = `${countryCode.callingCode[0]}${phone}`
-		if (isFromUpdate) {
+		if (isFromUpdate && !!(isValidPhone && !disabledBtn)) {
 			AuthStoreService.updateUserInfo({
 				phone: formattedPhoneNumber,
 			}).then((data) => {
 				if (data) {
+					console.log('true')
 					setVerifyPhone(formattedPhoneNumber)
 					AuthStoreService.sendClientCode(formattedPhoneNumber).then((data) => {
 						if (data) {
-							navigation.navigate(routerConstants.VERIFY_NUMBER, {from: 'update'})
+							navigation.navigate(routerConstants.VERIFY_NUMBER, { from: 'update' })
 						}
 					})
 				}
@@ -99,7 +100,8 @@ const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 													onChangeTextPhone={onChangeTextPhone}
 													isRequired={true} isInvalid={disabledBtn} />
 				<Box mt={10} w={'100%'} alignItems={'center'}>
-					<Button styleContainer={{ maxWidth: 280, width: '100%' }} backgroundColor={colors.blue}
+					<Button styleContainer={{ maxWidth: 280, width: '100%', opacity: disabledBtn ? 0.3 : 1 }}
+									backgroundColor={colors.blue}
 									colorText={colors.white}
 									onPress={onPressSendSMS} title={'Send SMS'} />
 				</Box>

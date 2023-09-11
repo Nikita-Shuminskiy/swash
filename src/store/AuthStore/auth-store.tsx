@@ -74,9 +74,11 @@ export class AuthStore {
 	}
 
 	async sendClientRegister(payload: ClientRegisterPayloadType) {
-		console.log(payload)
 		const { data } = await clientApi.sendClientRegister(payload)
-		console.log(data, 'sendClient')
+		return data
+	}
+	async updateClientPhoto(photo: string) {
+		const { data } = await clientApi.updateClientPhoto(photo)
 		return data
 	}
 
@@ -88,6 +90,7 @@ export class AuthStore {
 			phone: observable,
 			setPhone: action,
 			getSettingsClient: action,
+			updateClientPhoto: action,
 			setClientSettings: action,
 			sendClientVerifyCode: action,
 			getLogisticPoints: action,
@@ -100,6 +103,7 @@ export class AuthStore {
 		this.setAuth = this.setAuth.bind(this)
 		this.setLogisticPoints = this.setLogisticPoints.bind(this)
 		this.getSettingsClient = this.getSettingsClient.bind(this)
+		this.updateClientPhoto = this.updateClientPhoto.bind(this)
 		this.sendClientCode = this.sendClientCode.bind(this)
 		this.setPhone = this.setPhone.bind(this)
 		this.clearStore = this.clearStore.bind(this)

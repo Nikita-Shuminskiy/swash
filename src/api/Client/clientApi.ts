@@ -24,6 +24,47 @@ export const clientApi = {
 			params: payload,
 		})
 	},
+	async updateClientPhoto(photo: string) {
+		const resizedImage = await manipulateAsync(
+			photo,
+			[{ resize: { width: 800, height: 800 } }],
+			{ format: 'jpeg' as SaveFormat, compress: 0.8 },
+		)
+		const formData = new FormData()
+		// @ts-ignore
+		formData.append('photo', { uri: resizedImage.uri,
+			name: 'image.jpg',
+			type: 'image/jpeg',
+		})
+		return await instance.post(`washapi.php/client_register`, formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		})
+	},
+	async saveOrderPhoto(payload: { orders_id: string, photo: string }) {
+		const { orders_id, photo } = payload
+		const resizedImage = await manipulateAsync(
+			photo, [{ resize: { width: 800, height: 800 } }],
+			{ format: 'jpeg' as SaveFormat, compress: 0.8 },
+		)
+		const formData = new FormData()
+
+		// @ts-ignore
+		formData.append('photo', {
+			uri: resizedImage.uri,
+			name: 'image.jpg', type: 'image/jpeg',
+		})
+
+		return await instance.post(`washapi.php/order_client_photo`, formData, {
+			params: {
+				orders_id,
+			},
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		})
+	},
 	async getOrderReportClient(payload: { date_finish?: string, date_start?: string }) {
 		return await instance.get(`washapi.php/order_report_client`, { params: payload })
 	},
@@ -47,28 +88,7 @@ export const clientApi = {
 	async getOrderReportDetail(payload: { orders_id: string }) {
 		return await instance.get(`washapi.php/order_report_client_detail`, { params: payload })
 	},
-	async saveOrderPhoto(payload: { orders_id: string, photo: string }) {
-		const { orders_id, photo } = payload
-		const resizedImage = await manipulateAsync(
-			photo, [{ resize: { width: 800, height: 800 } }],
-			{ format: 'jpeg' as SaveFormat, compress: 0.8 },
-		)
-		const formData = new FormData()
 
-		// @ts-ignore
-		formData.append('photo', { uri: resizedImage.uri,
-			name: 'image.jpg', type: 'image/jpeg',
-		})
-
-		return await instance.post(`washapi.php/order_client_photo`, formData, {
-			params: {
-				orders_id,
-			},
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			},
-		})
-	},
 	async startOrder(payload: StartOrderPayload) {
 		return await instance.post(`washapi.php/order_client_start`, payload)
 	},

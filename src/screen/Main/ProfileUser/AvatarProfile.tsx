@@ -28,6 +28,7 @@ const AvatarProfile = () => {
 				const selectedAsset = result.assets[0]
 				const selectedImageUri = selectedAsset.uri
 				setSelectedImageUri(selectedImageUri)
+				AuthStoreService.updateClientPhoto(selectedImageUri)
 			}
 		} catch (error) {
 			console.log('Error selecting image from gallery:', error)

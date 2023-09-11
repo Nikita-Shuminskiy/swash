@@ -39,7 +39,7 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 	const onPressSave = () => {
 		AuthStoreService.updateUserInfo(dataInfo).then((data) => {
 			if(data) {
-				navigation.goBack()
+				navigation.navigate(routerConstants.ORDERS, {from: 'open_menu'})
 			}
 		})
 	}

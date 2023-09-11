@@ -21,6 +21,7 @@ type OrdersSProps = {
 }
 const OrdersS = observer(({ navigation, route }: OrdersSProps) => {
 	const { orders } = OrdersStore
+	const isOpenMenu = route.params?.from === 'open_menu'
 
 	const { OrdersStoreService } = rootStore
 	const renderItem = ({ item }: { item: OrderType }) => {
@@ -81,7 +82,7 @@ const OrdersS = observer(({ navigation, route }: OrdersSProps) => {
 			<AlertFeedBack navigation={navigation} route={route} />
 			<BaseWrapperComponent isKeyboardAwareScrollView={true}>
 				<Box style={{ paddingHorizontal: 16 }}>
-					<BurgerMenuImg />
+					<BurgerMenuImg openingForced={isOpenMenu}  />
 					<Box mt={4}>
 						<FlatList scrollEnabled={false} data={orders} renderItem={renderItem} />
 					</Box>

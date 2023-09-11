@@ -150,6 +150,7 @@ type payloadUpdOrderType = {
 
 type ClientRegisterPayloadType = {
 	phone?: string,
+	photo?: string,
 	country?: string,
 	first_name?: string,
 	last_name?: string,

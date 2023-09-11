@@ -13,8 +13,9 @@ import { routerConstants } from '../constants/routerConstants'
 const CELL_COUNT = 5
 type PhoneVerificationProps = {
 	navigation: NavigationProp<ParamListBase>
+	isFromUpdate: boolean
 }
-const PhoneVerificationCode = observer(({ navigation }: PhoneVerificationProps) => {
+const PhoneVerificationCode = observer(({ navigation, isFromUpdate }: PhoneVerificationProps) => {
 	const [code, setCode] = useState('')
 	const { AuthStoreService } = rootStore
 	const [isValid, setIsValid] = useState(true)
@@ -40,6 +41,7 @@ const PhoneVerificationCode = observer(({ navigation }: PhoneVerificationProps) 
 					}, 700)
 				}
 				if (data.status === 'ok') {
+					if(isFromUpdate) return navigation.navigate(routerConstants.ORDERS, {from: 'open_menu'})
 					navigation.navigate(routerConstants.TERMS_OF_USE)
 				}
 			})

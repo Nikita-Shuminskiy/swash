@@ -12,8 +12,10 @@ import ArrowBack from '../../components/ArrowBack'
 
 type VerifyNumberSProps = {
 	navigation: NavigationProp<ParamListBase>
+	route: any
 }
-const VerifyNumberS = observer(({ navigation }: VerifyNumberSProps) => {
+const VerifyNumberS = observer(({ navigation, route }: VerifyNumberSProps) => {
+	const isFromUpdate = route.params?.from === 'update'
 	const { phone } = AuthStore
 	const { AuthStoreService } = rootStore
 	const onPressSendCodeAgain = () => {
@@ -32,7 +34,7 @@ const VerifyNumberS = observer(({ navigation }: VerifyNumberSProps) => {
 				<Text fontSize={15} color={colors.gray} fontFamily={'regular'}>The code was sent to <Text fontFamily={'regular'} fontSize={15}
 																																					 color={colors.blue}>+{phone}</Text></Text>
 				<Box mt={10} mb={10} flex={1} w={'100%'}>
-					<PhoneVerificationCode navigation={navigation} />
+					<PhoneVerificationCode isFromUpdate={isFromUpdate} navigation={navigation} />
 				</Box>
 				<TimerComponent onPressSendCodeAgain={onPressSendCodeAgain} />
 			</Box>
