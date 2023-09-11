@@ -74,7 +74,9 @@ export class AuthStore {
 	}
 
 	async sendClientRegister(payload: ClientRegisterPayloadType) {
+		console.log(payload)
 		const { data } = await clientApi.sendClientRegister(payload)
+		console.log(data, 'sendClient')
 		return data
 	}
 

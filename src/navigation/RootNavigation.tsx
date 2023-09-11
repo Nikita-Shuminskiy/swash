@@ -30,7 +30,7 @@ import ExecutorStatusS from '../screen/Main/ExecutorStatusS'
 import { BurgerMenuProvider } from '../components/BurgerMenu/BurgerMenuContext'
 import BurgerMenu from '../components/BurgerMenu/BurgerMenu'
 import { SafeAreaView } from 'react-native'
-import ProfileUserS from '../screen/Main/ProfileUserS'
+import ProfileUserS from '../screen/Main/ProfileUser/ProfileUserS'
 
 
 const RootStack = createNativeStackNavigator()

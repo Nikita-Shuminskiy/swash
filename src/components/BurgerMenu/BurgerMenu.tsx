@@ -14,13 +14,16 @@ import Avatar from './Avatar'
 import mockImg from './imgMock.png'
 import BaseBottomPopUp from '../pop-up/BaseBottomPopUp'
 import rootStore from '../../store/RootStore/root-store'
+import AuthStore from '../../store/AuthStore/auth-store'
+import { observer } from 'mobx-react-lite'
 
-const BurgerMenu = () => {
+const BurgerMenu = observer(() => {
 	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
 	const [isOpenLogout, setIsLogout] = useState<boolean>(false)
 	const toValue = isMenuOpen ? 0 : -1000
 	const menuPosition = useRef(new Animated.Value(toValue)).current
 	const { AuthStoreService } = rootStore
+	const {clientSettings} = AuthStore
 
 	const toggleMenu = () => {
 		Animated.timing(menuPosition, {
@@ -73,7 +76,7 @@ const BurgerMenu = () => {
 					]}
 				>
 					<Box pt={8}>
-						<Avatar name={'Miguel Miguel'} onClose={() => setIsMenuOpen(false)} img={mockImg} />
+						<Avatar name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`} onClose={() => setIsMenuOpen(false)} img={mockImg} />
 						<BurgerLink img={countryImg} countryName={'Poland'} text={'Country'} />
 						<BurgerLink img={repeatImg} text={'Order history'} />
 						<BurgerLink img={questionMarkImg} text={'Contact support'} />
@@ -100,7 +103,7 @@ const BurgerMenu = () => {
 
 		</>
 	)
-}
+})
 
 const styles = StyleSheet.create({
 	background: {

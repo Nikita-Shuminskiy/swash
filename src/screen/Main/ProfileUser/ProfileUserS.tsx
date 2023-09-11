@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
-import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
+import { BaseWrapperComponent } from '../../../components/baseWrapperComponent'
 import { observer } from 'mobx-react-lite'
-import ArrowBack from '../../components/ArrowBack'
+import ArrowBack from '../../../components/ArrowBack'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { Avatar, Box, Image, Text } from 'native-base'
-import photoImg from '../../assets/Images/photoWhite.png'
-import { colors } from '../../assets/colors/colors'
+import photoImg from '../../../assets/Images/photoWhite.png'
+import { colors } from '../../../assets/colors/colors'
 import { TouchableOpacity } from 'react-native'
-import InputCustom from '../../components/TextInput'
-import Button from '../../components/Button'
-import BtnDelete from '../../components/btnDelete'
-import AuthStore from '../../store/AuthStore/auth-store'
-import BaseBottomPopUp from '../../components/pop-up/BaseBottomPopUp'
-import rootStore from '../../store/RootStore/root-store'
-import { routerConstants } from '../../constants/routerConstants'
+import InputCustom from '../../../components/TextInput'
+import Button from '../../../components/Button'
+import BtnDelete from '../../../components/btnDelete'
+import AuthStore from '../../../store/AuthStore/auth-store'
+import BaseBottomPopUp from '../../../components/pop-up/BaseBottomPopUp'
+import rootStore from '../../../store/RootStore/root-store'
+import { routerConstants } from '../../../constants/routerConstants'
+import AvatarProfile from './AvatarProfile'
 
 type ProfileUserSProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -22,19 +23,25 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 	const { clientSettings } = AuthStore
 	const { AuthStoreService } = rootStore
 	const [isDeleteAccount, setIsDeleteAccount] = useState<boolean>(false)
+
 	const [dataInfo, setDataInfo] = useState({
-		firstName: clientSettings.client.first_name,
-		lastName: clientSettings.client.last_name,
+		first_name: clientSettings.client.first_name,
+		last_name: clientSettings.client.last_name,
 		email: clientSettings.client.email,
 	})
+
 	const goBackPress = () => {
 		navigation.goBack()
 	}
 	const onPressChangePhone = () => {
-		navigation.navigate(routerConstants.PHONE_VERIFY)
+		navigation.navigate(routerConstants.PHONE_VERIFY, {from: 'update'})
 	}
 	const onPressSave = () => {
-
+		AuthStoreService.updateUserInfo(dataInfo).then((data) => {
+			if(data) {
+				navigation.goBack()
+			}
+		})
 	}
 	const onPressDeleteAccount = () => {
 		setIsDeleteAccount(true)
@@ -50,6 +57,8 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 			}
 		})
 	}
+
+
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={false}>
 			<Box paddingX={4} mb={6} mt={3} flex={1} justifyContent={'space-between'}>
@@ -64,26 +73,17 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 						<Box flex={1} />
 					</Box>
 					<Box alignItems={'center'} mt={4}>
-						<TouchableOpacity>
-							<Box alignItems={'center'}>
-								<Image alt={'photo'} w={6} h={6} position={'absolute'} zIndex={2} top={8} source={photoImg} />
-								<Box position={'absolute'} w={24} borderRadius={50} zIndex={1} top={0} opacity={0.3} h={24}
-										 backgroundColor={colors.black} />
-							</Box>
-							<Avatar bg='green.500' alignSelf='center' w={24} h={24} source={{
-								uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-							}} />
-						</TouchableOpacity>
+						<AvatarProfile/>
 					</Box>
 					<Box>
 						<Box flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
 							<Box flex={1}>
-								<InputCustom value={dataInfo.firstName} onChangeText={(e) => onChangeTextFields('firstName', e)}
+								<InputCustom value={dataInfo.first_name} onChangeText={(e) => onChangeTextFields('first_name', e)}
 														 borderRadius={16}
 														 heightInput={12} label={'First name'} />
 							</Box>
 							<Box ml={2} flex={1}>
-								<InputCustom value={dataInfo.lastName} onChangeText={(e) => onChangeTextFields('lastName', e)}
+								<InputCustom value={dataInfo.last_name} onChangeText={(e) => onChangeTextFields('last_name', e)}
 														 borderRadius={16}
 														 heightInput={12} label={'Last name'} />
 							</Box>

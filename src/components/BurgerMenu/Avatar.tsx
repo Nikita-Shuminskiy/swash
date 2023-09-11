@@ -26,13 +26,13 @@ const Avatar = ({ img, name, onClose }: AvatarProps) => {
 				<Box alignItems={'center'}
 						 flexDirection={'row'}>
 					<Image style={{ width: 48, height: 48, borderRadius: 28 }} source={img} />
-					<Box ml={3}>
+					<Box ml={3} flex={1} mr={4}>
 						<Text fontSize={13} fontFamily={'regular'} color={colors.grayLight}>Welcome back,</Text>
 						<Text fontSize={17} fontFamily={'semiBold'}>{name}</Text>
 					</Box>
 				</Box>
 
-				<Image alt={'img'} source={arrowBlue} />
+				<Image alt={'img'} style={{position: 'relative', right: 15 }} source={arrowBlue} />
 			</Box>
 		</TouchableOpacity>
 	)
