@@ -50,13 +50,8 @@ const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 				phone: formattedPhoneNumber,
 			}).then((data) => {
 				if (data) {
-					console.log('true')
 					setVerifyPhone(formattedPhoneNumber)
-					AuthStoreService.sendClientCode(formattedPhoneNumber).then((data) => {
-						if (data) {
-							navigation.navigate(routerConstants.VERIFY_NUMBER, { from: 'update' })
-						}
-					})
+					navigation.navigate(routerConstants.VERIFY_NUMBER, { from: 'update' })
 				}
 			})
 			return

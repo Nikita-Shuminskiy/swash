@@ -15,19 +15,21 @@ import BaseBottomPopUp from '../../../components/pop-up/BaseBottomPopUp'
 import rootStore from '../../../store/RootStore/root-store'
 import { routerConstants } from '../../../constants/routerConstants'
 import AvatarProfile from './AvatarProfile'
+import { useBurgerMenu } from '../../../components/BurgerMenu/BurgerMenuContext'
 
 type ProfileUserSProps = {
 	navigation: NavigationProp<ParamListBase>
 }
 const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
+	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
 	const { clientSettings } = AuthStore
 	const { AuthStoreService } = rootStore
 	const [isDeleteAccount, setIsDeleteAccount] = useState<boolean>(false)
 
 	const [dataInfo, setDataInfo] = useState({
-		first_name: clientSettings.client.first_name,
-		last_name: clientSettings.client.last_name,
-		email: clientSettings.client.email,
+		first_name: clientSettings?.client?.first_name,
+		last_name: clientSettings?.client?.last_name,
+		email: clientSettings?.client?.email,
 	})
 
 	const goBackPress = () => {
@@ -39,7 +41,7 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 	const onPressSave = () => {
 		AuthStoreService.updateUserInfo(dataInfo).then((data) => {
 			if(data) {
-				navigation.navigate(routerConstants.ORDERS, {from: 'open_menu'})
+				setIsMenuOpen(true)
 			}
 		})
 	}
@@ -47,7 +49,11 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 		setIsDeleteAccount(true)
 	}
 	const deleteAccountHandler = () => {
-		AuthStoreService.forgotAboutDevice()
+		AuthStoreService.forgotAboutDevice().then((data) => {
+			if(data) {
+				navigation.navigate(routerConstants.LOGIN)
+			}
+		})
 	}
 	const onChangeTextFields = (key: string, value: string) => {
 		setDataInfo(prevState => {
@@ -73,25 +79,25 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 						<Box flex={1} />
 					</Box>
 					<Box alignItems={'center'} mt={4}>
-						<AvatarProfile/>
+						<AvatarProfile photo={clientSettings.client?.pic}/>
 					</Box>
 					<Box>
 						<Box flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
 							<Box flex={1}>
-								<InputCustom value={dataInfo.first_name} onChangeText={(e) => onChangeTextFields('first_name', e)}
+								<InputCustom value={dataInfo?.first_name} onChangeText={(e) => onChangeTextFields('first_name', e)}
 														 borderRadius={16}
 														 heightInput={12} label={'First name'} />
 							</Box>
 							<Box ml={2} flex={1}>
-								<InputCustom value={dataInfo.last_name} onChangeText={(e) => onChangeTextFields('last_name', e)}
+								<InputCustom value={dataInfo?.last_name} onChangeText={(e) => onChangeTextFields('last_name', e)}
 														 borderRadius={16}
 														 heightInput={12} label={'Last name'} />
 							</Box>
 						</Box>
-						<InputCustom value={dataInfo.email} onChangeText={(e) => onChangeTextFields('email', e)} borderRadius={16}
+						<InputCustom value={dataInfo?.email} onChangeText={(e) => onChangeTextFields('email', e)} borderRadius={16}
 												 heightInput={12} label={'E-mail'} />
 						<Box>
-							<InputCustom value={`+${clientSettings.client.phone}`} borderRadius={16} heightInput={12}
+							<InputCustom value={`+${clientSettings.client?.phone}`} borderRadius={16} heightInput={12}
 													 label={'Phone'} />
 							<Box style={{ width: 130 }} h={19} position={'absolute'} right={0} top={10}>
 								<Button styleText={{ fontSize: 10 }} styleContainer={{ minHeight: 10, height: 48 }}

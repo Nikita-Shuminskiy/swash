@@ -76,7 +76,7 @@ const BurgerMenu = observer(() => {
 					]}
 				>
 					<Box pt={8}>
-						<Avatar name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`} onClose={() => setIsMenuOpen(false)} img={mockImg} />
+						<Avatar photo={clientSettings?.client?.pic} name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`} onClose={() => setIsMenuOpen(false)} />
 						<BurgerLink img={countryImg} countryName={'Poland'} text={'Country'} />
 						<BurgerLink img={repeatImg} text={'Order history'} />
 						<BurgerLink img={questionMarkImg} text={'Contact support'} />

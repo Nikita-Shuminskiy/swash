@@ -5,14 +5,16 @@ import arrowBlue from '../../assets/Images/order/arrowRightBlue.png'
 import { colors } from '../../assets/colors/colors'
 import { useNavigation } from '@react-navigation/native'
 import { routerConstants } from '../../constants/routerConstants'
+import { BASE_URL } from '../../api/config'
 
 type AvatarProps = {
-	img: string
+	photo: string
 	name: string
 	onClose: () => void
 }
 
-const Avatar = ({ img, name, onClose }: AvatarProps) => {
+const Avatar = ({ photo, name, onClose }: AvatarProps) => {
+	const photoUrl = `${BASE_URL}${photo}`
 	const navigation = useNavigation<any>()
 	const onPressGoProfile = () => {
 		navigation.navigate(routerConstants.PROFILE)
@@ -25,7 +27,7 @@ const Avatar = ({ img, name, onClose }: AvatarProps) => {
 					 flexDirection={'row'} mb={9}>
 				<Box alignItems={'center'}
 						 flexDirection={'row'}>
-					<Image style={{ width: 48, height: 48, borderRadius: 28 }} source={img} />
+					<Image style={{ width: 48, height: 48, borderRadius: 28 }} resizeMode={'center'} source={{ uri: photoUrl }} />
 					<Box ml={3} flex={1} mr={4}>
 						<Text fontSize={13} fontFamily={'regular'} color={colors.grayLight}>Welcome back,</Text>
 						<Text fontSize={17} fontFamily={'semiBold'}>{name}</Text>

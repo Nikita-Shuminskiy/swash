@@ -5,10 +5,16 @@ import { colors } from '../../../assets/colors/colors'
 import { TouchableOpacity } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import rootStore from '../../../store/RootStore/root-store'
+import { BASE_URL } from '../../../api/config'
+import { useBurgerMenu } from '../../../components/BurgerMenu/BurgerMenuContext'
 
-const AvatarProfile = () => {
+const AvatarProfile = ({ photo }) => {
+	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
+	const photoUrl = `${BASE_URL}${photo}`
+
 	const { AuthStoreService } = rootStore
-	const [selectedImageUri, setSelectedImageUri] = useState<string>('https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')
+
+	const [selectedImageUri, setSelectedImageUri] = useState<string>(photoUrl)
 	const onGalleryHandler = async () => {
 		const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
 
@@ -28,7 +34,11 @@ const AvatarProfile = () => {
 				const selectedAsset = result.assets[0]
 				const selectedImageUri = selectedAsset.uri
 				setSelectedImageUri(selectedImageUri)
-				AuthStoreService.updateClientPhoto(selectedImageUri)
+				AuthStoreService.updateClientPhoto(selectedImageUri).then((data) => {
+					if(data) {
+						setIsMenuOpen(true)
+					}
+				})
 			}
 		} catch (error) {
 			console.log('Error selecting image from gallery:', error)
@@ -37,7 +47,7 @@ const AvatarProfile = () => {
 	return (
 		<TouchableOpacity onPress={onGalleryHandler}>
 			<Box alignItems={'center'}>
-				<Image alt={'photo'} w={6} h={6} position={'absolute'} zIndex={2} top={8} source={photoImg} />
+				<Image alt={'photo'} w={6} h={6} position={'absolute'} zIndex={2} top={9} source={photoImg} />
 				<Box position={'absolute'} w={24} borderRadius={50} zIndex={1} top={0} opacity={0.3} h={24}
 						 backgroundColor={colors.black} />
 			</Box>

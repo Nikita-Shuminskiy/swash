@@ -10,6 +10,7 @@ type ClientType = {
 	last_name: string;
 	phone: string;
 	phone_verify_datetime: string;
+	pic: string
 };
 
 type CountryType = {

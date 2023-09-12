@@ -45,14 +45,13 @@ export const clientApi = {
 	async saveOrderPhoto(payload: { orders_id: string, photo: string }) {
 		const { orders_id, photo } = payload
 		const resizedImage = await manipulateAsync(
-			photo, [{ resize: { width: 800, height: 800 } }],
+			photo, [{ resize: { width: 800, height: 600 } }],
 			{ format: 'jpeg' as SaveFormat, compress: 0.8 },
 		)
 		const formData = new FormData()
 
 		// @ts-ignore
-		formData.append('photo', {
-			uri: resizedImage.uri,
+		formData.append('photo', { uri: resizedImage.uri,
 			name: 'image.jpg', type: 'image/jpeg',
 		})
 
