@@ -3,6 +3,7 @@ import { LoadingEnum } from '../../types/types'
 import { routerConstants } from '../../../constants/routerConstants'
 import { payloadUpdOrderType, StatusOrder } from '../../../api/Client/type'
 import { ReviewOrderPayload, StartOrderPayload } from '../../../api/Client/clientApi'
+import { deviceStorage } from '../../../utils/storage/storage'
 
 
 export class OrdersStoreService {
@@ -37,6 +38,9 @@ export class OrdersStoreService {
 	async getSettingClient(navigate) {
 		this.rootStore.Notification.setIsLoading(LoadingEnum.fetching)
 		try {
+			const token = await deviceStorage.getItem('token')
+			if(!token) return false
+
 			const data = await this.rootStore.AuthStore.getSettingsClient()
 
 			if (!data.client.phone_verify_datetime) return navigate && navigate(routerConstants.PHONE_VERIFY)

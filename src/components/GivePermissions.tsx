@@ -30,10 +30,10 @@ const GivePermissions = ({visible, askLocationPermissionHandler, askNotification
 		<Modal isOpen={visible}>
 		<BaseWrapperComponent styleSafeArea={{ backgroundColor: errorPermission ? colors.redLight : colors.blueLight }}>
 			<StatusBar backgroundColor={errorPermission ? colors.redLight : colors.blueLight} />
-			<Box flex={1} w={'100%'} justifyContent={'space-between'} alignItems={'center'}
+			<Box justifyContent={'space-between'} alignItems={'center'}
 					 backgroundColor={errorPermission ? colors.redLight : colors.blueLight}>
 				<Image style={styles.imgLogo} source={errorPermission ? imgLookRed : imgLook} />
-				<Box justifyContent={'space-between'} w={'100%'}>
+				<Box justifyContent={'space-between'}  w={'100%'}>
 					<Box alignItems={'center'}>
 						<Image style={{ width: '100%' }} source={imgBack} />
 						{

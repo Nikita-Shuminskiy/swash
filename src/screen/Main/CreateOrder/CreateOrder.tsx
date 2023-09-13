@@ -54,13 +54,13 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 		OrdersStoreService.updateOrder(payload)
 	}
 	const renderItem = ({ item }: { item: LogisticsPointType }) => {
-		const chousenPaczkomat = orderDetail.client_logistic_partners_points_id === item.logistic_partners_id
+		const chousenPaczkomat = orderDetail.client_logistic_partners_points_id === item.id
 
 
 		const onPressPaczkomat = () => {
 			OrdersStoreService.updateOrder({
 				orders_id: orderDetail.orders_id,
-				client_logistic_partners_points_id: item.logistic_partners_id,
+				client_logistic_partners_points_id: item.id,
 			})
 		}
 		return <Box paddingY={5} mb={2} minHeight={70} backgroundColor={colors.grayBright} borderRadius={16}

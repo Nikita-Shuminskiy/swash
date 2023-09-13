@@ -36,11 +36,11 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 		navigation.goBack()
 	}
 	const onPressChangePhone = () => {
-		navigation.navigate(routerConstants.PHONE_VERIFY, {from: 'update'})
+		navigation.navigate(routerConstants.PHONE_VERIFY, { from: 'update' })
 	}
 	const onPressSave = () => {
 		AuthStoreService.updateUserInfo(dataInfo).then((data) => {
-			if(data) {
+			if (data) {
 				setIsMenuOpen(true)
 			}
 		})
@@ -50,7 +50,7 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 	}
 	const deleteAccountHandler = () => {
 		AuthStoreService.forgotAboutDevice().then((data) => {
-			if(data) {
+			if (data) {
 				navigation.navigate(routerConstants.LOGIN)
 			}
 		})
@@ -79,7 +79,7 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 						<Box flex={1} />
 					</Box>
 					<Box alignItems={'center'} mt={4}>
-						<AvatarProfile photo={clientSettings.client?.pic}/>
+						<AvatarProfile photo={clientSettings.client?.pic} />
 					</Box>
 					<Box>
 						<Box flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
@@ -97,7 +97,8 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 						<InputCustom value={dataInfo?.email} onChangeText={(e) => onChangeTextFields('email', e)} borderRadius={16}
 												 heightInput={12} label={'E-mail'} />
 						<Box>
-							<InputCustom value={`+${clientSettings.client?.phone}`} borderRadius={16} heightInput={12}
+							<InputCustom value={`+${clientSettings.client?.phone}`} isReadOnly={true} editable={false}
+													 borderRadius={16} heightInput={12}
 													 label={'Phone'} />
 							<Box style={{ width: 130 }} h={19} position={'absolute'} right={0} top={10}>
 								<Button styleText={{ fontSize: 10 }} styleContainer={{ minHeight: 10, height: 48 }}

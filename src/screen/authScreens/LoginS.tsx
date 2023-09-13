@@ -11,19 +11,11 @@ import { colors } from '../../assets/colors/colors'
 import Button from '../../components/Button'
 import rootStore from '../../store/RootStore/root-store'
 import WebView from 'react-native-webview'
+import { LoadingEnum } from '../../store/types/types'
+import LoadingGlobal from '../../components/LoadingGlobal'
+import NotificationStore from '../../store/NotificationStore/notification-store'
+import { observer } from 'mobx-react-lite'
 
-function containsSpecialCharacters(inputString) {
-	try {
-		JSON.parse(inputString) // Попытка парсинга JSON
-		return false // Если успешно, значит, нет ошибки "Unexpected end of input"
-	} catch (error) {
-		// Обработка ошибки парсинга JSON
-		if (error instanceof SyntaxError && error.message.includes('Unexpected end of input')) {
-			return true // Возвращаем true, если ошибка "Unexpected end of input" обнаружена
-		}
-		return true // Возвращаем false в случае другой ошибки
-	}
-}
 
 const uriGoogleAuth = {
 	uri:
@@ -45,8 +37,9 @@ export type  UserAuthGoogleData = {
 	status: string;
 	token: string;
 }
-const LoginS = ({ navigation }: LoginSProps) => {
-	const { setUserAuthData } = AuthStore
+const LoginS = observer(({ navigation }: LoginSProps) => {
+	const { setUserAuthData, isAuth } = AuthStore
+	const { setInitLoading, initLoading } = NotificationStore
 	const { AuthStoreService, OrdersStoreService } = rootStore
 	const [webViewVisible, setWebViewVisible] = useState(false)
 	const onPressSingUpGoogle = () => {
@@ -56,6 +49,20 @@ const LoginS = ({ navigation }: LoginSProps) => {
 	}
 	const onPressAboutUs = () => {
 
+	}
+
+	function containsSpecialCharacters(inputString) {
+		try {
+			JSON.parse(inputString) // Попытка парсинга JSON
+			return false // Если успешно, значит, нет ошибки "Unexpected end of input"
+		} catch (error) {
+			// Обработка ошибки парсинга JSON
+			if (error instanceof SyntaxError && error.message.includes('Unexpected end of input')) {
+				return true // Возвращаем true, если ошибка "Unexpected end of input" обнаружена
+			}
+			setInitLoading(LoadingEnum.success)
+			return true // Возвращаем false в случае другой ошибки
+		}
 	}
 
 	const extractJSONFromBody = (body) => {
@@ -73,20 +80,20 @@ const LoginS = ({ navigation }: LoginSProps) => {
 	const onMessageWebView = (event) => {
 		const body = event.nativeEvent.data
 		const jsonData = extractJSONFromBody(body)
-
-		if (!containsSpecialCharacters(jsonData)) {
-			try {
-				const parsedData: UserAuthGoogleData = JSON.parse(jsonData)
-				if (parsedData.token) {
-					setWebViewVisible(false)
-					setUserAuthData(parsedData).then(r => {
-						OrdersStoreService.getSettingClient(navigation.navigate)
-					})
-
-				}
-			} catch (error) {
-				console.error('Error parsing JSON:', error)
+		if (containsSpecialCharacters(jsonData)) return
+    setInitLoading(LoadingEnum.loadingMore)
+		try {
+			const parsedData: UserAuthGoogleData = JSON.parse(jsonData)
+			if (parsedData.token) {
+				setWebViewVisible(false)
+				setUserAuthData(parsedData).then(r => {
+					OrdersStoreService.getSettingClient(navigation.navigate)
+				})
 			}
+		} catch (error) {
+			setInitLoading(LoadingEnum.success)
+			console.error('Error parsing JSON:', error)
+		} finally {
 		}
 	}
 	const LoadingIndicatorView = () => {
@@ -100,13 +107,23 @@ const LoginS = ({ navigation }: LoginSProps) => {
 		)
 	}
 
+
 	useEffect(() => {
-		AuthStoreService.checkToken().then((data) => {
-			if (data) {
-				OrdersStoreService.getSettingClient(navigation.navigate)
+		OrdersStoreService.getSettingClient(navigation.navigate).then((data) => {
+
+			if (typeof data === 'boolean') {
+				!data && setInitLoading(LoadingEnum.success)
 			}
+		}).catch(() => {
+			setInitLoading(LoadingEnum.success)
 		})
 	}, [])
+	// Если проверка токена еще не выполнена, отображаем индикатор загрузки
+	if (initLoading === LoadingEnum.loadingMore) {
+		return (
+			<LoadingGlobal visible={true} />
+		)
+	}
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={false}>
 			{
@@ -153,7 +170,7 @@ const LoginS = ({ navigation }: LoginSProps) => {
 							source={uriGoogleAuth}
 							renderLoading={LoadingIndicatorView}
 							startInLoadingState={true}
-							userAgent="Chrome"
+							userAgent='Chrome'
 							onMessage={onMessageWebView}
 						/>
 						{/*	<Box paddingX={10}>
@@ -166,7 +183,7 @@ const LoginS = ({ navigation }: LoginSProps) => {
 
 		</BaseWrapperComponent>
 	)
-}
+})
 const styles = StyleSheet.create({
 	imgIco: {
 		width: 24,

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Swash",
+    "name": "swash",
     "slug": "swash",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -50,10 +50,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "ceb8faaf-be57-4fc2-9cb5-32d6fc5355e2"
+        "projectId": "ec365838-71d1-4229-a5d5-898693ff8391"
       }
     },
-    "owner": "nick_11112",
+    "owner": "nick_111122",
     "scheme": "swash",
     "plugins": [
       "expo-localization"

@@ -90,7 +90,6 @@ const AddPhotoComponent = observer(() => {
 			setIsDeleteModal(true)
 		}
 		const imageUrl = `${BASE_URL}${item.filename}`
-		console.log(imageUrl)
 		return item.id === 'add_photo_button' ? (
 			<TouchableOpacity style={styles.addPhotoButton} onPress={() => {
 				if (!cameraPermission) {
