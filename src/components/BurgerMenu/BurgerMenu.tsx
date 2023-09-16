@@ -16,6 +16,8 @@ import BaseBottomPopUp from '../pop-up/BaseBottomPopUp'
 import rootStore from '../../store/RootStore/root-store'
 import AuthStore from '../../store/AuthStore/auth-store'
 import { observer } from 'mobx-react-lite'
+import { useNavigation } from '@react-navigation/native'
+import { routerConstants } from '../../constants/routerConstants'
 
 const BurgerMenu = observer(() => {
 	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
@@ -24,7 +26,7 @@ const BurgerMenu = observer(() => {
 	const menuPosition = useRef(new Animated.Value(toValue)).current
 	const { AuthStoreService } = rootStore
 	const {clientSettings} = AuthStore
-
+	const navigation = useNavigation<any>()
 	const toggleMenu = () => {
 		Animated.timing(menuPosition, {
 			toValue,
@@ -45,6 +47,10 @@ const BurgerMenu = observer(() => {
 				setIsMenuOpen(false)
 			}
 		})
+	}
+	const onPressNavigateHandler = (routeName: any) => {
+		navigation.navigate(routeName)
+		setIsMenuOpen(false)
 	}
 	return (
 		<>
@@ -81,7 +87,7 @@ const BurgerMenu = observer(() => {
 						<BurgerLink img={repeatImg} text={'Order history'} />
 						<BurgerLink img={questionMarkImg} text={'Contact support'} />
 						<BurgerLink img={walletImg} text={'Payment methods'} />
-						<BurgerLink img={exclamationMarkImg} text={'About Swash'} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)} img={exclamationMarkImg} text={'About Swash'} />
 					</Box>
 					<Box mt={2} mb={5} alignItems={'center'}>
 						<Button backgroundColor={colors.white} colorText={colors.black}

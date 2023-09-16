@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { BaseWrapperComponent } from '../../../components/baseWrapperComponent'
 import { observer } from 'mobx-react-lite'
-import ArrowBack from '../../../components/ArrowBack'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
-import { Avatar, Box, Image, Text } from 'native-base'
-import photoImg from '../../../assets/Images/photoWhite.png'
+import { Box, Text } from 'native-base'
 import { colors } from '../../../assets/colors/colors'
 import { TouchableOpacity } from 'react-native'
 import InputCustom from '../../../components/TextInput'
@@ -16,6 +14,7 @@ import rootStore from '../../../store/RootStore/root-store'
 import { routerConstants } from '../../../constants/routerConstants'
 import AvatarProfile from './AvatarProfile'
 import { useBurgerMenu } from '../../../components/BurgerMenu/BurgerMenuContext'
+import HeaderGoBackTitle from '../../../components/HeaderGoBackTitle'
 
 type ProfileUserSProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -69,15 +68,7 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 		<BaseWrapperComponent isKeyboardAwareScrollView={false}>
 			<Box paddingX={4} mb={6} mt={3} flex={1} justifyContent={'space-between'}>
 				<Box>
-					<Box flexDirection={'row'} alignItems={'center'} justifyContent={'center'}>
-						<Box flex={1} position={'relative'} bottom={1}>
-							<ArrowBack goBackPress={goBackPress} />
-						</Box>
-						<Box flex={2} alignItems={'center'}>
-							<Text fontSize={17} fontFamily={'semiBold'}>Account</Text>
-						</Box>
-						<Box flex={1} />
-					</Box>
+					<HeaderGoBackTitle title={'Account'} goBackPress={goBackPress}/>
 					<Box alignItems={'center'} mt={4}>
 						<AvatarProfile photo={clientSettings.client?.pic} />
 					</Box>
