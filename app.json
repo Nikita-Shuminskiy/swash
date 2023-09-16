@@ -25,7 +25,8 @@
       },
       "config": {
         "googleMapsApiKey": "AIzaSyD-3PKe63YHjDDaxjVahTekuyvvOFfwKp4"
-      }
+      },
+      "bundleIdentifier": "com.nick.auth"
     },
     "android": {
       "userInterfaceStyle": "light",
@@ -33,7 +34,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.nick.swash",
+      "package": "com.nick.auth",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyD-3PKe63YHjDDaxjVahTekuyvvOFfwKp4"
@@ -50,7 +51,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "ec365838-71d1-4229-a5d5-898693ff8391"
+        "projectId": "6a70ae27-2a77-4f70-8ecc-f612508b268d"
       }
     },
     "owner": "nick_111122",

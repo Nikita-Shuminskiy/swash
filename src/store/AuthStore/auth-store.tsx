@@ -77,9 +77,20 @@ export class AuthStore {
 		const { data } = await clientApi.sendClientRegister(payload)
 		return data
 	}
+
 	async updateClientPhoto(photo: string) {
 		const { data } = await clientApi.updateClientPhoto(photo)
 		return data
+	}
+
+	async authWithGoogle(id_device: string) {
+		try {
+			const { data } = await authApi.authWithGoogle(id_device)
+			await deviceStorage.saveItem('token', data.token)
+			return true
+		} catch (e) {
+			console.log(e, 'auth store')
+		}
 	}
 
 	constructor() {
@@ -94,6 +105,7 @@ export class AuthStore {
 			setClientSettings: action,
 			sendClientVerifyCode: action,
 			getLogisticPoints: action,
+			authWithGoogle: action,
 			setAuth: action,
 			setUserAuthData: action,
 			sendClientCode: action,
@@ -101,6 +113,7 @@ export class AuthStore {
 			setLogisticPoints: action,
 		})
 		this.setAuth = this.setAuth.bind(this)
+		this.authWithGoogle = this.authWithGoogle.bind(this)
 		this.setLogisticPoints = this.setLogisticPoints.bind(this)
 		this.getSettingsClient = this.getSettingsClient.bind(this)
 		this.updateClientPhoto = this.updateClientPhoto.bind(this)

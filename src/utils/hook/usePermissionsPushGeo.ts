@@ -23,8 +23,10 @@ export const usePermissionsPushGeo = () => {
 		(async () => {
 			try {
 				const { status } = await Notifications.requestPermissionsAsync()
+				console.log(status)
 				setNotificationStatus(status)
 				const { status: existingLocationStatus } = await Location.getForegroundPermissionsAsync()
+				console.log(existingLocationStatus, '11')
 				setLocationStatus(existingLocationStatus)
 			} catch (e) {
 
