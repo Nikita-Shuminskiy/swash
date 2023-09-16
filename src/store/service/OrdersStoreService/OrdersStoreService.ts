@@ -1,7 +1,7 @@
 import RootStore from '../../RootStore'
 import { LoadingEnum } from '../../types/types'
 import { routerConstants } from '../../../constants/routerConstants'
-import { payloadUpdOrderType, StatusOrder } from '../../../api/Client/type'
+import { LastStep, payloadUpdOrderType, StatusOrder } from '../../../api/Client/type'
 import { ReviewOrderPayload, StartOrderPayload } from '../../../api/Client/clientApi'
 import { deviceStorage } from '../../../utils/storage/storage'
 
@@ -172,6 +172,18 @@ export class OrdersStoreService {
 		try {
 			await this.rootStore.OrdersStore.updateOrder(payload)
 			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
+		} catch (e) {
+			console.log(e)
+		} finally {
+			this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
+		}
+	}
+	async getClosedOrders() {
+		this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
+		try {
+			 const data = await this.rootStore.AuthStore.getSettingsClient()
+			const closedOrders = data.orders.filter((order) => order.last_step === LastStep.admin_closed_order)
+			await this.rootStore.OrdersStore.setClosedOrder(closedOrders)
 		} catch (e) {
 			console.log(e)
 		} finally {

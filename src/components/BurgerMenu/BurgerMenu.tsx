@@ -84,7 +84,7 @@ const BurgerMenu = observer(() => {
 					<Box pt={8}>
 						<Avatar photo={clientSettings?.client?.pic} name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`} onClose={() => setIsMenuOpen(false)} />
 						<BurgerLink img={countryImg} countryName={'Poland'} text={'Country'} />
-						<BurgerLink img={repeatImg} text={'Order history'} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)} img={repeatImg} text={'Order history'} />
 						<BurgerLink img={questionMarkImg} text={'Contact support'} />
 						<BurgerLink img={walletImg} text={'Payment methods'} />
 						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)} img={exclamationMarkImg} text={'About Swash'} />

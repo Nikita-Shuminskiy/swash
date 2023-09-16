@@ -32,6 +32,7 @@ import BurgerMenu from '../components/BurgerMenu/BurgerMenu'
 import { SafeAreaView } from 'react-native'
 import ProfileUserS from '../screen/Main/ProfileUser/ProfileUserS'
 import AboutUsS from '../screen/Main/AboutUsS'
+import OrderHistoryS from '../screen/Main/OrderHistoryS'
 
 
 const RootStack = createNativeStackNavigator()
@@ -124,6 +125,11 @@ const RootNavigation = observer(() => {
 								options={{ headerShown: false }}
 								name={routerConstants.ABOUT_US}
 								component={AboutUsS}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.ORDER_HISTORY}
+								component={OrderHistoryS}
 							/>
 						</>
 					}

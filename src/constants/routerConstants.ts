@@ -18,7 +18,8 @@ export const routerConstants = {
     CLIENT_PAY: 'client_pay',
     EXECUTOR_STATUSES: 'executor_statuses',
     PROFILE: 'profile',
-    ABOUT_US: 'about-us'
+    ABOUT_US: 'about-us',
+    ORDER_HISTORY: 'order-history'
 /*
 
     EXECUTOR_CONFIRM_CLIENT_MUST_PAY: 'executor_confirm&client_must_pay', // оплати
