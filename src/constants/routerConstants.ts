@@ -19,7 +19,8 @@ export const routerConstants = {
     EXECUTOR_STATUSES: 'executor_statuses',
     PROFILE: 'profile',
     ABOUT_US: 'about-us',
-    ORDER_HISTORY: 'order-history'
+    ORDER_HISTORY: 'order-history',
+    CHANGE_COUNTRY: 'change-country'
 /*
 
     EXECUTOR_CONFIRM_CLIENT_MUST_PAY: 'executor_confirm&client_must_pay', // оплати

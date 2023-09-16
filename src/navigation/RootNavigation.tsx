@@ -33,6 +33,7 @@ import { SafeAreaView } from 'react-native'
 import ProfileUserS from '../screen/Main/ProfileUser/ProfileUserS'
 import AboutUsS from '../screen/Main/AboutUsS'
 import OrderHistoryS from '../screen/Main/OrderHistoryS'
+import ChangeCountryS from '../screen/Main/ChangeCountryS'
 
 
 const RootStack = createNativeStackNavigator()
@@ -130,6 +131,11 @@ const RootNavigation = observer(() => {
 								options={{ headerShown: false }}
 								name={routerConstants.ORDER_HISTORY}
 								component={OrderHistoryS}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.CHANGE_COUNTRY}
+								component={ChangeCountryS}
 							/>
 						</>
 					}

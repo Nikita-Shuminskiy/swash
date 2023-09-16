@@ -91,7 +91,8 @@ const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 					<Text fontSize={22} mb={2} fontFamily={'semiBold'}>Phone verification</Text>
 					<Text fontSize={15} color={colors.grayLight} fontFamily={'regular'}>We need your phone number</Text>
 				</Box>
-				<PhoneNumberField onChangeCountry={onChangeCountry} defaultValue={phone} errorMessage={'Incorrect phone number'}
+				<PhoneNumberField defaultCode={'PL'} onChangeCountry={onChangeCountry} defaultValue={phone} errorMessage={'Incorrect phone number'}
+													placeholder={'Phone'}
 													onChangeTextPhone={onChangeTextPhone}
 													isRequired={true} isInvalid={disabledBtn} />
 				<Box mt={10} w={'100%'} alignItems={'center'}>

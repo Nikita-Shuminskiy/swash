@@ -37,8 +37,6 @@ const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
 					textContainerStyle={{ borderRadius: 16, backgroundColor: 'transparent', height: 50 }}
 					codeTextStyle={{ color: colors.black, height: 23, fontWeight: '400', fontSize: 16 }}
 					textInputStyle={{ color: colors.black, fontSize: 16, fontFamily: 'regular' }}
-					defaultCode={'PL'}
-					placeholder={'Phone'}
 					layout='first'
 					onChangeText={(text) => {
 						onChangeTextPhone(text, phoneInput.current?.isValidNumber(text))
