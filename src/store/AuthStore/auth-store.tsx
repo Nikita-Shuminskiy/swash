@@ -4,6 +4,7 @@ import { deviceStorage } from '../../utils/storage/storage'
 import { UserAuthGoogleData } from '../../screen/authScreens/LoginS'
 import { clientApi } from '../../api/Client/clientApi'
 import { ClientRegisterPayloadType, DataSettingClientType, LogisticsPointType } from '../../api/Client/type'
+import { createAlert } from '../../components/CreateAlert'
 
 export class AuthStore {
 	isAuth: boolean = false
@@ -85,10 +86,15 @@ export class AuthStore {
 
 	async authWithGoogle(id_device: string) {
 		try {
-			const { data } = await authApi.authWithGoogle(id_device)
+			const { data } = await authApi.authWithGoogle('112')
 			await deviceStorage.saveItem('token', data.token)
 			return true
 		} catch (e) {
+			createAlert({
+				title: 'Message',
+				message: `${e}, authWithGoogle cath`,
+				buttons: [{ text: 'Exit' }],
+			})
 			console.log(e, 'auth store')
 		}
 	}

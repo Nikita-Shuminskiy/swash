@@ -15,6 +15,7 @@ import NotificationStore from '../../store/NotificationStore/notification-store'
 import { observer } from 'mobx-react-lite'
 import * as Application from 'expo-application'
 import * as Google from 'expo-auth-session/providers/google'
+import { createAlert } from '../../components/CreateAlert'
 
 export type  UserAuthGoogleData = {
 	email: string;
@@ -51,8 +52,25 @@ export const LoginS = observer(({ navigation }: any) => {
 		}).finally(() => {
 			setInitLoading(LoadingEnum.success)
 		})
-	}, [response])
+	}, [])
 
+	const loginGoogle = () => {
+		promptAsync({ useProxy: true, showInRecents: true }).then((data) => {
+			if(data) {
+				authWithGoogle(Application.androidId).then((data) => {
+					OrdersStoreService.getSettingClient(navigation.navigate).then((data) => {
+						if (typeof data === 'boolean') {
+							!data && setInitLoading(LoadingEnum.success)
+						}
+					}).catch(() => {
+						setInitLoading(LoadingEnum.success)
+					})
+				}).finally(() => {
+					setInitLoading(LoadingEnum.success)
+				})
+			}
+		})
+	}
 	// Если проверка токена еще не выполнена, отображаем индикатор загрузки
 	if (initLoading === LoadingEnum.loadingMore) {
 		return (
@@ -72,7 +90,7 @@ export const LoginS = observer(({ navigation }: any) => {
 				</Box>
 				<Box alignItems={'center'} w={'100%'}>
 					<Button styleContainer={styles.styleContainerBtn} backgroundColor={colors.blue}
-									onPress={() => promptAsync({ useProxy: true, showInRecents: true })}
+									onPress={loginGoogle}
 					>
 
 						<Box flexDirection={'row'} alignItems={'center'}>
@@ -83,7 +101,7 @@ export const LoginS = observer(({ navigation }: any) => {
 						</Box>
 					</Button>
 					<Button colorText={colors.white} styleContainer={{ ...styles.styleContainerBtn, ...styles.shadow }}
-									onPress={() => promptAsync({ useProxy: true, showInRecents: true })}>
+									onPress={() => promptAsync({ showInRecents: true })}>
 						<Box flexDirection={'row'} alignItems={'center'}>
 							<Image style={styles.imgIco} alt={'img-google'} source={imgGoogle} />
 							<Text>
