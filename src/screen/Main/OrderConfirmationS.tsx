@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { Box, Image, Text } from 'native-base'
@@ -27,12 +27,9 @@ const OrderConfirmationS = observer(({ navigation, route }: OrderConfirmationSPr
 		return true
 	}
 
-	// Определите обработчик события, когда компонент монтируется
-	React.useEffect(() => {
-		// Добавляем слушатель события нажатия на кнопку "назад"
+	useEffect(() => {
 		BackHandler.addEventListener('hardwareBackPress', goBackPress)
 
-		// Очистите слушателя события, когда компонент размонтируется
 		return () => {
 			BackHandler.removeEventListener('hardwareBackPress', goBackPress)
 		}

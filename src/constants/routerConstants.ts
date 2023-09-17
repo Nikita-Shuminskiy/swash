@@ -20,7 +20,8 @@ export const routerConstants = {
     PROFILE: 'profile',
     ABOUT_US: 'about-us',
     ORDER_HISTORY: 'order-history',
-    CHANGE_COUNTRY: 'change-country'
+    CHANGE_COUNTRY: 'change-country',
+    PAYMENT_METHOD: 'payment-methods'
 /*
 
     EXECUTOR_CONFIRM_CLIENT_MUST_PAY: 'executor_confirm&client_must_pay', // оплати

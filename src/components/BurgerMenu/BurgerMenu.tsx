@@ -18,6 +18,7 @@ import AuthStore from '../../store/AuthStore/auth-store'
 import { observer } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import { routerConstants } from '../../constants/routerConstants'
+import PaymentMethodS from '../../screen/Main/PaymentMethod/PaymentMethodS'
 
 const BurgerMenu = observer(() => {
 	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
@@ -25,7 +26,7 @@ const BurgerMenu = observer(() => {
 	const toValue = isMenuOpen ? 0 : -1000
 	const menuPosition = useRef(new Animated.Value(toValue)).current
 	const { AuthStoreService } = rootStore
-	const {clientSettings} = AuthStore
+	const { clientSettings } = AuthStore
 	const navigation = useNavigation<any>()
 	const toggleMenu = () => {
 		Animated.timing(menuPosition, {
@@ -82,12 +83,18 @@ const BurgerMenu = observer(() => {
 					]}
 				>
 					<Box pt={8}>
-						<Avatar photo={clientSettings?.client?.pic} name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`} onClose={() => setIsMenuOpen(false)} />
-						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHANGE_COUNTRY)} img={countryImg} countryName={'Poland'} text={'Country'} />
-						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)} img={repeatImg} text={'Order history'} />
+						<Avatar photo={clientSettings?.client?.pic}
+										name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`}
+										onClose={() => setIsMenuOpen(false)} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHANGE_COUNTRY)} img={countryImg}
+												countryName={'Poland'} text={'Country'} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)} img={repeatImg}
+												text={'Order history'} />
 						<BurgerLink img={questionMarkImg} text={'Contact support'} />
-						<BurgerLink img={walletImg} text={'Payment methods'} />
-						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)} img={exclamationMarkImg} text={'About Swash'} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.PAYMENT_METHOD)} img={walletImg}
+												text={'Payment methods'} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)} img={exclamationMarkImg}
+												text={'About Swash'} />
 					</Box>
 					<Box mt={2} mb={5} alignItems={'center'}>
 						<Button backgroundColor={colors.white} colorText={colors.black}

@@ -34,6 +34,7 @@ import ProfileUserS from '../screen/Main/ProfileUser/ProfileUserS'
 import AboutUsS from '../screen/Main/AboutUsS'
 import OrderHistoryS from '../screen/Main/OrderHistoryS'
 import ChangeCountryS from '../screen/Main/ChangeCountryS'
+import PaymentMethodS from '../screen/Main/PaymentMethod/PaymentMethodS'
 
 
 const RootStack = createNativeStackNavigator()
@@ -126,6 +127,11 @@ const RootNavigation = observer(() => {
 								options={{ headerShown: false }}
 								name={routerConstants.ABOUT_US}
 								component={AboutUsS}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.PAYMENT_METHOD}
+								component={PaymentMethodS}
 							/>
 							<RootStack.Screen
 								options={{ headerShown: false }}

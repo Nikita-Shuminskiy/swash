@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import PhoneInput, { PhoneInputProps } from 'react-native-phone-number-input'
 import { colors } from '../assets/colors/colors'
 import { Box, FormControl, WarningOutlineIcon } from 'native-base'
-import { Image, Modal, View, TouchableOpacity } from 'react-native'
+import { Image } from 'react-native'
 import arrow from '../assets/Images/arrow-bottom.png'
+
 type PhoneNumberFieldProps = PhoneInputProps & {
 	isRequired: boolean
 	isInvalid: boolean
@@ -21,15 +22,6 @@ export const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
 																														 ...rest
 																													 }) => {
 	const phoneInput = useRef<PhoneInput>(null)
-	const [countryModalVisible, setCountryModalVisible] = useState(false)
-
-	const openCountryModal = () => {
-		setCountryModalVisible(true)
-	}
-
-	const closeCountryModal = () => {
-		setCountryModalVisible(false)
-	}
 
 	return (
 		<Box w={'100%'}>
@@ -49,7 +41,7 @@ export const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
 						borderRadius: 16,
 						alignItems: 'center',
 					}}
-					textContainerStyle={{ borderRadius: 16, backgroundColor: 'transparent', height: 50 }}
+					textContainerStyle={{ borderRadius: 16, backgroundColor: 'transparent', height: 56 }}
 					codeTextStyle={{ color: colors.black, height: 23, fontWeight: '400', fontSize: 16 }}
 					textInputStyle={{ color: colors.black, fontSize: 16, fontFamily: 'regular' }}
 					layout='first'

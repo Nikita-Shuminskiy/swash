@@ -9,19 +9,22 @@ import { LastStep, OrderType } from '../../api/Client/type'
 import OrderHistoryViewer from '../../components/list-viewer/OrderHistoryViewer/OrderHistoryViewer'
 import rootStore from '../../store/RootStore/root-store'
 import OrdersStore from '../../store/OrdersStore/orders-store'
+import { routerConstants } from '../../constants/routerConstants'
 
 type OrderHistorySProps = {
 	navigation: NavigationProp<ParamListBase>
 }
 const OrderHistoryS = observer(({ navigation }: OrderHistorySProps) => {
 	const { OrdersStoreService } = rootStore
-	const { closedOrders } = OrdersStore
+	const { closedOrders, orderDetail } = OrdersStore
+
 	const goBack = () => {
 		navigation.goBack()
 	}
 	const renderItem = ({ item }: { item: OrderType }) => {
 		const onPressDetails = () => {
-
+			OrdersStoreService.getOrderReportDetail(item.id)
+			navigation.navigate(routerConstants.CLIENT_PAY, {from: 'ok'})
 		}
 		return <OrderHistoryViewer onPressDetails={onPressDetails} order={item} />
 	}

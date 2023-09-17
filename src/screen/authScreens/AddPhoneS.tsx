@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
 import { Box, Text } from 'native-base'
 import { colors } from '../../assets/colors/colors'
-import PhoneNumberField from '../../components/PhoneField'
 import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native'
 import Button from '../../components/Button'
 import rootStore from '../../store/RootStore/root-store'
@@ -10,6 +9,7 @@ import { routerConstants } from '../../constants/routerConstants'
 import AuthStore from '../../store/AuthStore/auth-store'
 import ArrowBack from '../../components/ArrowBack'
 import { countryDataDefault } from '../../utils/constants'
+import { PhoneNumberField } from '../../components/PhoneField'
 
 type PhoneVerifySProps = {
 	navigation: NavigationProp<ParamListBase>
