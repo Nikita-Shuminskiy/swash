@@ -9,12 +9,13 @@ import rootStore from '../../store/RootStore/root-store'
 import { routerConstants } from '../../constants/routerConstants'
 import AuthStore from '../../store/AuthStore/auth-store'
 import ArrowBack from '../../components/ArrowBack'
+import { countryDataDefault } from '../../utils/constants'
 
 type PhoneVerifySProps = {
 	navigation: NavigationProp<ParamListBase>
 	route: any
 }
-type CountryData = {
+export type CountryData = {
 	callingCode: string[];
 	cca2: string;
 	currency: string[];
@@ -23,15 +24,7 @@ type CountryData = {
 	region: string;
 	subregion: string;
 };
-const countryDataDefault = {
-	callingCode: ['48'],
-	cca2: 'PL',
-	currency: ['PLN'],
-	flag: 'flag-pl',
-	name: 'Poland',
-	region: 'Europe',
-	subregion: 'Eastern Europe',
-}
+
 const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 	const { AuthStoreService } = rootStore
 	const isFromUpdate = route.params?.from === 'update'

@@ -1,7 +1,9 @@
+import { CountryCode } from 'react-native-country-picker-modal/lib/types'
+
 type ClientType = {
 	clients_id: string;
 	consent_datetime: null | string; // если нет согласия  === null => экран дачи согласия
-	country: string;
+	country: CountryCode;
 	disabled: null | string;
 	email: string;
 	favorite_client_logistic_partners_points_id: string[];

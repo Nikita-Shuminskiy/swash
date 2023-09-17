@@ -1,26 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
 import { Box, Text } from 'native-base'
 import HeaderGoBackTitle from '../../components/HeaderGoBackTitle'
 import { colors } from '../../assets/colors/colors'
 import Button from '../../components/Button'
-import PhoneNumberField from '../../components/PhoneField'
-import { Country } from 'react-native-country-picker-modal/lib/types'
+import CountriesPicker from '../../components/CountriesPicker'
+import { CountryCode } from 'react-native-country-picker-modal/lib/types'
+import rootStore from '../../store/RootStore/root-store'
+import AuthStore from '../../store/AuthStore/auth-store'
+import { observer } from 'mobx-react-lite'
+import { useBurgerMenu } from '../../components/BurgerMenu/BurgerMenuContext'
 
 type ChangeCountrySProps = {
 	navigation: NavigationProp<ParamListBase>
 }
-const ChangeCountryS = ({ navigation }: ChangeCountrySProps) => {
+const ChangeCountryS = observer(({ navigation }: ChangeCountrySProps) => {
+	const { clientSettings } = AuthStore
+	const { AuthStoreService } = rootStore
+	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
+	const [selectedCountryCode, setSelectedCountryCode] = useState<CountryCode>(clientSettings.client.country)
+
 	const goBack = () => {
 		navigation.goBack()
 	}
 	const onPressSave = () => {
+		AuthStoreService.updateUserInfo({ country: selectedCountryCode }).then((data) => {
+			if (data) {
+				setIsMenuOpen(true)
+			}
+		})
+	}
 
-	}
-	const onChangeCountry = (country: Country) => {
-		console.log(country)
-	}
 	return (
 		<BaseWrapperComponent>
 			<Box paddingX={4} mb={6} mt={3} flex={1}>
@@ -31,12 +42,7 @@ const ChangeCountryS = ({ navigation }: ChangeCountrySProps) => {
 					<Text fontSize={15} fontFamily={'regular'} color={colors.grayLight}>You can always change country in your
 						profile</Text>
 					<Box mt={4} mb={4}>
-						<PhoneNumberField onChangeCountry={onChangeCountry}
-															onChangeTextPhone={() => {
-															}}
-
-															defaultCode={'PL'}
-															isRequired={false} isInvalid={false} />
+						<CountriesPicker saveCountryHandler={setSelectedCountryCode} country={selectedCountryCode} />
 					</Box>
 					<Box>
 						<Button onPress={onPressSave}
@@ -49,6 +55,6 @@ const ChangeCountryS = ({ navigation }: ChangeCountrySProps) => {
 			</Box>
 		</BaseWrapperComponent>
 	)
-}
+})
 
 export default ChangeCountryS

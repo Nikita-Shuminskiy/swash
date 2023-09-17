@@ -1,16 +1,18 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import PhoneInput, { PhoneInputProps } from 'react-native-phone-number-input'
 import { colors } from '../assets/colors/colors'
 import { Box, FormControl, WarningOutlineIcon } from 'native-base'
-
+import { Image, Modal, View, TouchableOpacity } from 'react-native'
+import arrow from '../assets/Images/arrow-bottom.png'
 type PhoneNumberFieldProps = PhoneInputProps & {
 	isRequired: boolean
 	isInvalid: boolean
 	errorMessage?: string
-	onValidNumber?: (isValid: boolean) => void,
+	onValidNumber?: (isValid: boolean) => void
 	onChangeTextPhone: (text: string, isValid: boolean) => void
 }
-const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
+
+export const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
 																														 isRequired,
 																														 onChangeTextPhone,
 																														 isInvalid,
@@ -19,6 +21,16 @@ const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
 																														 ...rest
 																													 }) => {
 	const phoneInput = useRef<PhoneInput>(null)
+	const [countryModalVisible, setCountryModalVisible] = useState(false)
+
+	const openCountryModal = () => {
+		setCountryModalVisible(true)
+	}
+
+	const closeCountryModal = () => {
+		setCountryModalVisible(false)
+	}
+
 	return (
 		<Box w={'100%'}>
 			<FormControl isInvalid={isInvalid} isRequired={isRequired}>
@@ -27,10 +39,13 @@ const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
 					textInputProps={{
 						keyboardType: 'numeric',
 					}}
+					renderDropdownImage={<Image source={arrow} style={{ width: 24, height: 24, position: 'absolute', right: 0 }} />}
 					containerStyle={{
 						width: '100%',
 						height: 56,
-						backgroundColor: '#F5F5F6',
+						borderWidth: 1,
+						borderColor: colors.grayBright,
+						backgroundColor: 'rgba(245,245,246,0)',
 						borderRadius: 16,
 						alignItems: 'center',
 					}}
@@ -51,4 +66,3 @@ const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
 	)
 }
 
-export default PhoneNumberField
