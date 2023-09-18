@@ -19,12 +19,16 @@ const ChangeCountryS = observer(({ navigation }: ChangeCountrySProps) => {
 	const { clientSettings } = AuthStore
 	const { AuthStoreService } = rootStore
 	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
-	const [selectedCountryCode, setSelectedCountryCode] = useState<CountryCode>(clientSettings.client.country)
+	const [selectedCountryCode, setSelectedCountryCode] = useState<CountryCode | null>(null)
+	//const currentCountry = clientSettings.countries.find(el => el.country === clientSettings.client.country)
+
+
 
 	const goBack = () => {
 		navigation.goBack()
 	}
 	const onPressSave = () => {
+		if(!selectedCountryCode) return
 		AuthStoreService.updateUserInfo({ country: selectedCountryCode }).then((data) => {
 			if (data) {
 				setIsMenuOpen(true)
@@ -42,7 +46,7 @@ const ChangeCountryS = observer(({ navigation }: ChangeCountrySProps) => {
 					<Text fontSize={15} fontFamily={'regular'} color={colors.grayLight}>You can always change country in your
 						profile</Text>
 					<Box mt={4} mb={4}>
-						<CountriesPicker saveCountryHandler={setSelectedCountryCode} country={selectedCountryCode} />
+						<CountriesPicker saveCountryHandler={setSelectedCountryCode}   country={clientSettings?.client?.country} />
 					</Box>
 					<Box>
 						<Button onPress={onPressSave}

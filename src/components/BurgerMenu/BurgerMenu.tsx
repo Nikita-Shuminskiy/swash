@@ -11,14 +11,12 @@ import repeatImg from '../../assets/Images/BurgerMenu/repeatBlue.png'
 import walletImg from '../../assets/Images/BurgerMenu/walletBlue.png'
 import Button from '../Button'
 import Avatar from './Avatar'
-import mockImg from './imgMock.png'
 import BaseBottomPopUp from '../pop-up/BaseBottomPopUp'
 import rootStore from '../../store/RootStore/root-store'
 import AuthStore from '../../store/AuthStore/auth-store'
 import { observer } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import { routerConstants } from '../../constants/routerConstants'
-import PaymentMethodS from '../../screen/Main/PaymentMethod/PaymentMethodS'
 
 const BurgerMenu = observer(() => {
 	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
@@ -87,10 +85,11 @@ const BurgerMenu = observer(() => {
 										name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`}
 										onClose={() => setIsMenuOpen(false)} />
 						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHANGE_COUNTRY)} img={countryImg}
-												countryName={'Poland'} text={'Country'} />
+												countryName={clientSettings.client?.country} text={'Country'} />
 						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)} img={repeatImg}
 												text={'Order history'} />
-						<BurgerLink img={questionMarkImg} text={'Contact support'} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHAT_SUPPORT)} img={questionMarkImg}
+												text={'Contact support'} />
 						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.PAYMENT_METHOD)} img={walletImg}
 												text={'Payment methods'} />
 						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)} img={exclamationMarkImg}

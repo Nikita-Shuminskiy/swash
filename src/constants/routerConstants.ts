@@ -21,7 +21,8 @@ export const routerConstants = {
     ABOUT_US: 'about-us',
     ORDER_HISTORY: 'order-history',
     CHANGE_COUNTRY: 'change-country',
-    PAYMENT_METHOD: 'payment-methods'
+    PAYMENT_METHOD: 'payment-methods',
+    CHAT_SUPPORT: 'chat-support'
 /*
 
     EXECUTOR_CONFIRM_CLIENT_MUST_PAY: 'executor_confirm&client_must_pay', // оплати

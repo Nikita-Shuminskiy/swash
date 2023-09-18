@@ -35,6 +35,7 @@ import AboutUsS from '../screen/Main/AboutUsS'
 import OrderHistoryS from '../screen/Main/OrderHistoryS'
 import ChangeCountryS from '../screen/Main/ChangeCountryS'
 import PaymentMethodS from '../screen/Main/PaymentMethod/PaymentMethodS'
+import ChatS from '../screen/Main/Chat/ChatS'
 
 
 const RootStack = createNativeStackNavigator()
@@ -142,6 +143,11 @@ const RootNavigation = observer(() => {
 								options={{ headerShown: false }}
 								name={routerConstants.CHANGE_COUNTRY}
 								component={ChangeCountryS}
+							/>
+							<RootStack.Screen
+								options={{ headerShown: false }}
+								name={routerConstants.CHAT_SUPPORT}
+								component={ChatS}
 							/>
 						</>
 					}
