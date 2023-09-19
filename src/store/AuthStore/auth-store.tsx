@@ -55,7 +55,6 @@ export class AuthStore {
 
 	async getSettingsClient() {
 		const { data } = await clientApi.getSettingsClient()
-		console.log(data.countries)
 		this.setClientSettings(data)
 		return data
 	}

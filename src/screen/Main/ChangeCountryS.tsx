@@ -11,30 +11,34 @@ import rootStore from '../../store/RootStore/root-store'
 import AuthStore from '../../store/AuthStore/auth-store'
 import { observer } from 'mobx-react-lite'
 import { useBurgerMenu } from '../../components/BurgerMenu/BurgerMenuContext'
+import CountriesPopUp from '../../components/pop-up/CountriesPopUp'
+import { CountryType } from '../../api/Client/type'
 
 type ChangeCountrySProps = {
 	navigation: NavigationProp<ParamListBase>
 }
 const ChangeCountryS = observer(({ navigation }: ChangeCountrySProps) => {
 	const { clientSettings } = AuthStore
+	const currentCountry = clientSettings.countries.find((country) => country.country === clientSettings.client.country)
+
 	const { AuthStoreService } = rootStore
 	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
-	const [selectedCountryCode, setSelectedCountryCode] = useState<CountryCode | null>(null)
-	//const currentCountry = clientSettings.countries.find(el => el.country === clientSettings.client.country)
-
+	const [selectedCountry, setSelectedCountry] = useState<CountryType | null>(currentCountry)
+	const [isCountryPickerVisible, setIsCountryPickerVisible] = useState(false)
 
 
 	const goBack = () => {
 		navigation.goBack()
 	}
 	const onPressSave = () => {
-		if(!selectedCountryCode) return
-		AuthStoreService.updateUserInfo({ country: selectedCountryCode }).then((data) => {
+		if (!selectedCountry.country) return
+		AuthStoreService.updateUserInfo({ country: selectedCountry.country }).then((data) => {
 			if (data) {
 				setIsMenuOpen(true)
 			}
 		})
 	}
+
 
 	return (
 		<BaseWrapperComponent>
@@ -46,7 +50,8 @@ const ChangeCountryS = observer(({ navigation }: ChangeCountrySProps) => {
 					<Text fontSize={15} fontFamily={'regular'} color={colors.grayLight}>You can always change country in your
 						profile</Text>
 					<Box mt={4} mb={4}>
-						<CountriesPicker saveCountryHandler={setSelectedCountryCode}   country={clientSettings?.client?.country} />
+						<CountriesPicker openCountriesPopUp={setIsCountryPickerVisible}
+														 selectedCountry={selectedCountry} />
 					</Box>
 					<Box>
 						<Button onPress={onPressSave}
@@ -57,7 +62,16 @@ const ChangeCountryS = observer(({ navigation }: ChangeCountrySProps) => {
 					</Box>
 				</Box>
 			</Box>
+			{
+				isCountryPickerVisible &&
+				<CountriesPopUp text={'Choice of countries'} saveCountry={setSelectedCountry}
+												currentCountry={selectedCountry.country as CountryCode}
+												countries={clientSettings.countries}
+												visible={isCountryPickerVisible}
+												onClose={() => setIsCountryPickerVisible(false)} />
+			}
 		</BaseWrapperComponent>
+
 	)
 })
 

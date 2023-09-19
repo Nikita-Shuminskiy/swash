@@ -6,65 +6,40 @@ import { Country, CountryCode } from 'react-native-country-picker-modal/lib/type
 import CountryPicker from 'react-native-country-picker-modal'
 import arrow from '../assets/Images/arrow-bottom.png'
 import { CountryType } from '../api/Client/type'
+import BaseBottomPopUp from './pop-up/BaseBottomPopUp'
+import CountriesPopUp from './pop-up/CountriesPopUp'
+import CountryFlag from 'react-native-country-flag'
 
 type CountriesPickerProps = {
-	saveCountryHandler: (country: CountryCode) => void
-	country: CountryCode
-	//currentCountry: CountryType
+	selectedCountry: CountryType
+	openCountriesPopUp: (value: boolean) => void
 }
 
-const CountriesPicker = ({ saveCountryHandler, country }: CountriesPickerProps) => {
-	const [isCountryPickerVisible, setIsCountryPickerVisible] = useState(false)
-	const [selectedCountry, setSelectedCountry] = useState<Country | null>(null)
-
-	const showDatePicker = () => {
-		setIsCountryPickerVisible(true)
-	}
-
-	const hideDatePicker = () => {
-		setIsCountryPickerVisible(false)
-	}
-
-	const handleCountryChange = (country: Country) => {
-		setSelectedCountry(country)
-		saveCountryHandler(country.cca2)
-	}
+const CountriesPicker = ({ selectedCountry, openCountriesPopUp }: CountriesPickerProps) => {
 
 	return (
-		<Box>
-			<TouchableOpacity style={{ width: '100%' }} onPress={showDatePicker}>
-				<Box style={{ height: 56 }} borderWidth={1} w={'100%'} borderRadius={16} borderColor={colors.grayBright}
-						 flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-					<Box flexDirection={'row'} alignItems={'center'} justifyContent={'center'}>
-						<Box ml={2}>
-							<CountryPicker
-								visible={isCountryPickerVisible}
-								onClose={hideDatePicker}
-								onSelect={handleCountryChange}
-								countryCode={selectedCountry?.cca2 ?? country} />
+		<>
+			<Box>
+				<TouchableOpacity style={{ width: '100%' }} onPress={() => openCountriesPopUp(true)}>
+					<Box style={{ height: 56 }} borderWidth={1} w={'100%'} borderRadius={16} borderColor={colors.grayBright}
+							 flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
+						<Box flexDirection={'row'} alignItems={'center'} justifyContent={'center'}>
+							<Box ml={2} mr={1}>
+								<CountryFlag isoCode={selectedCountry?.country} size={18} />
+							</Box>
+							<Text fontSize={15} fontFamily={'regular'} mr={1}> {selectedCountry?.country}</Text>
+							<Text fontSize={15}
+										fontFamily={'regular'}>{`(${selectedCountry?.tel_prefix})`}</Text>
 						</Box>
-						{
-							!!selectedCountry ? <>
-								{
-									selectedCountry?.callingCode[0] && <Text fontSize={15}
-																													 fontFamily={'regular'}>{`(+${selectedCountry?.callingCode[0]})`}</Text>
-								}
-
-								{selectedCountry?.name &&
-									<Text fontSize={15} fontFamily={'regular'}> {selectedCountry.name as string}</Text>}
-							</> : <Text fontSize={15} fontFamily={'regular'}> {country}</Text>
-						}
-
+						<Image
+							source={arrow}
+							style={{ width: 20, height: 20, marginRight: 10 }}
+						/>
 					</Box>
-					<Image
-						source={arrow}
-						style={{ width: 20, height: 20, marginRight: 10 }}
-					/>
-				</Box>
-			</TouchableOpacity>
+				</TouchableOpacity>
+			</Box>
 
-
-		</Box>
+		</>
 	)
 }
 

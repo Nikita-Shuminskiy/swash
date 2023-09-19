@@ -95,7 +95,6 @@ export enum LastStep {
 	admin_closed_order = 'admin_closed_order',// не показывать
 	client_confirm = 'client_confirm',// не показывать
 
-
 }
 
 export type UntilsOrderType = {
