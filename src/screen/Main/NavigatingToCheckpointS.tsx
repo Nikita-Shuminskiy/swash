@@ -21,6 +21,7 @@ type NavigatingToCheckpointSProps = {
 	route: any
 }
 const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToCheckpointSProps) => {
+
 	const { orderDetail } = OrdersStore
 	const isFromExecutorPerfomed = route.params.from === 'takeIt'
 	const [myPosition, setMyPosition] = useState<Coordinates>()

@@ -1,25 +1,52 @@
 import React from 'react'
 import { Box, Text } from 'native-base'
 import mockImg from '../../../assets/Images/google.png'
-import { Image } from 'react-native'
+import { Image, StyleSheet } from 'react-native'
 import { colors } from '../../../assets/colors/colors'
+import { DialogType } from '../../../api/ChatApi/type'
+import { dateStringFormat } from '../../../utils/commonUtils'
+import { BASE_URL } from '../../../api/config'
+import AuthStore from '../../../store/AuthStore/auth-store'
 
 type MessageViewerProps = {
-	message: any
+	message: DialogType
 }
 const MessageViewer = ({ message }: MessageViewerProps) => {
+	const isClientMessage = !message.admins_id
+	const { clientSettings } = AuthStore
+
+	const imageUrl = `${BASE_URL}${message.image}`
+	const clientAvatar = `${BASE_URL}${clientSettings.client.pic}`
+	const adminAvatar = `${BASE_URL}${message.admins_pic}`
+
 	return (
-		<Box flexDirection={'row'} alignItems={'flex-end'}>
-			<Image source={mockImg} style={{ width: 32, height: 32, marginRight: 4 }} />
-			<Box backgroundColor={colors.grayBright} borderRadius={16} p={3} borderBottomLeftRadius={0}
-					 borderBottomRightRadius={0}>
-				<Text color={colors.grayLight} fontFamily={'regular'} fontSize={13}>Ameli</Text>
-				<Text fontFamily={'regular'} maxWidth={'90%'} fontSize={15}>Hi, please choose topic or just write вы ава влорипамс риот льдб
-					льтори пмнае ygvbhuinj okpl pkoijhyu пеак пнгр ijokpl[ koij  эждл ор олд жэ длщшог рнhyg hujiko lp;p lokij uhygt yhuj ikolp; l okijuhy пеап yhuj ikolphyugtfr gyuh ijokp kij hyugtfr gyuhijokp l </Text>
-				<Text color={colors.grayLight} textAlign={'right'} fontFamily={'regular'} fontSize={13}>10:12</Text>
+		<Box flexDirection={'row'} mb={4} alignItems={'flex-end'}
+				 justifyContent={isClientMessage ? 'flex-end' : 'flex-start'}>
+			{!isClientMessage &&
+				<Image source={message.admins_pic ? { uri: adminAvatar } : mockImg}
+							 style={{ ...styles.imgAvatar, marginRight: 4 }} />}
+
+			<Box backgroundColor={isClientMessage ? colors.blue : colors.grayBright} borderRadius={16} p={2}
+					 borderBottomLeftRadius={isClientMessage ? 16 : 0}
+					 borderBottomRightRadius={!isClientMessage ? 16 : 0} flex={message?.image ? 1 : 0}>
+				<Text color={colors.grayLight} mb={message?.image ? 2 : 0} textAlign={isClientMessage ? 'right' : 'left'}
+							fontFamily={'regular'}
+							fontSize={13}>{isClientMessage ? clientSettings.client.first_name : message.admins_name ?? 'Admin'}</Text>
+				{message?.image && <Image style={styles.imgPhoto} resizeMethod={'resize'} source={{ uri: imageUrl }} />}
+				<Box maxWidth={'90%'} minWidth={120} mt={message?.image ? 3 : 0}>
+					<Text fontFamily={'regular'} color={isClientMessage ? colors.white : colors.black}
+								fontSize={15}>{message.text}</Text>
+				</Box>
+				<Text color={colors.grayLight} textAlign={'right'} fontFamily={'regular'}
+							fontSize={13}>{dateStringFormat('hh:mm', message.datetime_create)}</Text>
 			</Box>
+			{isClientMessage &&
+				<Image source={{ uri: clientAvatar }} style={{ ...styles.imgAvatar, marginLeft: 4 }} />}
 		</Box>
 	)
 }
-
+const styles = StyleSheet.create({
+	imgPhoto: { width: '100%', height: 160, borderRadius: 16 },
+	imgAvatar: { width: 32, height: 32, borderRadius: 16 },
+})
 export default MessageViewer

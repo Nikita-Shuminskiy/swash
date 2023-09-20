@@ -6,7 +6,7 @@ type ClientType = {
 	country: CountryCode;
 	disabled: null | string;
 	email: string;
-	favorite_client_logistic_partners_points_id: string[];
+	favorite_client_logistic_partners_points_id: LogisticsPointType[]
 	first_name: string;
 	language: string;
 	last_name: string;
@@ -106,8 +106,13 @@ export type UntilsOrderType = {
 
 
 export type PhotoType = { 'filename': string, 'id': string }
+export type ClientTypicalMessagesType = {
+	country: string,
+	message: string
+}
 type DataSettingClientType = {
 	client: ClientType;
+	client_typical_messages: ClientTypicalMessagesType[]
 	countries: CountryType[];
 	languages: string[];
 	orders: OrderType[];
