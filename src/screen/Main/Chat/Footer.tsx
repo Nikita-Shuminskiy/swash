@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Box, Image, Input } from 'native-base'
+import { Box } from 'native-base'
 
 import paperClippingImg from '../../../assets/Images/Chat/paperСlippng.png'
 import sendBtnImg from '../../../assets/Images/Chat/sendBtn.png'
-import { TouchableOpacity, TextInput, StyleSheet, ImageBackground } from 'react-native'
+import { ActivityIndicator, ImageBackground, StyleSheet, TextInput } from 'react-native'
 import { colors } from '../../../assets/colors/colors'
 import * as ImagePicker from 'expo-image-picker'
 import closeCircleGrayImg from '../../../assets/Images/order/closeCircleGray.png'
@@ -13,7 +13,7 @@ import rootStore from '../../../store/RootStore/root-store'
 type FooterProps = {
 	scrollToBottomHandler: () => void
 }
-const Footer = ({scrollToBottomHandler}: FooterProps) => {
+const Footer = ({ scrollToBottomHandler }: FooterProps) => {
 	const { ChatStoreService } = rootStore
 	const [currentImg, setCurrentImg] = useState<string>('')
 	const [message, setMessage] = useState<string>('')
@@ -45,13 +45,16 @@ const Footer = ({scrollToBottomHandler}: FooterProps) => {
 		setCurrentImg('')
 	}
 	const onPressSendMessage = () => {
+		if(!message && !currentImg) return
 		setLoading(true)
-		ChatStoreService.sendMessage({ photo: currentImg, text: message }).then((data)=> {
-			if(data) {
+		ChatStoreService.sendMessage({ photo: currentImg, text: message }).then((data) => {
+			if (data) {
 				setCurrentImg('')
 				setMessage('')
 				scrollToBottomHandler()
 			}
+		}).finally(() => {
+			setLoading(false)
 		})
 	}
 
@@ -59,7 +62,7 @@ const Footer = ({scrollToBottomHandler}: FooterProps) => {
 		<Box paddingX={4}>
 			{
 				currentImg && <Box pt={2} flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'}>
-					<ImageBackground alt={'img-gallery'} resizeMethod={'resize'} style={{ width: 64, height: 64}}  borderRadius={16}
+					<ImageBackground alt={'img-gallery'} resizeMethod={'resize'} style={{ width: 64, height: 64 }} borderRadius={16}
 													 source={{ uri: currentImg }}>
 						<Link styleImg={{ width: 24, height: 24 }} styleLink={{ position: 'absolute', right: -5, top: -10 }}
 									img={closeCircleGrayImg} onPress={onPressDeleteImg} />
@@ -72,8 +75,14 @@ const Footer = ({scrollToBottomHandler}: FooterProps) => {
 				<Box flex={1}>
 					<TextInput multiline={true} value={message} onChangeText={setMessage} style={styles.input} />
 				</Box>
-				<Link styleImg={styles.img} styleLink={{ marginLeft: 10, marginBottom: 0 }}
-							img={sendBtnImg} onPress={onPressSendMessage} />
+				{
+					loading ? <ActivityIndicator
+						color={colors.blue}
+						size='large'
+					/> : <Link styleImg={styles.img} styleLink={{ marginLeft: 10, marginBottom: 0 }}
+										 img={sendBtnImg} onPress={onPressSendMessage} />
+				}
+
 			</Box>
 		</Box>
 	)
