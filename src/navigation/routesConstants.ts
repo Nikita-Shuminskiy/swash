@@ -35,7 +35,6 @@ const authenticatedRoutes: Route[] = [
 	{ name: routerConstants.CLIENT_RECEIVED, component: FeedbackS },
 	{ name: routerConstants.EXECUTOR_MAP, component: NavigatingToCheckpointS },
 	{ name: routerConstants.PROFILE, component: ProfileUserS },
-	{ name: routerConstants.ABOUT_US, component: AboutUsS },
 	{ name: routerConstants.PAYMENT_METHOD, component: PaymentMethodS },
 	{ name: routerConstants.ORDER_HISTORY, component: OrderHistoryS },
 	{ name: routerConstants.CHANGE_COUNTRY, component: ChangeCountryS },

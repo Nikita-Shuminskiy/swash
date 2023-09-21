@@ -21,20 +21,22 @@ import BurgerMenu from '../components/BurgerMenu/BurgerMenu'
 import authenticatedRoutes from './routesConstants'
 import rootStore from '../store/RootStore/root-store'
 import { useNavigation } from '@react-navigation/native'
+import AboutUsS from '../screen/Main/AboutUsS'
 
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
 	const { isLoading, serverResponseText, isLocalLoading, setIsLoading } = NotificationStore
 
-	const { AuthStoreService, OrdersStoreService } = rootStore
+	const { OrdersStoreService } = rootStore
 	const { isAuth } = AuthStore
 	const {
 		askNotificationPermissionHandler,
 		askLocationPermissionHandler,
 		locationStatus,
+		notificationStatus
 	} = usePermissionsPushGeo()
-	const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
+	const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted' || notificationStatus !== 'undetermined' && locationStatus !== 'granted'
 	const { checkInternetConnection, isConnected } = useInternetConnected()
 	const navigate = useNavigation<any>()
 
@@ -72,6 +74,10 @@ const RootNavigation = observer(() => {
 				<RootStack.Screen
 					name={routerConstants.TERMS_OF_USE}
 					component={TermsOfUseS}
+				/>
+				<RootStack.Screen
+					name={routerConstants.ABOUT_US}
+					component={AboutUsS}
 				/>
 				{
 					isAuth &&

@@ -70,24 +70,16 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 	const onPressSingFacebook = () => {
 	}
 	const onPressAboutUs = () => {
-
+		navigation.navigate(routerConstants.ABOUT_US)
 	}
 
 	const containsSpecialCharacters = (inputString) => {
-		setIsLoading(LoadingEnum.fetching)
 		try {
 			JSON.parse(inputString) // Попытка парсинга JSON
+			setIsLoading(LoadingEnum.fetching)
 			return false // Если успешно, значит, нет ошибки "Unexpected end of input"
 		} catch (error) {
-			// Обработка ошибки парсинга JSON
-			if (error instanceof SyntaxError && error.message.includes('Unexpected end of input')) {
-				return true // Возвращаем true, если ошибка "Unexpected end of input" обнаружена
-			}
-			//setInitLoading(LoadingEnum.success)
-			setTimeout(() => {
-				setIsLoading(LoadingEnum.success)
-			}, 1000)
-			return true // Возвращаем false в случае другой ошибки
+			return true
 		}
 	}
 	const onMessageWebView = (event) => {

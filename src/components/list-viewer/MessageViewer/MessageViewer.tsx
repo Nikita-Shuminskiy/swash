@@ -1,7 +1,7 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { Box, Text } from 'native-base'
 import mockImg from '../../../assets/Images/google.png'
-import { Image, Pressable, StyleSheet, TouchableOpacity } from 'react-native'
+import { BackHandler, Image, Pressable, StyleSheet, TouchableOpacity } from 'react-native'
 import { colors } from '../../../assets/colors/colors'
 import { DialogType } from '../../../api/ChatApi/type'
 import { dateStringFormat } from '../../../utils/commonUtils'
@@ -20,6 +20,7 @@ const MessageViewer = memo(({ message }: MessageViewerProps) => {
 	const imageUrl = `${BASE_URL}${message.image}`
 	const clientAvatar = `${BASE_URL}${clientSettings.client.pic}`
 	const adminAvatar = `${BASE_URL}${message.admins_pic}`
+
 
 	return (
 		<>

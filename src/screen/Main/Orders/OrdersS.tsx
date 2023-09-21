@@ -22,7 +22,7 @@ type OrdersSProps = {
 const OrdersS = observer(({ navigation, route }: OrdersSProps) => {
 	const { orders } = OrdersStore
 	const isOpenMenu = route.params?.from === 'open_menu'
-	console.log('orders')
+
 	const { OrdersStoreService } = rootStore
 	const renderItem = ({ item }: { item: OrderType }) => {
 		const onPressDetails = () => {

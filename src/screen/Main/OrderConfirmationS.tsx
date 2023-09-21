@@ -9,6 +9,7 @@ import loadingGif from '../../assets/Gif/loadingGif.gif'
 import rootStore from '../../store/RootStore/root-store'
 import { routerConstants } from '../../constants/routerConstants'
 import { BackHandler } from 'react-native'
+import { useGoBack } from '../../utils/hook/useGoBack'
 
 type OrderConfirmationSProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -27,13 +28,7 @@ const OrderConfirmationS = observer(({ navigation, route }: OrderConfirmationSPr
 		return true
 	}
 
-	useEffect(() => {
-		BackHandler.addEventListener('hardwareBackPress', goBackPress)
-
-		return () => {
-			BackHandler.removeEventListener('hardwareBackPress', goBackPress)
-		}
-	}, [])
+	useGoBack(goBackPress)
 	return (
 		<BaseWrapperComponent>
 			<Box paddingX={3}>

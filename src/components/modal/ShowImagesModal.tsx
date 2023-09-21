@@ -10,11 +10,12 @@ type BaseModalProps = {
 	onClose: () => void
 }
 const ShowImagesModal = ({ visible, onClose, image }: BaseModalProps) => {
+	
 	return (
 		<Modal transparent={false} visible={visible}>
 			<BaseWrapperComponent isKeyboardAwareScrollView={false}>
-				<Box ml={4} flex={1}>
-					<HeaderGoBackTitle goBackPress={onClose} title={''} />
+				<Box pl={4} position={'relative'} bottom={3} flex={1}>
+					<HeaderGoBackTitle goBackPress={onClose} title={'лорпарол'} />
 				</Box>
 				<Box paddingY={4}>
 					<Box mt={2}>
