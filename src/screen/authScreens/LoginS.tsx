@@ -12,11 +12,33 @@ import Button from '../../components/Button'
 import rootStore from '../../store/RootStore/root-store'
 import WebView from 'react-native-webview'
 import { LoadingEnum } from '../../store/types/types'
-import LoadingGlobal from '../../components/LoadingGlobal'
 import NotificationStore from '../../store/NotificationStore/notification-store'
 import { observer } from 'mobx-react-lite'
+import LoadingGlobal from '../../components/LoadingGlobal'
+import { routerConstants } from '../../constants/routerConstants'
 
+const LoadingIndicatorView = () => {
+	return (
+		<Box alignItems={'center'} flex={1} w={'100%'} justifyContent={'flex-start'}>
+			<ActivityIndicator
+				color={colors.blue}
+				size='large'
+			/>
+		</Box>
+	)
+}
+const extractJSONFromBody = (body) => {
+	const startTag = '<body>'
+	const endTag = '</body>'
+	const startIndex = body.indexOf(startTag)
+	const endIndex = body.indexOf(endTag)
 
+	if (startIndex !== -1 && endIndex !== -1) {
+		return body.substring(startIndex + startTag.length, endIndex)
+	}
+
+	return null
+}
 const uriGoogleAuth = {
 	uri:
 		'https://s-wash.com/washapi.php/auth_client_by_google?status=client&country=PL&language=PL',
@@ -38,9 +60,9 @@ export type  UserAuthGoogleData = {
 	token: string;
 }
 const LoginS = observer(({ navigation }: LoginSProps) => {
-	const { setUserAuthData, isAuth } = AuthStore
-	const { setInitLoading, initLoading } = NotificationStore
-	const { AuthStoreService, OrdersStoreService } = rootStore
+	const { setUserAuthData } = AuthStore
+	const { setIsLoading } = NotificationStore
+	const { OrdersStoreService } = rootStore
 	const [webViewVisible, setWebViewVisible] = useState(false)
 	const onPressSingUpGoogle = () => {
 		setWebViewVisible(true)
@@ -51,7 +73,8 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 
 	}
 
-	function containsSpecialCharacters(inputString) {
+	const containsSpecialCharacters = (inputString) => {
+		setIsLoading(LoadingEnum.fetching)
 		try {
 			JSON.parse(inputString) // Попытка парсинга JSON
 			return false // Если успешно, значит, нет ошибки "Unexpected end of input"
@@ -60,28 +83,18 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 			if (error instanceof SyntaxError && error.message.includes('Unexpected end of input')) {
 				return true // Возвращаем true, если ошибка "Unexpected end of input" обнаружена
 			}
-			setInitLoading(LoadingEnum.success)
+			//setInitLoading(LoadingEnum.success)
+			setTimeout(() => {
+				setIsLoading(LoadingEnum.success)
+			}, 1000)
 			return true // Возвращаем false в случае другой ошибки
 		}
-	}
-
-	const extractJSONFromBody = (body) => {
-		const startTag = '<body>'
-		const endTag = '</body>'
-		const startIndex = body.indexOf(startTag)
-		const endIndex = body.indexOf(endTag)
-
-		if (startIndex !== -1 && endIndex !== -1) {
-			return body.substring(startIndex + startTag.length, endIndex)
-		}
-
-		return null
 	}
 	const onMessageWebView = (event) => {
 		const body = event.nativeEvent.data
 		const jsonData = extractJSONFromBody(body)
 		if (containsSpecialCharacters(jsonData)) return
-    setInitLoading(LoadingEnum.loadingMore)
+		setIsLoading(LoadingEnum.fetching)
 		try {
 			const parsedData: UserAuthGoogleData = JSON.parse(jsonData)
 			if (parsedData.token) {
@@ -91,31 +104,13 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 				})
 			}
 		} catch (error) {
-			setInitLoading(LoadingEnum.success)
 			console.error('Error parsing JSON:', error)
 		} finally {
+			setTimeout(() => {
+				setIsLoading(LoadingEnum.success)
+			}, 4000)
 		}
 	}
-	const LoadingIndicatorView = () => {
-		return (
-			<Box alignItems={'center'} flex={1} w={'100%'} justifyContent={'flex-start'}>
-				<ActivityIndicator
-					color={colors.blue}
-					size='large'
-				/>
-			</Box>
-		)
-	}
-
-
-	useEffect(() => {
-		OrdersStoreService.getSettingClient(navigation.navigate).then((data) => {
-
-			setInitLoading(LoadingEnum.success)
-		}).finally(() => {
-			setInitLoading(LoadingEnum.success)
-		})
-	}, [])
 
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={false}>

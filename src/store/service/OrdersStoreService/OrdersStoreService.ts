@@ -36,7 +36,7 @@ export class OrdersStoreService {
 	}
 
 	async getSettingClient(navigate) {
-		this.rootStore.Notification.setIsLoading(LoadingEnum.fetching)
+	//	this.rootStore.Notification.setIsLoading(LoadingEnum.fetching)
 		try {
 			const token = await deviceStorage.getItem('token')
 			if (!token) return false
@@ -86,7 +86,7 @@ export class OrdersStoreService {
 		} catch (e) {
 			console.log(e, 'getSettingClient')
 		} finally {
-			this.rootStore.Notification.setIsLoading(LoadingEnum.success)
+		//this.rootStore.Notification.setIsLoading(LoadingEnum.success)
 		}
 	}
 

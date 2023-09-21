@@ -49,9 +49,8 @@ const ProfileUserS = observer(({ navigation }: ProfileUserSProps) => {
 	}
 	const deleteAccountHandler = () => {
 		AuthStoreService.forgotAboutDevice().then((data) => {
-			if (data) {
-				navigation.navigate(routerConstants.LOGIN)
-			}
+			navigation.navigate(routerConstants.LOGIN)
+			setIsMenuOpen(false)
 		})
 	}
 	const onChangeTextFields = (key: string, value: string) => {

@@ -11,8 +11,7 @@ const convertToFormDataImg = async (img) => {
 	)
 	const formData = new FormData()
 	// @ts-ignore
-	formData.append('photo', {
-		uri: resizedImage.uri,
+	formData.append('photo', { uri: resizedImage.uri,
 		name: 'image.jpg',
 		type: 'image/jpeg',
 	})
