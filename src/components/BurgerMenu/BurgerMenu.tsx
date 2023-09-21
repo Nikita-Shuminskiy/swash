@@ -11,11 +11,12 @@ import repeatImg from '../../assets/Images/BurgerMenu/repeatBlue.png'
 import walletImg from '../../assets/Images/BurgerMenu/walletBlue.png'
 import Button from '../Button'
 import Avatar from './Avatar'
-import mockImg from './imgMock.png'
 import BaseBottomPopUp from '../pop-up/BaseBottomPopUp'
 import rootStore from '../../store/RootStore/root-store'
 import AuthStore from '../../store/AuthStore/auth-store'
 import { observer } from 'mobx-react-lite'
+import { useNavigation } from '@react-navigation/native'
+import { routerConstants } from '../../constants/routerConstants'
 
 const BurgerMenu = observer(() => {
 	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
@@ -23,8 +24,8 @@ const BurgerMenu = observer(() => {
 	const toValue = isMenuOpen ? 0 : -1000
 	const menuPosition = useRef(new Animated.Value(toValue)).current
 	const { AuthStoreService } = rootStore
-	const {clientSettings} = AuthStore
-
+	const { clientSettings } = AuthStore
+	const navigation = useNavigation<any>()
 	const toggleMenu = () => {
 		Animated.timing(menuPosition, {
 			toValue,
@@ -40,11 +41,13 @@ const BurgerMenu = observer(() => {
 		setIsLogout(true)
 	}
 	const logOutHandler = () => {
-		AuthStoreService.logout().then((data) => {
-			if (data) {
-				setIsMenuOpen(false)
-			}
-		})
+		AuthStoreService.logout()
+		navigation.navigate(routerConstants.LOGIN)
+		setIsMenuOpen(false)
+	}
+	const onPressNavigateHandler = (routeName: any) => {
+		navigation.navigate(routeName)
+		setIsMenuOpen(false)
 	}
 	return (
 		<>
@@ -76,12 +79,19 @@ const BurgerMenu = observer(() => {
 					]}
 				>
 					<Box pt={8}>
-						<Avatar photo={clientSettings?.client?.pic} name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`} onClose={() => setIsMenuOpen(false)} />
-						<BurgerLink img={countryImg} countryName={'Poland'} text={'Country'} />
-						<BurgerLink img={repeatImg} text={'Order history'} />
-						<BurgerLink img={questionMarkImg} text={'Contact support'} />
-						<BurgerLink img={walletImg} text={'Payment methods'} />
-						<BurgerLink img={exclamationMarkImg} text={'About Swash'} />
+						<Avatar photo={clientSettings?.client?.pic}
+										name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`}
+										onClose={() => setIsMenuOpen(false)} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHANGE_COUNTRY)} img={countryImg}
+												countryName={clientSettings.client?.country} text={'Country'} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)} img={repeatImg}
+												text={'Order history'} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHAT_SUPPORT)} img={questionMarkImg}
+												text={'Contact support'} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.PAYMENT_METHOD)} img={walletImg}
+												text={'Payment methods'} />
+						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)} img={exclamationMarkImg}
+												text={'About Swash'} />
 					</Box>
 					<Box mt={2} mb={5} alignItems={'center'}>
 						<Button backgroundColor={colors.white} colorText={colors.black}

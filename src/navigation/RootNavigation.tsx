@@ -1,9 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { observer } from 'mobx-react-lite'
 import AuthStore from '../store/AuthStore'
 import NotificationStore from '../store/NotificationStore/notification-store'
-import { NavigationContainer } from '@react-navigation/native'
 import { LoadingEnum } from '../store/types/types'
 import LoadingGlobal from '../components/LoadingGlobal'
 import { routerConstants } from '../constants/routerConstants'
@@ -15,28 +14,21 @@ import AddPhoneS from '../screen/authScreens/AddPhoneS'
 import WifiReconnect from '../components/WifiReconnect'
 import TermsOfUseS from '../screen/authScreens/TermsOfUseS'
 import { usePermissionsPushGeo } from '../utils/hook/usePermissionsPushGeo'
-import CreateOrder from '../screen/Main/CreateOrder/CreateOrder'
-import AddNewCardS from '../screen/Main/AddNewCardS'
-import OrderConfirmationS from '../screen/Main/OrderConfirmationS'
-import PriceS from '../screen/Main/PriceS'
-import LogisticsPointS from '../screen/LogisticsPointS'
 import LoadingLocal from '../components/LoadingLocal'
 import { useInternetConnected } from '../utils/hook/useInternetConnected'
-import OrdersS from '../screen/Main/Orders/OrdersS'
-import FeedbackS from '../screen/Main/FeedbackS'
-import NavigatingToCheckpointS from '../screen/Main/NavigatingToCheckpointS'
-import ClientPayS from '../screen/Main/ClientPay/ClientPayS'
-import ExecutorStatusS from '../screen/Main/ExecutorStatusS'
 import { BurgerMenuProvider } from '../components/BurgerMenu/BurgerMenuContext'
 import BurgerMenu from '../components/BurgerMenu/BurgerMenu'
-import { SafeAreaView } from 'react-native'
-import ProfileUserS from '../screen/Main/ProfileUser/ProfileUserS'
+import authenticatedRoutes from './routesConstants'
+import rootStore from '../store/RootStore/root-store'
+import { useNavigation } from '@react-navigation/native'
+import AboutUsS from '../screen/Main/AboutUsS'
 
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
-	const { isLoading, serverResponseText, isLocalLoading } = NotificationStore
+	const { isLoading, serverResponseText, isLocalLoading, setIsLoading } = NotificationStore
 
+	const { OrdersStoreService } = rootStore
 	const { isAuth } = AuthStore
 	const {
 		askNotificationPermissionHandler,
@@ -44,14 +36,20 @@ const RootNavigation = observer(() => {
 		locationStatus,
 		notificationStatus
 	} = usePermissionsPushGeo()
-
-	const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted' || notificationStatus !== 'undetermined' && notificationStatus !== 'granted'
+	const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted' || notificationStatus !== 'undetermined' && locationStatus !== 'granted'
 	const { checkInternetConnection, isConnected } = useInternetConnected()
+	const navigate = useNavigation<any>()
 
+	useEffect(() => {
+		setIsLoading(LoadingEnum.fetching)
+		OrdersStoreService.getSettingClient(navigate?.navigate).finally(() => {
+			setTimeout(() => {
+				setIsLoading(LoadingEnum.success)
+			}, 3000)
+		})
+	}, [])
 	return (
-
-		<NavigationContainer>
-			<BurgerMenuProvider>
+		<BurgerMenuProvider>
 			{isLoading === LoadingEnum.fetching && <LoadingGlobal visible={true} />}
 			{isLocalLoading === LoadingEnum.fetching && <LoadingLocal visible={true} />}
 			{serverResponseText && <Alerts text={serverResponseText} />}
@@ -59,93 +57,40 @@ const RootNavigation = observer(() => {
 			{checkStatusPermissions && <GivePermissions askLocationPermissionHandler={askLocationPermissionHandler}
 																									askNotificationPermissionHandler={askNotificationPermissionHandler}
 																									visible={checkStatusPermissions} />}
-				<BurgerMenu />
-				<RootStack.Navigator>
-					{
-						isAuth && <>
-							<RootStack.Screen
-								options={{ headerShown: false }}
-								name={routerConstants.CREATE_ORDER}
-								component={CreateOrder}
-							/>
-							<RootStack.Screen
-								options={{ headerShown: false }}
-								name={routerConstants.ORDERS}
-								initialParams={{ showFeedback: false }}
-								component={OrdersS}
-							/>
-							<RootStack.Screen
-								options={{ headerShown: false }}
-								name={routerConstants.ADD_NEW_CARD}
-								component={AddNewCardS}
-							/>
-							<RootStack.Screen
-								options={{ headerShown: false }}
-								name={routerConstants.ORDER_CONFIRMATION}
-								component={OrderConfirmationS}
-							/>
-							<RootStack.Screen
-								options={{ headerShown: false }}
-								name={routerConstants.PRICE}
-								component={PriceS}
-							/>
-
-							<RootStack.Screen
-								options={{ headerShown: false }}
-								name={routerConstants.LOGISTIC_POINT}
-								component={LogisticsPointS}
-							/>
-
-							<RootStack.Screen
-								options={{ headerShown: false }}
-								name={routerConstants.EXECUTOR_STATUSES}
-								component={ExecutorStatusS}
-							/>
-							<RootStack.Screen
-								options={{ headerShown: false }}
-								name={routerConstants.CLIENT_PAY}
-								component={ClientPayS}
-							/>
-							<RootStack.Screen
-								options={{ headerShown: false }}
-								name={routerConstants.CLIENT_RECEIVED}
-								component={FeedbackS}
-							/>
-							<RootStack.Screen
-								options={{ headerShown: false }}
-								name={routerConstants.EXECUTOR_MAP}
-								component={NavigatingToCheckpointS}
-							/>
-							<RootStack.Screen
-								options={{ headerShown: false }}
-								name={routerConstants.PROFILE}
-								component={ProfileUserS}
-							/>
-						</>
-					}
-					<RootStack.Screen
-						options={{ headerShown: false }}
-						name={routerConstants.LOGIN}
-						component={LoginS}
-					/>
-					<RootStack.Screen
-						options={{ headerShown: false }}
-						name={routerConstants.VERIFY_NUMBER}
-						component={VerifyNumberS}
-					/>
-					<RootStack.Screen
-						options={{ headerShown: false }}
-						name={routerConstants.PHONE_VERIFY}
-						component={AddPhoneS}
-					/>
-					<RootStack.Screen
-						options={{ headerShown: false }}
-						name={routerConstants.TERMS_OF_USE}
-						component={TermsOfUseS}
-					/>
-				</RootStack.Navigator>
-			</BurgerMenuProvider>
-		</NavigationContainer>
+			<BurgerMenu />
+			<RootStack.Navigator screenOptions={{ headerShown: false }}>
+				<RootStack.Screen
+					name={routerConstants.LOGIN}
+					component={LoginS}
+				/>
+				<RootStack.Screen
+					name={routerConstants.VERIFY_NUMBER}
+					component={VerifyNumberS}
+				/>
+				<RootStack.Screen
+					name={routerConstants.PHONE_VERIFY}
+					component={AddPhoneS}
+				/>
+				<RootStack.Screen
+					name={routerConstants.TERMS_OF_USE}
+					component={TermsOfUseS}
+				/>
+				<RootStack.Screen
+					name={routerConstants.ABOUT_US}
+					component={AboutUsS}
+				/>
+				{
+					isAuth &&
+					authenticatedRoutes.map((route) => {
+						return <RootStack.Screen
+							key={route.name}
+							name={route.name}
+							component={route.component}
+						/>
+					})
+				}
+			</RootStack.Navigator>
+		</BurgerMenuProvider>
 	)
 })
 

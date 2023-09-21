@@ -6,6 +6,7 @@ import { CreateServicesDataType, OrderReportDetailType, OrderType, payloadUpdOrd
 export class OrdersStore {
 	orderDetail: OrderReportDetailType = {} as OrderReportDetailType
 	orders: OrderType[] = [] as OrderType[]
+	closedOrders: OrderType[] = [] as OrderType[]
 
 	setOrderDetail(order: OrderReportDetailType) {
 		this.orderDetail = order
@@ -13,6 +14,9 @@ export class OrdersStore {
 
 	setOrders(orders: OrderType[]) {
 		this.orders = orders
+	}
+	setClosedOrder(orders: OrderType[]) {
+		this.closedOrders = orders
 	}
 	clearStore() {
 		this.orders = []
@@ -33,8 +37,6 @@ export class OrdersStore {
 	}
 
 	async getOrderReportDetail(orders_id: string): Promise<OrderReportDetailType> {
-
-
 		const { data } = await clientApi.getOrderReportDetail({
 			orders_id,
 		})
@@ -67,7 +69,6 @@ export class OrdersStore {
 	}
 
 	async reviewOrder(payload: Omit<ReviewOrderPayload, 'orders_id'>) {
-
 		const data = await clientApi.reviewOrder({
 			orders_id: this.orderDetail.orders_id,
 			...payload,
@@ -75,16 +76,13 @@ export class OrdersStore {
 	}
 
 	async deleteOrderPhoto(photo_id) {
-
 		await clientApi.deleteOrderPhoto({
-
 			photo_id,
 			order_number: this.orderDetail.orders_id,
 		})
 	}
 
 	async getOrderReportClient() {
-
 		const { data } = await clientApi.getOrderReportClient({})
 		this.setOrders(data)
 	}
@@ -92,6 +90,7 @@ export class OrdersStore {
 	constructor() {
 		makeObservable(this, {
 			orderDetail: observable,
+			closedOrders: observable,
 			orders: observable,
 			createOrderClient: action,
 			setOrderDetail: action,
@@ -105,10 +104,12 @@ export class OrdersStore {
 			getOrderReportDetail: action,
 			getOrderReportClient: action,
 			clearStore: action,
+			setClosedOrder: action,
 		})
 
 		this.createOrderClient = this.createOrderClient.bind(this)
 		this.updateOrder = this.updateOrder.bind(this)
+		this.setClosedOrder = this.setClosedOrder.bind(this)
 		this.getOrderReportClient = this.getOrderReportClient.bind(this)
 		this.reviewOrder = this.reviewOrder.bind(this)
 		this.startOrder = this.startOrder.bind(this)

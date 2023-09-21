@@ -46,3 +46,12 @@ export const DATA_IMG = {
 		name: 'Bedding'
 	},
 }
+export const countryDataDefault = {
+	callingCode: ['48'],
+	cca2: 'PL',
+	currency: ['PLN'],
+	flag: 'flag-pl',
+	name: 'Poland',
+	region: 'Europe',
+	subregion: 'Eastern Europe',
+}
