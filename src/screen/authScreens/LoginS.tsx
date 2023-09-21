@@ -111,19 +111,12 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 	useEffect(() => {
 		OrdersStoreService.getSettingClient(navigation.navigate).then((data) => {
 
-			if (typeof data === 'boolean') {
-				!data && setInitLoading(LoadingEnum.success)
-			}
-		}).catch(() => {
+			setInitLoading(LoadingEnum.success)
+		}).finally(() => {
 			setInitLoading(LoadingEnum.success)
 		})
 	}, [])
-	// Если проверка токена еще не выполнена, отображаем индикатор загрузки
-	if (initLoading === LoadingEnum.loadingMore) {
-		return (
-			<LoadingGlobal visible={true} />
-		)
-	}
+
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={false}>
 			{

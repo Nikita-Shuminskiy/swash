@@ -47,7 +47,7 @@ const Footer = ({ scrollToBottomHandler }: FooterProps) => {
 	const onPressSendMessage = () => {
 		if(!message && !currentImg) return
 		setLoading(true)
-		ChatStoreService.sendMessage({ photo: currentImg, text: message }).then((data) => {
+		ChatStoreService.sendMessage({ photo: currentImg, text: message.trim() }).then((data) => {
 			if (data) {
 				setCurrentImg('')
 				setMessage('')

@@ -67,7 +67,7 @@ const ChatS = observer(({ navigation }: ChatSProps) => {
 				</Box>
 			</Box>
 			{!isAtBottom && (
-				<Box position={'absolute'} bottom={20} right={5}>
+				<Box position={'absolute'} bottom={'15%'} right={5}>
 					<Link onPress={scrollToBottom} img={arrowBottomImg} styleImg={{ width: 42, height: 42 }} />
 				</Box>
 			)}
