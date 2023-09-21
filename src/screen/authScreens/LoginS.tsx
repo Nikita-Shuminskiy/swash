@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Image, StyleSheet } from 'react-native'
+import { Image, Linking, StyleSheet } from 'react-native'
 import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
 import AuthStore from '../../store/AuthStore/auth-store'
 import imgLogo from '../../assets/Images/logoSwash.png'
@@ -16,7 +16,10 @@ import { observer } from 'mobx-react-lite'
 import * as Application from 'expo-application'
 import * as Google from 'expo-auth-session/providers/google'
 import { createAlert } from '../../components/CreateAlert'
+import * as WebBrowser from 'expo-web-browser';
+import { Prompt } from 'expo-auth-session/src/AuthRequest.types'
 
+WebBrowser.maybeCompleteAuthSession();
 export type  UserAuthGoogleData = {
 	email: string;
 	first_name: string;
@@ -31,51 +34,47 @@ export type  UserAuthGoogleData = {
 export const LoginS = observer(({ navigation }: any) => {
 
 	const { authWithGoogle } = AuthStore
-	const { setInitLoading, initLoading } = NotificationStore
+	const { setIsLoading, isLoading } = NotificationStore
 	const { OrdersStoreService } = rootStore
 
 	const [request, response, promptAsync] = Google.useAuthRequest({
 		androidClientId: '764320596484-vn0nd80heq74i90gagss2nu4l7um1eer.apps.googleusercontent.com',
 		iosClientId: '764320596484-7s862pjvgf6adrri2s3hdak9gkj0i8n2.apps.googleusercontent.com',
 		expoClientId: '764320596484-54jjhrcgb9sft0hrclu8aq8oa848biqa.apps.googleusercontent.com',
+		redirectUri: 'https://auth.expo.io/@nick_111122/swash',
+		prompt: Prompt.SelectAccount
 	})
 
 	useEffect(() => {
 		authWithGoogle(Application.androidId).then((data) => {
 			OrdersStoreService.getSettingClient(navigation.navigate).then((data) => {
 				if (typeof data === 'boolean') {
-					!data && setInitLoading(LoadingEnum.success)
+					!data && setIsLoading(LoadingEnum.success)
 				}
 			}).catch(() => {
-				setInitLoading(LoadingEnum.success)
+				setIsLoading(LoadingEnum.success)
 			})
 		}).finally(() => {
-			setInitLoading(LoadingEnum.success)
+			setIsLoading(LoadingEnum.success)
 		})
 	}, [])
 
 	const loginGoogle = () => {
-		promptAsync({ useProxy: true, showInRecents: true }).then((data) => {
+		promptAsync({  showInRecents: true }).then((data) => {
 			if(data) {
 				authWithGoogle(Application.androidId).then((data) => {
 					OrdersStoreService.getSettingClient(navigation.navigate).then((data) => {
 						if (typeof data === 'boolean') {
-							!data && setInitLoading(LoadingEnum.success)
+							!data && setIsLoading(LoadingEnum.success)
 						}
 					}).catch(() => {
-						setInitLoading(LoadingEnum.success)
+						setIsLoading(LoadingEnum.success)
 					})
 				}).finally(() => {
-					setInitLoading(LoadingEnum.success)
+					setIsLoading(LoadingEnum.success)
 				})
 			}
 		})
-	}
-	// Если проверка токена еще не выполнена, отображаем индикатор загрузки
-	if (initLoading === LoadingEnum.loadingMore) {
-		return (
-			<LoadingGlobal visible={true} />
-		)
 	}
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={false}>
