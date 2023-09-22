@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet } from 'react-native'
 import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
 import AuthStore from '../../store/AuthStore/auth-store'
@@ -10,13 +10,11 @@ import { colors } from '../../assets/colors/colors'
 import Button from '../../components/Button'
 import rootStore from '../../store/RootStore/root-store'
 import { LoadingEnum } from '../../store/types/types'
-import LoadingGlobal from '../../components/LoadingGlobal'
 import NotificationStore from '../../store/NotificationStore/notification-store'
 import { observer } from 'mobx-react-lite'
 import * as Application from 'expo-application'
 import * as Google from 'expo-auth-session/providers/google'
-import { createAlert } from '../../components/CreateAlert'
-
+// "originalFullName": "@nick_111122/swash",
 export type  UserAuthGoogleData = {
 	email: string;
 	first_name: string;
@@ -33,50 +31,37 @@ export const LoginS = observer(({ navigation }: any) => {
 	const { authWithGoogle } = AuthStore
 	const { setInitLoading, initLoading } = NotificationStore
 	const { OrdersStoreService } = rootStore
-
+	const [test, setTest] = useState<boolean>(false)
 	const [request, response, promptAsync] = Google.useAuthRequest({
 		androidClientId: '764320596484-vn0nd80heq74i90gagss2nu4l7um1eer.apps.googleusercontent.com',
 		iosClientId: '764320596484-7s862pjvgf6adrri2s3hdak9gkj0i8n2.apps.googleusercontent.com',
 		expoClientId: '764320596484-54jjhrcgb9sft0hrclu8aq8oa848biqa.apps.googleusercontent.com',
 	})
 
-	useEffect(() => {
-		authWithGoogle(Application.androidId).then((data) => {
-			OrdersStoreService.getSettingClient(navigation.navigate).then((data) => {
-				if (typeof data === 'boolean') {
-					!data && setInitLoading(LoadingEnum.success)
-				}
-			}).catch(() => {
-				setInitLoading(LoadingEnum.success)
-			})
-		}).finally(() => {
-			setInitLoading(LoadingEnum.success)
-		})
-	}, [])
 
-	const loginGoogle = () => {
-		promptAsync({ useProxy: true, showInRecents: true }).then((data) => {
-			if(data) {
-				authWithGoogle(Application.androidId).then((data) => {
-					OrdersStoreService.getSettingClient(navigation.navigate).then((data) => {
-						if (typeof data === 'boolean') {
-							!data && setInitLoading(LoadingEnum.success)
-						}
-					}).catch(() => {
-						setInitLoading(LoadingEnum.success)
-					})
-				}).finally(() => {
-					setInitLoading(LoadingEnum.success)
+	useEffect(() => {
+		if (test) {
+			authWithGoogle(Application.androidId).then((data) => {
+				OrdersStoreService.getSettingClient(navigation.navigate).then((data) => {
+					if (typeof data === 'boolean') {
+						data && alert('getSettingClient data true')
+					}
+				}).catch(() => {
+					alert('catch getSettingClient')
 				})
-			}
-		})
+			})
+		}
+	}, [test])
+
+	const loginGoogle = async () => {
+		try {
+			await promptAsync({ showInRecents: true })
+			setTest(true)
+		} catch (e) {
+			alert('error')
+		}
 	}
-	// Если проверка токена еще не выполнена, отображаем индикатор загрузки
-	if (initLoading === LoadingEnum.loadingMore) {
-		return (
-			<LoadingGlobal visible={true} />
-		)
-	}
+
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={false}>
 			<Box paddingX={5} flex={1} alignItems={'center'} justifyContent={'space-evenly'}>
@@ -101,7 +86,8 @@ export const LoginS = observer(({ navigation }: any) => {
 						</Box>
 					</Button>
 					<Button colorText={colors.white} styleContainer={{ ...styles.styleContainerBtn, ...styles.shadow }}
-									onPress={() => promptAsync({ showInRecents: true })}>
+									onPress={() => promptAsync({useProxy: true, showInRecents: true })}>
+
 						<Box flexDirection={'row'} alignItems={'center'}>
 							<Image style={styles.imgIco} alt={'img-google'} source={imgGoogle} />
 							<Text>

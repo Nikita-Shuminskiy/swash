@@ -86,7 +86,8 @@ export class AuthStore {
 
 	async authWithGoogle(id_device: string) {
 		try {
-			const { data } = await authApi.authWithGoogle('112')
+			const { data } = await authApi.authWithGoogle(id_device)
+			console.log(data.token)
 			await deviceStorage.saveItem('token', data.token)
 			return true
 		} catch (e) {
