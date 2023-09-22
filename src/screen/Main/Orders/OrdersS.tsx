@@ -68,7 +68,6 @@ const OrdersS = observer(({ navigation, route }: OrdersSProps) => {
 				}
 
 			}
-
 		}
 		if (item.last_step === LastStep.admin_closed_order || item.last_step === LastStep.client_confirm) return
 		return <OrderViewer onPressDetails={onPressDetails} order={item} />

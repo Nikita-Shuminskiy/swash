@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { NativeBaseProvider } from 'native-base'
 import { LogBox } from 'react-native'
 import { useFonts } from '@expo-google-fonts/inter/useFonts'
+import { NavigationContainer } from '@react-navigation/native'
 
 LogBox.ignoreLogs([
 	'In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.',
@@ -25,7 +26,9 @@ export default function App() {
 		<GestureHandlerRootView style={{ flex: 1 }}>
 			<NativeBaseProvider>
 				<StatusBar hidden={false} style={'auto'} animated={true} translucent={true} />
-				<RootNavigation />
+				<NavigationContainer  >
+					<RootNavigation />
+				</NavigationContainer>
 			</NativeBaseProvider>
 		</GestureHandlerRootView>
 	)

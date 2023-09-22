@@ -5,12 +5,13 @@ import Button from '../../components/Button'
 import { colors } from '../../assets/colors/colors'
 import ArrowBack from '../../components/ArrowBack'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
-import { Image, Linking, StyleSheet } from 'react-native'
+import { Image, Linking, StyleSheet, View } from 'react-native'
 import { getCurrentPositionHandler } from '../../components/MapViews/utils'
 import { observer } from 'mobx-react-lite'
 import takeYourThingsImg from '../../assets/Images/orders/takeThings.png'
 import takeYourThingsFromImg from '../../assets/Images/orders/takeThingsFrom.png'
 import OrdersStore from '../../store/OrdersStore/orders-store'
+import Loaders from 'react-native-pure-loaders'
 
 type Coordinates = {
 	latitude: number;
@@ -21,6 +22,7 @@ type NavigatingToCheckpointSProps = {
 	route: any
 }
 const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToCheckpointSProps) => {
+
 	const { orderDetail } = OrdersStore
 	const isFromExecutorPerfomed = route.params.from === 'takeIt'
 	const [myPosition, setMyPosition] = useState<Coordinates>()
@@ -29,6 +31,7 @@ const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToChe
 	}
 
 	const onPressNavigate = () => {
+		if (!myPosition?.latitude) return
 		const endLocation = [+orderDetail.client_logistic_partners_points_lat, +orderDetail.client_logistic_partners_points_lon]
 		const startLocation = [myPosition.latitude, myPosition.longitude]
 
@@ -90,7 +93,7 @@ const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToChe
 
 					<Box mt={4} h={200}>
 						{
-							myPosition && <MapView
+							myPosition ? <MapView
 								style={styles.map}
 								provider={PROVIDER_GOOGLE}
 								initialRegion={initialRegion}
@@ -104,7 +107,9 @@ const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToChe
 										title={''}
 									/>
 								}
-							</MapView>
+							</MapView> : <View style={styles.containerLoading}>
+								<Loaders.Ellipses color={colors.blue} />
+							</View>
 						}
 					</Box>
 
@@ -132,6 +137,12 @@ const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToChe
 })
 
 const styles = StyleSheet.create({
+	containerLoading: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: 'rgba(230,245,255,0.37)',
+	},
 	container: {
 		flex: 1,
 	},

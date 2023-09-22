@@ -2,19 +2,20 @@ import React, { useState } from 'react'
 import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
 import { Box, Text } from 'native-base'
 import { colors } from '../../assets/colors/colors'
-import PhoneNumberField from '../../components/PhoneField'
 import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native'
 import Button from '../../components/Button'
 import rootStore from '../../store/RootStore/root-store'
 import { routerConstants } from '../../constants/routerConstants'
 import AuthStore from '../../store/AuthStore/auth-store'
 import ArrowBack from '../../components/ArrowBack'
+import { countryDataDefault } from '../../utils/constants'
+import { PhoneNumberField } from '../../components/PhoneField'
 
 type PhoneVerifySProps = {
 	navigation: NavigationProp<ParamListBase>
 	route: any
 }
-type CountryData = {
+export type CountryData = {
 	callingCode: string[];
 	cca2: string;
 	currency: string[];
@@ -23,15 +24,7 @@ type CountryData = {
 	region: string;
 	subregion: string;
 };
-const countryDataDefault = {
-	callingCode: ['48'],
-	cca2: 'PL',
-	currency: ['PLN'],
-	flag: 'flag-pl',
-	name: 'Poland',
-	region: 'Europe',
-	subregion: 'Eastern Europe',
-}
+
 const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 	const { AuthStoreService } = rootStore
 	const isFromUpdate = route.params?.from === 'update'
@@ -91,7 +84,8 @@ const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 					<Text fontSize={22} mb={2} fontFamily={'semiBold'}>Phone verification</Text>
 					<Text fontSize={15} color={colors.grayLight} fontFamily={'regular'}>We need your phone number</Text>
 				</Box>
-				<PhoneNumberField onChangeCountry={onChangeCountry} defaultValue={phone} errorMessage={'Incorrect phone number'}
+				<PhoneNumberField defaultCode={'PL'} onChangeCountry={onChangeCountry} defaultValue={phone} errorMessage={'Incorrect phone number'}
+													placeholder={'Phone'}
 													onChangeTextPhone={onChangeTextPhone}
 													isRequired={true} isInvalid={disabledBtn} />
 				<Box mt={10} w={'100%'} alignItems={'center'}>

@@ -10,7 +10,7 @@ import { StatusBar } from 'expo-status-bar'
 const LoadingGlobal = ({ visible }) => {
 	return (
 		<Modal visible={visible}>
-			<StatusBar backgroundColor={colors.blueLight} />
+			<StatusBar hidden={false} style={'auto'} animated={true} translucent={true} />
 			<Box backgroundColor={'red'} background={colors.blueLight} flex={1} width={'100%'} alignItems={'center'}
 					 justifyContent={'space-evenly'}>
 				<ImageBackground alt={'logo'} style={styles.imgBack} source={backgroundImg}>

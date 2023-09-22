@@ -1,10 +1,9 @@
 import RootStore from '../../RootStore'
 import { LoadingEnum } from '../../types/types'
 import { routerConstants } from '../../../constants/routerConstants'
-import { payloadUpdOrderType, StatusOrder } from '../../../api/Client/type'
+import { LastStep, payloadUpdOrderType, StatusOrder } from '../../../api/Client/type'
 import { ReviewOrderPayload, StartOrderPayload } from '../../../api/Client/clientApi'
 import { deviceStorage } from '../../../utils/storage/storage'
-import { createAlert } from '../../../components/CreateAlert'
 
 
 export class OrdersStoreService {
@@ -19,7 +18,7 @@ export class OrdersStoreService {
 		try {
 			const data = await this.rootStore.AuthStore.getSettingsClient()
 			const orderEditable = data.orders.find(order => order.status.trim() === StatusOrder.EDITABLE)
-			if(orderEditable) {
+			if (orderEditable) {
 				await this.rootStore.OrdersStore.getOrderReportDetail(orderEditable.id)
 			} else {
 				const idOrder = await this.rootStore.OrdersStore.createOrderClient({
@@ -37,15 +36,11 @@ export class OrdersStoreService {
 	}
 
 	async getSettingClient(navigate) {
-		this.rootStore.Notification.setIsLoading(LoadingEnum.fetching)
+	//	this.rootStore.Notification.setIsLoading(LoadingEnum.fetching)
 		try {
 			const token = await deviceStorage.getItem('token')
-			if(!token) return false
-			createAlert({
-				title: 'Message',
-				message: `${token}, getSettingClient`,
-				buttons: [{ text: 'Exit' }],
-			})
+			if (!token) return false
+
 			const data = await this.rootStore.AuthStore.getSettingsClient()
 
 			if (!data.client.phone_verify_datetime) return navigate && navigate(routerConstants.PHONE_VERIFY)
@@ -91,7 +86,7 @@ export class OrdersStoreService {
 		} catch (e) {
 			console.log(e, 'getSettingClient')
 		} finally {
-			this.rootStore.Notification.setIsLoading(LoadingEnum.success)
+		//this.rootStore.Notification.setIsLoading(LoadingEnum.success)
 		}
 	}
 
@@ -152,7 +147,7 @@ export class OrdersStoreService {
 
 	async saveOrderPhoto(photo) {
 		try {
-		const data =	await this.rootStore.OrdersStore.saveOrderPhoto(photo)
+			const data = await this.rootStore.OrdersStore.saveOrderPhoto(photo)
 
 			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
 		} catch (e) {
@@ -177,6 +172,19 @@ export class OrdersStoreService {
 		try {
 			await this.rootStore.OrdersStore.updateOrder(payload)
 			await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
+		} catch (e) {
+			console.log(e)
+		} finally {
+			this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
+		}
+	}
+
+	async getClosedOrders() {
+		this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
+		try {
+			const data = await this.rootStore.AuthStore.getSettingsClient()
+			const closedOrders = data.orders.filter((order) => order.last_step === LastStep.admin_closed_order)
+			await this.rootStore.OrdersStore.setClosedOrder(closedOrders)
 		} catch (e) {
 			console.log(e)
 		} finally {

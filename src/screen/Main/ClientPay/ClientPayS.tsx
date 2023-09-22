@@ -18,6 +18,8 @@ import PaymentRequared from './PaymentRequared'
 import PaymentMethod from '../../../components/PaymentMethod'
 import OrderInfoItem from './OrderInfoItem'
 import PaymentMethodPopUp from '../../../components/pop-up/PaymentMethod/PaymentMethodPopUp'
+import doneImg from '../../../assets/Images/orders/doneGreen.png'
+import closeImg from '../../../assets/Images/orders/closeRed.png'
 
 type ClientPaySProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -25,15 +27,10 @@ type ClientPaySProps = {
 }
 const ClientPayS = observer(({ navigation, route }: ClientPaySProps) => {
 	const checkFromStatus = route.params.from === 'done_client_must_pay'
+	const checkFromStatusOK = route.params.from === 'ok'
 	const [isShowModalPayment, setIsShowModalPayment] = useState<boolean>(false)
 	const { orderDetail } = OrdersStore
 
-	const onPressWithIron = () => {
-
-	}
-	const onPressHypoallergenic = () => {
-
-	}
 	const onPay = () => {
 
 	}
@@ -49,6 +46,9 @@ const ClientPayS = observer(({ navigation, route }: ClientPaySProps) => {
 			<BaseWrapperComponent isKeyboardAwareScrollView={true}>
 				<Box paddingX={4}>
 					<GeneralHeader orders_id={orderDetail.orders_id} navigation={navigation} />
+					{checkFromStatusOK &&
+						<Image style={{ width: 40, height: 40, position: 'absolute', right: 18, top: 43 }} alt={'img'}
+									 source={doneImg} />}
 					<Text mt={4} fontSize={22} fontFamily={'semiBold'}>Services</Text>
 					<Box mt={2} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
 						<Box flex={1}>
@@ -58,7 +58,8 @@ const ClientPayS = observer(({ navigation, route }: ClientPaySProps) => {
 									borderColor: orderDetail.add_iron === '1' ? colors.blue : colors.grayLight,
 									backgroundColor: orderDetail.add_iron === '1' ? '#E8F5FE' : null,
 								}}
-								onPress={onPressWithIron}
+								onPress={() => {
+								}}
 							>
 								<Image
 									style={{ width: 32, height: 32 }}
@@ -78,7 +79,8 @@ const ClientPayS = observer(({ navigation, route }: ClientPaySProps) => {
 									borderColor: orderDetail.add_hypo === '1' ? colors.blue : colors.grayLight,
 									backgroundColor: orderDetail.add_hypo === '1' ? '#E8F5FE' : null,
 								}}
-								onPress={onPressHypoallergenic}
+								onPress={() => {
+								}}
 							>
 								<Image
 									style={{ width: 29, height: 29 }}
@@ -95,16 +97,14 @@ const ClientPayS = observer(({ navigation, route }: ClientPaySProps) => {
 					<Box mt={4}>
 						<FlatList scrollEnabled={false} data={orderDetail.units_order} renderItem={renderItem} />
 						<Box mt={4}>
-							<PaymentMethod onPressChangePayment={onPressChangePayment} />
+							<PaymentMethod onPressChangePayment={checkFromStatusOK ? null : onPressChangePayment} />
 						</Box>
 					</Box>
 					{
-						!checkFromStatus && <Box mt={6} mb={6}>
+						!checkFromStatus && !checkFromStatusOK && <Box mt={6} mb={6}>
 							<PaymentRequared />
 						</Box>
 					}
-
-
 					<Box>
 						<Text mt={4} mb={2} fontSize={22} fontFamily={'semiBold'}>Order info</Text>
 						<OrderInfoItem nameField={'Order'} price={orderDetail.basic_pay} />
@@ -113,14 +113,17 @@ const ClientPayS = observer(({ navigation, route }: ClientPaySProps) => {
 						<OrderInfoItem color={colors.greenBright} nameField={'Discount'} price={`-${orderDetail.balance}`} />
 						<OrderInfoItem nameField={'Total'} price={orderDetail.amount} />
 					</Box>
-					<Box mt={10} mb={5} alignItems={'center'}>
-						<Button backgroundColor={colors.blue} colorText={colors.white}
-										styleContainer={{
-											borderRadius: 28,
-											maxWidth: 280,
-											width: '100%',
-										}} onPress={onPay} title={'Pay'} />
-					</Box>
+					{
+						!checkFromStatusOK && <Box mt={10} mb={5} alignItems={'center'}>
+							<Button backgroundColor={colors.blue} colorText={colors.white}
+											styleContainer={{
+												borderRadius: 28,
+												maxWidth: 280,
+												width: '100%',
+											}} onPress={onPay} title={'Pay'} />
+						</Box>
+					}
+
 				</Box>
 			</BaseWrapperComponent>
 			{

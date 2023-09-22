@@ -1,10 +1,12 @@
+import { CountryCode } from 'react-native-country-picker-modal/lib/types'
+
 type ClientType = {
 	clients_id: string;
 	consent_datetime: null | string; // если нет согласия  === null => экран дачи согласия
-	country: string;
+	country: CountryCode;
 	disabled: null | string;
 	email: string;
-	favorite_client_logistic_partners_points_id: string[];
+	favorite_client_logistic_partners_points_id: LogisticsPointType[]
 	first_name: string;
 	language: string;
 	last_name: string;
@@ -93,7 +95,6 @@ export enum LastStep {
 	admin_closed_order = 'admin_closed_order',// не показывать
 	client_confirm = 'client_confirm',// не показывать
 
-
 }
 
 export type UntilsOrderType = {
@@ -105,8 +106,13 @@ export type UntilsOrderType = {
 
 
 export type PhotoType = { 'filename': string, 'id': string }
+export type ClientTypicalMessagesType = {
+	country: string,
+	message: string
+}
 type DataSettingClientType = {
 	client: ClientType;
+	client_typical_messages: ClientTypicalMessagesType[]
 	countries: CountryType[];
 	languages: string[];
 	orders: OrderType[];

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { Box, Image, Text } from 'native-base'
@@ -9,6 +9,7 @@ import loadingGif from '../../assets/Gif/loadingGif.gif'
 import rootStore from '../../store/RootStore/root-store'
 import { routerConstants } from '../../constants/routerConstants'
 import { BackHandler } from 'react-native'
+import { useGoBack } from '../../utils/hook/useGoBack'
 
 type OrderConfirmationSProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -27,16 +28,7 @@ const OrderConfirmationS = observer(({ navigation, route }: OrderConfirmationSPr
 		return true
 	}
 
-	// Определите обработчик события, когда компонент монтируется
-	React.useEffect(() => {
-		// Добавляем слушатель события нажатия на кнопку "назад"
-		BackHandler.addEventListener('hardwareBackPress', goBackPress)
-
-		// Очистите слушателя события, когда компонент размонтируется
-		return () => {
-			BackHandler.removeEventListener('hardwareBackPress', goBackPress)
-		}
-	}, [])
+	useGoBack(goBackPress)
 	return (
 		<BaseWrapperComponent>
 			<Box paddingX={3}>

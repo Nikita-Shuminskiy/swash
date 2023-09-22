@@ -24,7 +24,7 @@ type CreateOrderProps = {
 }
 const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 	const { orderDetail } = OrdersStore
-	const { logisticPoints } = AuthStore
+	const { logisticPoints, clientSettings } = AuthStore
 	const { OrdersStoreService } = rootStore
 	const [isShowModalPayment, setIsShowModalPayment] = useState<boolean>(false)
 	const [isShowPopUpCanselSwash, setIsShowPopUpCanselSwash] = useState<boolean>(false)
@@ -43,7 +43,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 	const onSendOrder = () => {
 		OrdersStoreService.startOrder().then((data) => {
 			if (data) {
-				navigation.navigate(routerConstants.ORDER_CONFIRMATION, {from: 'send_order'})
+				navigation.navigate(routerConstants.ORDER_CONFIRMATION, { from: 'send_order' })
 			}
 		})
 	}
@@ -54,7 +54,8 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 		OrdersStoreService.updateOrder(payload)
 	}
 	const renderItem = ({ item }: { item: LogisticsPointType }) => {
-		const chousenPaczkomat = orderDetail.client_logistic_partners_points_id === item.id
+
+		const chousenPaczkomat = Number(orderDetail.client_logistic_partners_points_id) === Number(item.id)
 
 
 		const onPressPaczkomat = () => {
@@ -71,7 +72,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 				<CustomCheckbox checked={chousenPaczkomat} onPress={onPressPaczkomat} />
 			</Box>
 			<Box ml={2}>
-				<Text fontFamily={'regular'} fontSize={15}>{item.address.trim()}</Text>
+				<Text fontFamily={'regular'} fontSize={15}>{item?.address.trim()}</Text>
 			</Box>
 		</Box>
 	}
