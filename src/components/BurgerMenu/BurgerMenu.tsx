@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Animated, StyleSheet } from 'react-native'
-import { Box, Pressable } from 'native-base'
+import {Box, Image, Pressable, Text} from 'native-base'
 import { colors } from '../../assets/colors/colors'
 import { useBurgerMenu } from './BurgerMenuContext'
 import BurgerLink from './BurgerLink'
@@ -17,6 +17,7 @@ import AuthStore from '../../store/AuthStore/auth-store'
 import { observer } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import { routerConstants } from '../../constants/routerConstants'
+import arrowImg from "../../assets/Images/BurgerMenu/arrowGray.png";
 
 const BurgerMenu = observer(() => {
 	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
@@ -82,8 +83,24 @@ const BurgerMenu = observer(() => {
 						<Avatar photo={clientSettings?.client?.pic}
 										name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`}
 										onClose={() => setIsMenuOpen(false)} />
-						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHANGE_COUNTRY)} img={countryImg}
-												countryName={clientSettings.client?.country} text={'Country'} />
+						<Box justifyContent={'space-between'}
+							 alignItems={'center'}
+							 flexDirection={'row'}
+							 marginY={2}
+
+							 borderRadius={16}
+							 p={4}
+							 borderWidth={1}
+							 borderColor={colors.grayBright}>
+							<Box flexDirection={'row'} alignItems={'center'}>
+								<Image w={6} h={6} alt={'img'} source={countryImg} />
+								<Text fontSize={15} fontWeight={'regular'} ml={2}>Country</Text>
+							</Box>
+							<Box alignItems={'center'}
+								 flexDirection={'row'}>
+								<Text fontSize={15} fontWeight={'regular'} color={colors.grayLight}>{clientSettings.client?.country}</Text>
+							</Box>
+						</Box>
 						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)} img={repeatImg}
 												text={'Order history'} />
 						<BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHAT_SUPPORT)} img={questionMarkImg}

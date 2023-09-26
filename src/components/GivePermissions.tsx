@@ -28,7 +28,7 @@ const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificatio
 	}
 	return (
 		<Modal isOpen={visible}>
-			<BaseWrapperComponent styleSafeArea={{ backgroundColor: errorPermission ? colors.redLight : colors.blueLight }}>
+			<BaseWrapperComponent isKeyboardAwareScrollView={true} styleSafeArea={{ backgroundColor: errorPermission ? colors.redLight : colors.white }}>
 				<StatusBar backgroundColor={errorPermission ? colors.redLight : colors.blueLight} />
 				<Box justifyContent={'space-between'} alignItems={'center'}
 						 backgroundColor={errorPermission ? colors.redLight : colors.blueLight}>

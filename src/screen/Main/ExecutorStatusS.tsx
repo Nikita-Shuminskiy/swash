@@ -39,9 +39,8 @@ type ExecutorStatusSPorps = {
 const ExecutorStatusS = observer(({ navigation, route }: ExecutorStatusSPorps) => {
 	const { orderDetail } = OrdersStore
 	const statusData = STATUS_DATA[route.params.from]
-
 	return (
-		<BaseWrapperComponent>
+		<BaseWrapperComponent isKeyboardAwareScrollView={true}>
 			<Box paddingX={4}>
 				<GeneralHeader navigation={navigation} orders_id={orderDetail.orders_id} />
 				<Box mt={6} mb={12} alignItems={'center'}>

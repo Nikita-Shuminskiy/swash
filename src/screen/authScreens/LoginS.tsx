@@ -86,7 +86,7 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 		const body = event.nativeEvent.data
 		const jsonData = extractJSONFromBody(body)
 		if (containsSpecialCharacters(jsonData)) return
-		setIsLoading(LoadingEnum.fetching)
+		//setIsLoading(LoadingEnum.fetching)
 		try {
 			const parsedData: UserAuthGoogleData = JSON.parse(jsonData)
 			if (parsedData.token) {

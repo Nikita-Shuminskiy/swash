@@ -5,7 +5,7 @@ import Button from '../../components/Button'
 import { colors } from '../../assets/colors/colors'
 import ArrowBack from '../../components/ArrowBack'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
-import { Image, Linking, StyleSheet, View } from 'react-native'
+import {Dimensions, Image, Linking, StyleSheet, View} from 'react-native'
 import { getCurrentPositionHandler } from '../../components/MapViews/utils'
 import { observer } from 'mobx-react-lite'
 import takeYourThingsImg from '../../assets/Images/orders/takeThings.png'
@@ -58,8 +58,8 @@ const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToChe
 	}
 
 	return (
-		<BaseWrapperComponent>
-			<Box style={{ paddingHorizontal: 16, justifyContent: 'space-between', width: '100%', flex: 1 }}>
+		<BaseWrapperComponent isKeyboardAwareScrollView={true}>
+			<Box style={{ paddingHorizontal: 16, justifyContent: 'space-between', width: '100%', flex: 1, height: Dimensions.get('window').height }}>
 				<Box>
 					<ArrowBack goBackPress={goBackPress} />
 					<Box mt={2} mb={2}>
@@ -123,7 +123,7 @@ const NavigatingToCheckpointS = observer(({ navigation, route }: NavigatingToChe
 						</Text>
 					</Box>
 				</Box>
-				<Box mb={5} alignItems={'center'}>
+				<Box mb={3} mt={2} alignItems={'center'}>
 					<Button backgroundColor={colors.blue} colorText={colors.white}
 									styleContainer={{
 										borderRadius: 28,

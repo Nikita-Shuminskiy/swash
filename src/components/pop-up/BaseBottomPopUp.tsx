@@ -18,7 +18,7 @@ const BaseBottomPopUp = ({ visible, onClose, onDelete, text }: PopUpCanselSwashP
 		onClose()
 	}
 	return (
-		<ModalPopup modalHeight={Math.round(Dimensions.get('window').height * 0.2)} style={{}} visible={visible}
+		<ModalPopup modalHeight={150} style={{}} visible={visible}
 								onClose={onClose}>
 			<Box>
 				<Box flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>

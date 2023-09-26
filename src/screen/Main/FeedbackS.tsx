@@ -33,7 +33,7 @@ const FeedbackS = ({ navigation }: FeedbackSProps) => {
 	}
 
 	return (
-		<BaseWrapperComponent>
+		<BaseWrapperComponent isKeyboardAwareScrollView={true}>
 			<Box style={{ paddingHorizontal: 16 }}>
 				<ArrowBack goBackPress={goBackPress} />
 				<Box mt={2} mb={2}>
