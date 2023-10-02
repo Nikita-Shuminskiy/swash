@@ -1,32 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Image, StyleSheet } from 'react-native'
-import { NavigationProp, ParamListBase } from '@react-navigation/native'
-import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
+import React, {useState} from 'react'
+import {Image, StyleSheet} from 'react-native'
+import {NavigationProp, ParamListBase} from '@react-navigation/native'
+import {BaseWrapperComponent} from '../../components/baseWrapperComponent'
 import AuthStore from '../../store/AuthStore/auth-store'
 import imgLogo from '../../assets/Images/logoSwash.png'
 import imgGoogle from '../../assets/Images/google.png'
 import imgFacebook from '../../assets/Images/fasebook.png'
-import { Box, Text } from 'native-base'
-import { colors } from '../../assets/colors/colors'
+import {Box, Text} from 'native-base'
+import {colors} from '../../assets/colors/colors'
 import Button from '../../components/Button'
 import rootStore from '../../store/RootStore/root-store'
 import WebView from 'react-native-webview'
-import { LoadingEnum } from '../../store/types/types'
+import {LoadingEnum} from '../../store/types/types'
 import NotificationStore from '../../store/NotificationStore/notification-store'
-import { observer } from 'mobx-react-lite'
-import LoadingGlobal from '../../components/LoadingGlobal'
-import { routerConstants } from '../../constants/routerConstants'
+import {observer} from 'mobx-react-lite'
+import {routerConstants} from '../../constants/routerConstants'
+import {LoadingIndicatorView} from "../../components/LoadingIndicatorView";
 
-const LoadingIndicatorView = () => {
-	return (
-		<Box alignItems={'center'} flex={1} w={'100%'} justifyContent={'flex-start'}>
-			<ActivityIndicator
-				color={colors.blue}
-				size='large'
-			/>
-		</Box>
-	)
-}
 const extractJSONFromBody = (body) => {
 	const startTag = '<body>'
 	const endTag = '</body>'

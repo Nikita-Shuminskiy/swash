@@ -27,16 +27,14 @@ import AboutUsS from '../screen/Main/AboutUsS'
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
 	const { isLoading, serverResponseText, isLocalLoading, setIsLoading } = NotificationStore
-
 	const { OrdersStoreService } = rootStore
 	const { isAuth } = AuthStore
 	const {
 		askNotificationPermissionHandler,
 		askLocationPermissionHandler,
 		locationStatus,
-		notificationStatus
 	} = usePermissionsPushGeo()
-	const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted' || notificationStatus !== 'undetermined' && locationStatus !== 'granted'
+	const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
 	const { checkInternetConnection, isConnected } = useInternetConnected()
 	const navigate = useNavigation<any>()
 

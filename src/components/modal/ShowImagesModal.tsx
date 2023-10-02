@@ -14,8 +14,8 @@ const ShowImagesModal = ({ visible, onClose, image }: BaseModalProps) => {
 	return (
 		<Modal transparent={false} visible={visible}>
 			<BaseWrapperComponent isKeyboardAwareScrollView={false}>
-				<Box pl={4} position={'relative'} bottom={3} flex={1}>
-					<HeaderGoBackTitle goBackPress={onClose} title={'лорпарол'} />
+				<Box pl={4} position={'relative'} bottom={3} top={2} zIndex={10} >
+					<HeaderGoBackTitle goBackPress={onClose} title={''} />
 				</Box>
 				<Box paddingY={4}>
 					<Box mt={2}>

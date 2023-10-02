@@ -9,9 +9,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build_apk": "eas build -p android --profile preview",
-    "build_dev_android": "eas build --profile development --platform android",
-    "build_android_aab": "eas build --platform android"
+    "build_apk": "npx eas build -p android --profile preview",
+    "build_dev_android": "npx eas build --profile development --platform android",
+    "build_android_aab": "npx eas build --platform android"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
@@ -32,6 +32,7 @@
     "expo-notifications": "~0.20.1",
     "expo-permissions": "^14.2.1",
     "expo-status-bar": "~1.6.0",
+    "expo-web-browser": "^12.5.0",
     "formik": "^2.2.9",
     "mobx": "^6.6.1",
     "mobx-react-lite": "^3.4.0",

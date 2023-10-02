@@ -1,7 +1,7 @@
 type SendMessagePayloadType = {
 	orders_id?: string
-	photo: string
-	text: string
+	photo?: string
+	text?: string
 }
 type DialogType = {
 	"admins_id": string,

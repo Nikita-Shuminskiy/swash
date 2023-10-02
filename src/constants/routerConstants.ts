@@ -12,6 +12,7 @@ export const routerConstants = {
 
     PRICE: 'price',
     ORDERS: 'orders',
+    CHANGE_LANGUAGE: 'change-language',
 
     CLIENT_RECEIVED: 'client_received', // просим оценки
     EXECUTOR_MAP: 'executor_map', // отнеси и сдай
@@ -24,12 +25,8 @@ export const routerConstants = {
     PAYMENT_METHOD: 'payment-methods',
     CHAT_SUPPORT: 'chat-support'
 /*
-
     EXECUTOR_CONFIRM_CLIENT_MUST_PAY: 'executor_confirm&client_must_pay', // оплати
-
-
     EXECUTOR_DONE_CLIENT_MUST_PAY: 'executor_done&client_must_pay', // оплати
-
     AUCTION_OPEN: 'auction_open', // ищем исполнителя
     CLIENT_SENT: 'client_sent', // в процессе
     EXECUTOR_MUST_GET: 'executor_must_get', // в процессе

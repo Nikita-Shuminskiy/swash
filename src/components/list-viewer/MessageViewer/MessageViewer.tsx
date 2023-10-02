@@ -28,6 +28,8 @@ const MessageViewer = memo(({message}: MessageViewerProps) => {
                  justifyContent={isClientMessage ? 'flex-end' : 'flex-start'}>
                 {!isClientMessage &&
                     <Image source={message.admins_pic ? {uri: adminAvatar} : mockImg}
+                           resizeMethod={'resize'}
+                           resizeMode={'contain'}
                            style={{...styles.imgAvatar, marginRight: 4}}/>
                 }
 
@@ -58,7 +60,9 @@ const MessageViewer = memo(({message}: MessageViewerProps) => {
                 {isClientMessage &&
                     <Image source={{uri: clientAvatar}} style={{...styles.imgAvatar, marginLeft: 4}}/>}
             </Box>
-            <ShowImagesModal image={imageUrl} visible={openImg} onClose={() => setOpenImg(false)}/>
+            <ShowImagesModal image={imageUrl} visible={openImg} onClose={() => {
+                setOpenImg(false)
+            }}/>
         </>
     )
 })
