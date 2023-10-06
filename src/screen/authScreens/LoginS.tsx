@@ -16,6 +16,8 @@ import NotificationStore from '../../store/NotificationStore/notification-store'
 import {observer} from 'mobx-react-lite'
 import {routerConstants} from '../../constants/routerConstants'
 import {LoadingIndicatorView} from "../../components/LoadingIndicatorView";
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
 
 const extractJSONFromBody = (body) => {
 	const startTag = '<body>'
@@ -53,6 +55,8 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 	const { setUserAuthData } = AuthStore
 	const { setIsLoading } = NotificationStore
 	const { OrdersStoreService } = rootStore
+	const {dictionary} = DictionaryStore
+
 	const [webViewVisible, setWebViewVisible] = useState(false)
 	const onPressSingUpGoogle = () => {
 		setWebViewVisible(true)
@@ -62,7 +66,6 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 	const onPressAboutUs = () => {
 		navigation.navigate(routerConstants.ABOUT_US)
 	}
-
 	const containsSpecialCharacters = (inputString) => {
 		try {
 			JSON.parse(inputString) // Попытка парсинга JSON
@@ -102,8 +105,8 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 						<Image alt={'logo'} style={styles.imgLogo} source={imgLogo} />
 
 						<Box w={'100%'} alignItems={'center'}>
-							<Text fontSize={28} fontWeight={'600'}>Welcome to Swash!</Text>
-							<Text fontSize={15} color={colors.grayLight}>Choose the login method that is convenient for you</Text>
+							<Text fontSize={28} fontWeight={'600'}>{dictionary[DictionaryEnum.WelcomeToSwash]}</Text>
+							<Text fontSize={15} color={colors.grayLight}>{dictionary[DictionaryEnum.ChooseLoginMethod]}</Text>
 						</Box>
 					</Box>
 					<Box alignItems={'center'} w={'100%'}>
@@ -114,7 +117,7 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 							<Box flexDirection={'row'} alignItems={'center'}>
 								<Image style={styles.imgIco} alt={'img-face'} source={imgFacebook} />
 								<Text color={colors.white}>
-									Continue with Facebook
+									{dictionary[DictionaryEnum.ContinueWithFacebook]}
 								</Text>
 							</Box>
 						</Button>
@@ -123,13 +126,13 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 							<Box flexDirection={'row'} alignItems={'center'}>
 								<Image style={styles.imgIco} alt={'img-google'} source={imgGoogle} />
 								<Text>
-									Continue with Google
+									{dictionary[DictionaryEnum.ContinueWithGoogle]}
 								</Text>
 							</Box>
 						</Button>
 
 					</Box>
-					<Button onPress={onPressAboutUs} styleContainer={styles.styleContainerBtn} title={'About us'}
+					<Button onPress={onPressAboutUs} styleContainer={styles.styleContainerBtn} title={dictionary[DictionaryEnum.AboutSwash]}
 									colorText={colors.blue} backgroundColor={colors.blueLight} />
 				</Box>) : (
 					<Box flex={1} w={'100%'}>

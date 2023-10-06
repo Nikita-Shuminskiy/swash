@@ -1,12 +1,10 @@
 import {action, makeAutoObservable, makeObservable, observable} from 'mobx'
 import {clientApi} from '../../api/Client/clientApi'
 import {deviceStorage} from "../../utils/storage/storage";
+import {DictionaryEnum} from "./type";
 
 export type LaundryService = {
-    [key: string]: {
-        EN: string;
-        en: string;
-    };
+    [key: string]: string
 }
 
 export class DictionaryStore {
@@ -24,7 +22,6 @@ export class DictionaryStore {
             const {data} = await clientApi.getDictionary({language: language})
             await deviceStorage.saveItem('dictionary', JSON.stringify(data))
             await deviceStorage.saveItem('selectedLanguage', language)
-
             this.setDictionary(data)
             this.setSelectedLanguage(language)
         } catch (e) {
@@ -33,21 +30,19 @@ export class DictionaryStore {
     }
     getDictionaryLocal = async (language = 'en') => {
         try {
+            await this.sendDictionary(language)
+        } catch (e) {
             const dictionary = await deviceStorage.getItem('dictionary')
             const selectedLanguage = await deviceStorage.getItem('selectedLanguage')
             const convertDictionary: LaundryService = JSON.parse(dictionary)
-            await this.sendDictionary(language)
-            /* if (!dictionary) {
-
-                 return
-             }*/
-            this.setDictionary(convertDictionary)
-            this.setSelectedLanguage(selectedLanguage)
-        } catch (e) {
+            if (!!dictionary) {
+                this.setDictionary(convertDictionary)
+                this.setSelectedLanguage(selectedLanguage)
+            }
             console.log(e.response, 'convertDictionary')
-            console.log(e.response)
         }
     }
+
     constructor() {
         makeAutoObservable(this)
     }
