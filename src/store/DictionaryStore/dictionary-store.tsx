@@ -2,6 +2,7 @@ import {action, makeAutoObservable, makeObservable, observable} from 'mobx'
 import {clientApi} from '../../api/Client/clientApi'
 import {deviceStorage} from "../../utils/storage/storage";
 import {DictionaryEnum} from "./type";
+import {language} from "../../utils/commonUtils";
 
 export type LaundryService = {
     [key: string]: string
@@ -10,11 +11,16 @@ export type LaundryService = {
 export class DictionaryStore {
     dictionary: LaundryService | null = null
     selectedLanguage: string = 'en'
+
+    constructor() {
+        makeAutoObservable(this, {}, { autoBind: true });
+    }
     setDictionary = (dictionary: LaundryService) => {
         //console.log(dictionary)
         this.dictionary = dictionary
     }
     setSelectedLanguage = (lan: string) => {
+        console.log(lan)
         this.selectedLanguage = lan
     }
     sendDictionary = async (language = 'en') => {
@@ -28,9 +34,9 @@ export class DictionaryStore {
             console.log(e.response)
         }
     }
-    getDictionaryLocal = async (language = 'en') => {
+    getDictionaryLocal = async (languages = 'en') => {
         try {
-            await this.sendDictionary(language)
+            await this.sendDictionary(languages)
         } catch (e) {
             const dictionary = await deviceStorage.getItem('dictionary')
             const selectedLanguage = await deviceStorage.getItem('selectedLanguage')
@@ -41,10 +47,6 @@ export class DictionaryStore {
             }
             console.log(e.response, 'convertDictionary')
         }
-    }
-
-    constructor() {
-        makeAutoObservable(this)
     }
 }
 

@@ -159,4 +159,8 @@ export enum DictionaryEnum {
     Seconds = "seconds",
     Shirt = "shirt",
     ToTheContractor = "to the contractor",
+    WeNeedAskPushGeo = "We need to ask you for camera, geo, push permissions. Without them application wouldn’t work properly",
+    WeNeedPhoneNum = "We need your phone number",
+    IncorectPhoneNum = "Incorrect phone number",
+    WeNeedLifeVeryBusy__long = "We understand that modern life is very busy, and many people do not have time to do everyday household chores, such as washing and ironing. That's why we developed this app to help you optimize your time and make this process easier.",
 }

@@ -10,6 +10,8 @@ import AuthStore from '../../store/AuthStore/auth-store'
 import ArrowBack from '../../components/ArrowBack'
 import { countryDataDefault } from '../../utils/constants'
 import { PhoneNumberField } from '../../components/PhoneField'
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
 
 type PhoneVerifySProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -27,6 +29,7 @@ export type CountryData = {
 
 const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 	const { AuthStoreService } = rootStore
+	const {dictionary} = DictionaryStore
 	const isFromUpdate = route.params?.from === 'update'
 	const { setPhone: setVerifyPhone } = AuthStore
 	const [phone, setPhone] = useState<string>()
@@ -81,18 +84,18 @@ const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 			}
 			<Box flex={1} justifyContent={'center'} alignItems={'center'} paddingX={5}>
 				<Box alignItems={'center'} mb={10}>
-					<Text fontSize={22} mb={2} fontFamily={'semiBold'}>Phone verification</Text>
-					<Text fontSize={15} color={colors.grayLight} fontFamily={'regular'}>We need your phone number</Text>
+					<Text fontSize={22} mb={2} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.PhoneVerification]}</Text>
+					<Text fontSize={15} color={colors.grayLight} fontFamily={'regular'}>{dictionary[DictionaryEnum.WeNeedPhoneNum]}</Text>
 				</Box>
-				<PhoneNumberField defaultCode={'PL'} onChangeCountry={onChangeCountry} defaultValue={phone} errorMessage={'Incorrect phone number'}
-													placeholder={'Phone'}
+				<PhoneNumberField defaultCode={'PL'} onChangeCountry={onChangeCountry} defaultValue={phone} errorMessage={dictionary[DictionaryEnum.IncorrectConfirmationCode]}
+													placeholder={dictionary[DictionaryEnum.Phone]}
 													onChangeTextPhone={onChangeTextPhone}
 													isRequired={true} isInvalid={disabledBtn} />
 				<Box mt={10} w={'100%'} alignItems={'center'}>
 					<Button styleContainer={{ maxWidth: 280, width: '100%', opacity: disabledBtn ? 0.3 : 1 }}
 									backgroundColor={colors.blue}
 									colorText={colors.white}
-									onPress={onPressSendSMS} title={'Send SMS'} />
+									onPress={onPressSendSMS} title={dictionary[DictionaryEnum.SendSMS]} />
 				</Box>
 			</Box>
 		</BaseWrapperComponent>

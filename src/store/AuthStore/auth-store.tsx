@@ -56,7 +56,6 @@ export class AuthStore {
 
 	async getSettingsClient() {
 		const { data } = await clientApi.getSettingsClient()
-
 		this.setClientSettings(data)
 		return data
 	}

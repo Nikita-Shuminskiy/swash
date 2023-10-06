@@ -22,6 +22,7 @@ import authenticatedRoutes from './routesConstants'
 import rootStore from '../store/RootStore/root-store'
 import {useNavigation} from '@react-navigation/native'
 import AboutUsS from '../screen/Main/AboutUsS'
+import {language} from "../utils/commonUtils";
 
 
 const RootStack = createNativeStackNavigator()
@@ -29,7 +30,7 @@ const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
     const {OrdersStoreService, DictionaryStore} = rootStore
     const {dictionary, selectedLanguage} = DictionaryStore
-    console.log('RootNavigation')
+
     const {isAuth} = AuthStore
     const {
         askNotificationPermissionHandler,
@@ -43,7 +44,7 @@ const RootNavigation = observer(() => {
 
     useLayoutEffect(() => {
         setIsLoading(LoadingEnum.fetching)
-        DictionaryStore.getDictionaryLocal()
+        DictionaryStore.getDictionaryLocal(language.slice(0, 2))
         OrdersStoreService.getSettingClient(navigate?.navigate).finally(() => {
             setTimeout(() => {
                 setIsLoading(LoadingEnum.success)
@@ -51,17 +52,20 @@ const RootNavigation = observer(() => {
         })
     }, [])
     if (!dictionary) {
-        return <LoadingGlobal visible={!dictionary}/>
+        return null
     }
     return (
         <BurgerMenuProvider>
             {isLoading === LoadingEnum.fetching && <LoadingGlobal visible={true}/>}
             {isLocalLoading === LoadingEnum.fetching && <LoadingLocal visible={true}/>}
             {serverResponseText && <Alerts
+                dictionary={dictionary}
                 text={serverResponseText}/>}
             {!isConnected && <WifiReconnect
+                dictionary={dictionary}
                 checkInternet={checkInternetConnection} visible={!isConnected}/>}
             {checkStatusPermissions && <GivePermissions
+                dictionary={dictionary}
                 askLocationPermissionHandler={askLocationPermissionHandler}
                 askNotificationPermissionHandler={askNotificationPermissionHandler}
                 visible={checkStatusPermissions}/>}

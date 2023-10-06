@@ -13,6 +13,8 @@ import rootStore from '../../store/RootStore/root-store'
 import { observer } from 'mobx-react-lite'
 import { routerConstants } from '../../constants/routerConstants'
 import { format } from 'date-fns';
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
 type TermsOfUseSProps = {
 	navigation: NavigationProp<ParamListBase>
 }
@@ -21,6 +23,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 	const [checkToc, setCheckToc] = useState(false)
 	const [checkLegal, setCheckLegal] = useState(false)
 	const [disBtn, setDisBtn] = useState(false)
+	const {dictionary} = DictionaryStore
 	const onPressContinue = () => {
 		if (!checkLegal || !checkToc) {
 			setDisBtn(true)
@@ -59,7 +62,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 					<Box paddingX={2} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
 							 backgroundColor={colors.white}>
 						<Box flex={1} w={'100%'} alignItems={'center'}>
-							<Text fontSize={28} fontFamily={'semiBold'}>Terms of Use</Text>
+							<Text fontSize={28} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.TermsOfUse]}</Text>
 							<Box mt={3} w={'100%'}>
 								<Box borderRadius={16} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'center'}
 										 p={3} backgroundColor={colors.blueLight}>
@@ -67,9 +70,9 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 
 									<Box flexDirection={'row'} justifyContent={'flex-start'}
 											 alignItems={'center'}>
-										<Text ml={2} fontSize={15} fontFamily={'regular'}>I agree with{' '}</Text>
+										<Text ml={2} fontSize={15} fontFamily={'regular'}>{dictionary[DictionaryEnum.IAgreeWith]}{' '}</Text>
 										<TouchableOpacity style={styles.link}>
-											<Text color={colors.blue} fontFamily={'regular'}>TOS</Text>
+											<Text color={colors.blue} fontFamily={'regular'}>{dictionary[DictionaryEnum.TOC]}</Text>
 										</TouchableOpacity>
 									</Box>
 								</Box>
@@ -79,9 +82,9 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 									<CheckBoxs value={checkLegal} onPress={onPressLegalHandler} />
 									<Box flexDirection={'row'} justifyContent={'flex-start'}
 											 alignItems={'center'}>
-										<Text ml={2} fontSize={15} fontFamily={'regular'}>I agree with{' '}</Text>
+										<Text ml={2} fontSize={15} fontFamily={'regular'}>{dictionary[DictionaryEnum.IAgreeWith]}{' '}</Text>
 										<TouchableOpacity style={styles.link}>
-											<Text color={colors.blue} fontFamily={'regular'}>Legal Notice</Text>
+											<Text color={colors.blue} fontFamily={'regular'}>{dictionary[DictionaryEnum.LegalNotice]}</Text>
 										</TouchableOpacity>
 									</Box>
 								</Box>
@@ -89,7 +92,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 						</Box>
 						<Box flex={1} alignItems={'center'} w={'100%'} justifyContent={'center'}>
 							<Button disabled={disBtn} onPress={onPressContinue} styleContainer={{ ...styles.styleContainerBtn }}
-											title={'Continue'}
+											title={dictionary[DictionaryEnum.Continue]}
 											colorText={colors.white} backgroundColor={styleDisBtn} />
 						</Box>
 

@@ -3,11 +3,14 @@ import { Alert, Box, CloseIcon, Heading, HStack, IconButton, VStack } from 'nati
 import { colors } from '../assets/colors/colors'
 import NotificationStore from '../store/NotificationStore/notification-store'
 import { TouchableHighlight, TouchableOpacity } from 'react-native'
+import {LaundryService} from "../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../store/DictionaryStore/type";
 
 type AlertProps = {
 	text: string
+	dictionary: LaundryService
 }
-const Alerts = ({ text }: AlertProps) => {
+const Alerts = ({ text, dictionary }: AlertProps) => {
 	const { setServerErrorText } = NotificationStore
 	const onPressClose = () => {
 		setServerErrorText(undefined)
@@ -23,7 +26,7 @@ const Alerts = ({ text }: AlertProps) => {
 				<HStack space={2} flexShrink={1} alignItems='center'>
 					<Alert.Icon color={colors.white} />
 					<Heading fontSize='md' fontWeight='medium' color={colors.white}>
-						Service auth error
+						{dictionary[DictionaryEnum.ServiceAuthError]}
 					</Heading>
 				</HStack>
 				<IconButton onPress={onPressClose} variant='unstyled' icon={<CloseIcon size='4' color={colors.white} />} />

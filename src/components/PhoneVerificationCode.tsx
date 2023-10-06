@@ -8,14 +8,17 @@ import { observer } from 'mobx-react-lite'
 import rootStore from '../store/RootStore/root-store'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { routerConstants } from '../constants/routerConstants'
+import {LaundryService} from "../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../store/DictionaryStore/type";
 
 
 const CELL_COUNT = 5
 type PhoneVerificationProps = {
 	navigation: NavigationProp<ParamListBase>
 	isFromUpdate: boolean
+	dictionary: LaundryService
 }
-const PhoneVerificationCode = observer(({ navigation, isFromUpdate }: PhoneVerificationProps) => {
+const PhoneVerificationCode = observer(({ navigation, isFromUpdate, dictionary }: PhoneVerificationProps) => {
 	const [code, setCode] = useState('')
 	const { AuthStoreService } = rootStore
 	const [isValid, setIsValid] = useState(true)
@@ -47,17 +50,12 @@ const PhoneVerificationCode = observer(({ navigation, isFromUpdate }: PhoneVerif
 			})
 		}
 	}, [code])
-	const handleVerifyCode = () => {
-
-	}
-
 	const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT })
 
 	const [props, getCellOnLayoutHandler] = useClearByFocusCell({
 		value: code,
 		setValue: handleCodeChange,
 	})
-
 
 	return (
 		<View>
@@ -87,7 +85,7 @@ const PhoneVerificationCode = observer(({ navigation, isFromUpdate }: PhoneVerif
 				)}
 			/>
 			{
-				!isValid && <Text mt={2} fontFamily={'regular'} fontSize={15} color={colors.red}>Incorrect confirmation code</Text>
+				!isValid && <Text mt={2} fontFamily={'regular'} fontSize={15} color={colors.red}>{dictionary[DictionaryEnum.IncorrectConfirmationCode]}</Text>
 			}
 
 		</View>

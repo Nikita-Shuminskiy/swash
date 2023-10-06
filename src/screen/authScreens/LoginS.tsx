@@ -55,7 +55,7 @@ const LoginS = observer(({ navigation }: LoginSProps) => {
 	const { setUserAuthData } = AuthStore
 	const { setIsLoading } = NotificationStore
 	const { OrdersStoreService } = rootStore
-	const {dictionary} = DictionaryStore
+	const {dictionary, selectedLanguage} = DictionaryStore
 
 	const [webViewVisible, setWebViewVisible] = useState(false)
 	const onPressSingUpGoogle = () => {
