@@ -5,12 +5,18 @@ import { NativeBaseProvider } from 'native-base'
 import { LogBox } from 'react-native'
 import { useFonts } from '@expo-google-fonts/inter/useFonts'
 import { NavigationContainer } from '@react-navigation/native'
+import {spy} from "mobx";
 
 LogBox.ignoreLogs([
 	'In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.',
 ])
 // Temporary solution until the problem is officially fixed
 // https://github.com/GeekyAnts/NativeBase/issues/5758
+/*spy((ev) => {
+	if(ev.type === 'action') {
+		console.log(ev, 'ev action')
+	}
+})*/
 export default function App() {
 
 	let [fontsLoaded] = useFonts({

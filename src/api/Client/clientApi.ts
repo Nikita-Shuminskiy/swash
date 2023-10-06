@@ -7,14 +7,16 @@ import {
 	LogisticsPointType, payloadUpdOrderType,
 } from './type'
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator'
+import {LaundryService} from "../../store/DictionaryStore/dictionary-store";
 
 
 export const clientApi = {
 	async getLogisticPoints(payload: { country: string }) {
 		return await instance.get<ResponseLogisticsPoints>(`washapi.php/get_logistics_points`, { params: payload })
 	},
+
 	async getDictionary(payload: { language: string }) {
-		return await instance.get(`washapi.php/get_dictionary`, { params: payload })
+		return await instance.get<LaundryService>(`washapi.php/get_dictionary`, { params: payload })
 	},
 	async getSettingsClient() {
 		return await instance.get<DataSettingClientType>(`washapi.php/get_settings_client`)

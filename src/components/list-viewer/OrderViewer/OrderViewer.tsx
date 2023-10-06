@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 import { Box, Text } from 'native-base'
 import { colors } from '../../../assets/colors/colors'
 import { OrderType } from '../../../api/Client/type'
@@ -9,9 +9,9 @@ import { format } from 'date-fns'
 
 type OrderViewerProps = {
 	order: OrderType
-	onPressDetails: () => void
+	onPressDetails: (order: OrderType) => void
 }
-const OrderViewer = ({ order, onPressDetails }: OrderViewerProps) => {
+const OrderViewer = memo(({ order, onPressDetails }: OrderViewerProps) => {
 
 	const getCurrData = getLastStepStatusOrder(order.last_step?.trim(), order.date_estimated_ready)
 
@@ -27,10 +27,10 @@ const OrderViewer = ({ order, onPressDetails }: OrderViewerProps) => {
 				</Box>
 			</Box>
 			<Box>
-				<TouchableOpacity onPress={onPressDetails}>
+				<TouchableOpacity onPress={() => onPressDetails(order)}>
 					<Box paddingY={18} borderRadius={16} paddingX={5} flexDirection={'row'} alignItems={'center'}
-							 justifyContent={'space-between'}
-							 backgroundColor={colors.grayBright}>
+						 justifyContent={'space-between'}
+						 backgroundColor={colors.grayBright}>
 						<Text fontFamily={'regular'} fontSize={13} color={colors.blue}>Details</Text>
 						<Image source={arrowBlue} alt={'arrow'} />
 					</Box>
@@ -39,6 +39,6 @@ const OrderViewer = ({ order, onPressDetails }: OrderViewerProps) => {
 
 		</Box>
 	)
-}
+})
 
 export default OrderViewer

@@ -4,6 +4,7 @@ import { deviceStorage } from '../../utils/storage/storage'
 import { UserAuthGoogleData } from '../../screen/authScreens/LoginS'
 import { clientApi } from '../../api/Client/clientApi'
 import { ClientRegisterPayloadType, DataSettingClientType, LogisticsPointType } from '../../api/Client/type'
+import {language} from "../../utils/commonUtils";
 
 export class AuthStore {
 	isAuth: boolean = false
@@ -49,12 +50,13 @@ export class AuthStore {
 	async getLogisticPoints() {
 		const { data } = await clientApi.getLogisticPoints({ country: 'PL' }) // временно
 		this.setLogisticPoints(data.points)
-		/*		const { data: dataDictionary } = await clientApi.getDictionary({ language })
+		/*
 				const dataPushMessages = await clientApi.getClientPushMessages(payload)*/
 	}
 
 	async getSettingsClient() {
 		const { data } = await clientApi.getSettingsClient()
+
 		this.setClientSettings(data)
 		return data
 	}
@@ -75,7 +77,6 @@ export class AuthStore {
 
 	async sendClientRegister(payload: ClientRegisterPayloadType) {
 		const { data } = await clientApi.sendClientRegister(payload)
-		console.log(data)
 		return data
 	}
 	async updateClientPhoto(photo: string) {

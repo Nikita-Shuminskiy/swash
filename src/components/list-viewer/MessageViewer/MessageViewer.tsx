@@ -16,15 +16,12 @@ const MessageViewer = memo(({message}: MessageViewerProps) => {
     const [openImg, setOpenImg] = useState(false)
     const isClientMessage = !message.admins_id
     const {clientSettings} = AuthStore
-
     const imageUrl = `${BASE_URL}${message.image}`
     const clientAvatar = `${BASE_URL}${clientSettings.client.pic}`
     const adminAvatar = `${BASE_URL}${message.admins_pic}`
-
-
     return (
         <>
-            <Box flexDirection={'row'}  mb={4} alignItems={'flex-end'}
+            <Box flexDirection={'row'} mb={4} alignItems={'flex-end'}
                  justifyContent={isClientMessage ? 'flex-end' : 'flex-start'}>
                 {!isClientMessage &&
                     <Image source={message.admins_pic ? {uri: adminAvatar} : mockImg}
@@ -33,7 +30,7 @@ const MessageViewer = memo(({message}: MessageViewerProps) => {
                            style={{...styles.imgAvatar, marginRight: 4}}/>
                 }
 
-                <Box  backgroundColor={isClientMessage ? colors.blue : colors.grayBright} borderRadius={16} p={2}
+                <Box backgroundColor={isClientMessage ? colors.blue : colors.grayBright} borderRadius={16} p={2}
                      borderBottomLeftRadius={isClientMessage ? 16 : 0}
                      borderBottomRightRadius={!isClientMessage ? 16 : 0} flex={message?.image ? 1 : 1}>
                     {

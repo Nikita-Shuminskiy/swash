@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {BaseWrapperComponent} from '../../../components/baseWrapperComponent'
 import {observer} from 'mobx-react-lite'
 import rootStore from '../../../store/RootStore/root-store'
@@ -52,9 +52,11 @@ const ChatS = observer(({navigation}: ChatSProps) => {
     const goBack = () => {
         navigation.goBack()
     }
-    const renderItem = ({item}: { item: DialogType }) => {
-        return <MessageViewer message={item}/>
-    }
+    const renderItem = useCallback(
+        ({item}: { item: DialogType }) => {
+            return <MessageViewer message={item}/>
+    }, [])
+
     return (
         <BaseWrapperComponent>
             <Box paddingX={4} mt={2} mb={2}>
@@ -66,7 +68,7 @@ const ChatS = observer(({navigation}: ChatSProps) => {
                         {
                             !!dialog?.length &&
                             dialog.map((message, key) => {
-                                return <Box key={key}>
+                                return <Box key={message.message_id}>
                                     {renderItem({item: message})}
                                 </Box>
                             })
