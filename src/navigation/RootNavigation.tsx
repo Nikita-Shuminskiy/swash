@@ -37,23 +37,32 @@ const RootNavigation = observer(() => {
         askLocationPermissionHandler,
         locationStatus,
     } = usePermissionsPushGeo()
+
     const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
+
     const {checkInternetConnection, isConnected} = useInternetConnected()
 
     const navigate = useNavigation<any>()
 
     useLayoutEffect(() => {
         setIsLoading(LoadingEnum.fetching)
-        DictionaryStore.getDictionaryLocal(language.slice(0, 2))
-        OrdersStoreService.getSettingClient(navigate?.navigate).finally(() => {
-            setTimeout(() => {
-                setIsLoading(LoadingEnum.success)
-            }, 3000)
-        })
+        OrdersStoreService.getSettingClient(navigate?.navigate)
+            .then((data) => {
+                if (!data) {
+                    DictionaryStore.getDictionaryLocal()
+                }
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setIsLoading(LoadingEnum.success)
+                }, 3000)
+            })
     }, [])
+
     if (!dictionary) {
-        return null
+        return <LoadingGlobal visible={true}/>
     }
+
     return (
         <BurgerMenuProvider>
             {isLoading === LoadingEnum.fetching && <LoadingGlobal visible={true}/>}

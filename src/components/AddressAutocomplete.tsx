@@ -3,22 +3,25 @@ import {StyleSheet} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {Image} from "native-base";
 import {colors} from "../assets/colors/colors";
+import {DictionaryType} from "../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../store/DictionaryStore/type";
 
 type AddressAutocompleteProps = {
     onSave: (data: AutoCompleteDataType) => void
+    dictionary: DictionaryType
 }
 export type AutoCompleteDataType = {
     location: { latitude: number, longitude: number },
     positionMarker: { latitude: number, longitude: number },
     address: {name: string, formatted_address: string}
 }
-const AddressAutocomplete = ({onSave}: AddressAutocompleteProps) => {
+const AddressAutocomplete = ({onSave, dictionary}: AddressAutocompleteProps) => {
     return (
         <GooglePlacesAutocomplete
             enablePoweredByContainer={false}
             styles={styles}
             fetchDetails={true}
-            placeholder={'Enter an address'}
+            placeholder={dictionary[DictionaryEnum.EnterAddress]}
             onPress={(data, details = null) => {
                 const { geometry, name, formatted_address  } = details;
                 if (geometry && geometry.location) {

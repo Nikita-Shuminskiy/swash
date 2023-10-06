@@ -17,9 +17,14 @@ import AuthStore from '../../store/AuthStore/auth-store'
 import {observer} from 'mobx-react-lite'
 import {useNavigation} from '@react-navigation/native'
 import {routerConstants} from '../../constants/routerConstants'
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
 
 const BurgerMenu = observer(() => {
     const {isMenuOpen, setIsMenuOpen} = useBurgerMenu()
+
+    const {dictionary} = DictionaryStore
+
     const [isOpenLogout, setIsLogout] = useState<boolean>(false)
     const toValue = isMenuOpen ? 0 : -1000
     const menuPosition = useRef(new Animated.Value(toValue)).current
@@ -80,20 +85,21 @@ const BurgerMenu = observer(() => {
                 >
                     <Box pt={8}>
                         <Avatar photo={clientSettings?.client?.pic}
+                                dictionary={dictionary}
                                 name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`}
                                 onClose={() => setIsMenuOpen(false)}/>
                         <Box justifyContent={'space-between'}
                              alignItems={'center'}
                              flexDirection={'row'}
                              marginY={2}
-
                              borderRadius={16}
                              p={4}
                              borderWidth={1}
                              borderColor={colors.grayBright}>
                             <Box flexDirection={'row'} alignItems={'center'}>
                                 <Image w={6} h={6} alt={'img'} source={countryImg}/>
-                                <Text fontSize={15} fontWeight={'regular'} ml={2}>Country</Text>
+                                <Text fontSize={15} fontWeight={'regular'}
+                                      ml={2}>{dictionary[DictionaryEnum.Country]}</Text>
                             </Box>
                             <Box alignItems={'center'}
                                  flexDirection={'row'}>
@@ -103,16 +109,16 @@ const BurgerMenu = observer(() => {
                         </Box>
                         <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)}
                                     img={repeatImg}
-                                    text={'Order history'}/>
+                                    text={dictionary[DictionaryEnum.OrderHistory]}/>
                         <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHAT_SUPPORT)}
                                     img={questionMarkImg}
-                                    text={'Contact support'}/>
+                                    text={dictionary[DictionaryEnum.ContactSupport]}/>
                         <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.PAYMENT_METHOD)}
                                     img={walletImg}
-                                    text={'Payment methods'}/>
+                                    text={dictionary[DictionaryEnum.PaymentMethod]}/>
                         <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)}
                                     img={exclamationMarkImg}
-                                    text={'About Swash'}/>
+                                    text={dictionary[DictionaryEnum.AboutSwash]}/>
                     </Box>
                     <Box mt={2} mb={5} alignItems={'center'}>
                         <Button backgroundColor={colors.white} colorText={colors.black}
@@ -122,13 +128,15 @@ const BurgerMenu = observer(() => {
                                     borderRadius: 28,
                                     maxWidth: 280,
                                     width: '100%',
-                                }} styleText={{fontFamily: 'regular'}} onPress={onPressLogOut} title={'Log off'}/>
+                                }} styleText={{fontFamily: 'regular'}} onPress={onPressLogOut}
+                                title={dictionary[DictionaryEnum.LogOff]}/>
                     </Box>
                 </Animated.View>
             </Animated.View>
             {
                 isOpenLogout &&
-                <BaseBottomPopUp text={'Do you really want to log off?'} onDelete={logOutHandler} visible={isOpenLogout}
+                <BaseBottomPopUp dictionary={dictionary} text={dictionary[DictionaryEnum.DoYouWantToLogOff]}
+                                 onDelete={logOutHandler} visible={isOpenLogout}
                                  onClose={() => setIsLogout(false)}/>
             }
 

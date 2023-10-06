@@ -12,13 +12,16 @@ import Animated, {
 import heartBlueImg from '../assets/Images/heartBlue.png'
 import { colors } from '../assets/colors/colors'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
+import {DictionaryType} from "../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../store/DictionaryStore/type";
 
 const { width } = Dimensions.get('window')
 type AlertFeedbackProps = {
 	navigation: NavigationProp<ParamListBase>
 	route: any
+	dictionary:DictionaryType
 }
-const AlertFeedback = ({ route, navigation }: AlertFeedbackProps) => {
+const AlertFeedback = ({ route, navigation, dictionary }: AlertFeedbackProps) => {
 	const [showFeedback, setShowAlertFeedback] = useState(false)
 	const START_WIDTH = -width - 20
 	const translateX = useSharedValue(START_WIDTH) // Начальное значение за пределами экрана слева
@@ -94,7 +97,7 @@ const AlertFeedback = ({ route, navigation }: AlertFeedbackProps) => {
 				]}
 			>
 				<Image alt={'heart'} source={heartBlueImg} />
-				<Text style={styles.text}>Thank you for your feedback</Text>
+				<Text style={styles.text}>{dictionary[DictionaryEnum.ThankYouForFeedback]}</Text>
 			</Animated.View>
 		</PanGestureHandler>
 	)

@@ -16,6 +16,7 @@ type AboutUsSProps = {
 }
 const AboutUsS = ({navigation}: AboutUsSProps) => {
     const {dictionary} = DictionaryStore
+        //dictionary[DictionaryEnum.AboutSwash]
     const goBack = () => {
         navigation.goBack()
     }
@@ -54,13 +55,13 @@ const AboutUsS = ({navigation}: AboutUsSProps) => {
                     <Button backgroundColor={colors.aliceBlue} colorText={colors.blue}
                             styleContainer={styles.styleContainerBtn} styleText={{fontFamily: 'regular'}}
                             onPress={() => onPressLink('https://www.s-wash.com/docs/termofservice.html')}
-                            title={dictionary[DictionaryEnum.LegalLink1]}/>
+                            title={dictionary[DictionaryEnum.TermsOfService]}/>
                 </Box>
                 <Box mt={2} alignItems={'center'}>
                     <Button backgroundColor={colors.aliceBlue} colorText={colors.blue}
                             styleContainer={styles.styleContainerBtn} styleText={{fontFamily: 'regular'}}
                             onPress={() => onPressLink('https://www.s-wash.com/docs/privacy.html')}
-                            title={dictionary[DictionaryEnum.LegalLink2]}/>
+                            title={dictionary[DictionaryEnum.PrivaceStatment]}/>
                 </Box>
                 <Box mt={6} alignItems={'center'}>
                     <Text color={colors.grayLight} fontFamily={'regular'} fontSize={15}>v 1.45.234</Text>

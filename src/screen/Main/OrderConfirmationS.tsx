@@ -10,12 +10,15 @@ import rootStore from '../../store/RootStore/root-store'
 import { routerConstants } from '../../constants/routerConstants'
 import { BackHandler } from 'react-native'
 import { useGoBack } from '../../utils/hook/useGoBack'
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
 
 type OrderConfirmationSProps = {
 	navigation: NavigationProp<ParamListBase>
 	route: any
 }
 const OrderConfirmationS = observer(({ navigation, route }: OrderConfirmationSProps) => {
+	const {dictionary} = DictionaryStore
 	const isFromSendOrder = route.params?.from === 'send_order'
 	const { OrdersStoreService } = rootStore
 	const { orderDetail } = OrdersStore
@@ -39,7 +42,7 @@ const OrderConfirmationS = observer(({ navigation, route }: OrderConfirmationSPr
 					<Text fontSize={28} fontFamily={'semiBold'}>Swash #{orderDetail?.orders_id}</Text>
 				</Box>
 				<Box mt={10}>
-					<Text fontSize={32} fontFamily={'semiBold'}>Looking for executor</Text>
+					<Text fontSize={32} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.LookingForExecutor]}</Text>
 				</Box>
 				<Box mt={10} alignItems={'center'}>
 					<Image alt={'logo'} source={loadingGif} />

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { TouchableOpacity } from 'react-native'
 import { Box, Container, Text } from 'native-base'
 import { colors } from '../assets/colors/colors'
-import {LaundryService} from "../store/DictionaryStore/dictionary-store";
+import {DictionaryType} from "../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../store/DictionaryStore/type";
 
 type TimerComponentProps = {
 	onPressSendCodeAgain: () => void
-	dictionary: LaundryService
+	dictionary: DictionaryType
 }
 const TimerComponent = ({ onPressSendCodeAgain, dictionary }: TimerComponentProps) => {
 	const [seconds, setSeconds] = useState(40)

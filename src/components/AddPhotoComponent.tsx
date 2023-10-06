@@ -17,13 +17,14 @@ import { PhotoType } from '../api/Client/type'
 import { BASE_URL } from '../api/config'
 import { Ionicons } from '@expo/vector-icons'
 import { colors } from '../assets/colors/colors'
+import DictionaryStore from "../store/DictionaryStore/dictionary-store";
 
 
 const AddPhotoComponent = observer(() => {
 	const { orderDetail } = OrdersStore
 	const { setLocalLoading } = NotificationStore
 	const { OrdersStoreService } = rootStore
-
+	const {dictionary} = DictionaryStore
 	const [cameraPermission, setCameraPermission] = useState(null)
 	const [isOpenCamera, setIsOpenCamera] = useState(false)
 	const [isDeleteModal, setIsDeleteModal] = useState(false)
@@ -145,7 +146,7 @@ const AddPhotoComponent = observer(() => {
 					/*	persistentScrollbar={true}*/
 					keyExtractor={(item) => item.id}
 				/>
-				<DeletePhotoModal deleteOrderPhoto={() => OrdersStoreService.deleteOrderPhoto(deletedPhotoId)}
+				<DeletePhotoModal dictionary={dictionary} deleteOrderPhoto={() => OrdersStoreService.deleteOrderPhoto(deletedPhotoId)}
 													visible={isDeleteModal}
 													onClose={onCloseModalDelete} />
 			</View>

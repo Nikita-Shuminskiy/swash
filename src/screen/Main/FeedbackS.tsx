@@ -9,13 +9,18 @@ import Button from '../../components/Button'
 import InputMultiLine from '../../components/InputMultiLine'
 import { routerConstants } from '../../constants/routerConstants'
 import rootStore from '../../store/RootStore/root-store'
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
+import {observer} from "mobx-react-lite";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
 
 type FeedbackSProps = {
 	navigation: NavigationProp<ParamListBase>
 }
-const FeedbackS = ({ navigation }: FeedbackSProps) => {
+const FeedbackS = observer(({ navigation }: FeedbackSProps) => {
+	const {dictionary} = DictionaryStore
 	const [stars, setStars] = useState<number>(0)
-	const { OrdersStoreService } = rootStore
+	const { OrdersStoreService, OrdersStore } = rootStore
+	const { orderDetail } = OrdersStore
 	const [comment, setComment] = useState<string>('')
 	const goBackPress = () => {
 		navigation.navigate(routerConstants.ORDERS)
@@ -38,40 +43,41 @@ const FeedbackS = ({ navigation }: FeedbackSProps) => {
 				<ArrowBack goBackPress={goBackPress} />
 				<Box mt={2} mb={2}>
 					<Text fontSize={28} fontFamily={'semiBold'}>
-						Swash #221
+						Swash #{orderDetail.orders_id}
 					</Text>
 				</Box>
 				<Box p={3} borderRadius={16} h={92} backgroundColor={colors.grayBright}>
-					<Text mb={2} fontSize={15} fontFamily={'semiBold'}>Your rating</Text>
+					<Text mb={2} fontSize={15} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.YourRating]}</Text>
 					<Rating
+						dictionary={dictionary}
 						onChangeRating={(newRating) => {
 							setStars(newRating)
 						}}
 						initialValue={stars} />
 				</Box>
 				<Box>
-					<Text mb={2} mt={3} fontSize={13} fontFamily={'semiBold'}>Review</Text>
-					<InputMultiLine placeholder={'Write your review in more detail'}
-													borderRadius={16}
-													p={3}
-													onChangeText={onChangeTextComment}
-													value={comment}
-													borderColor={colors.grayBright}
-													fontFamily={'regular'}
-													placeholderTextColor={colors.grayLight}
-													fontSize={15} />
+					<Text mb={2} mt={3} fontSize={13} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.Review]}</Text>
+					<InputMultiLine placeholder={dictionary[DictionaryEnum.WriteYourReviewInMoreDetail]}
+									borderRadius={16}
+									p={3}
+									onChangeText={onChangeTextComment}
+									value={comment}
+									borderColor={colors.grayBright}
+									fontFamily={'regular'}
+									placeholderTextColor={colors.grayLight}
+									fontSize={15} />
 				</Box>
 				<Box mt={2} alignItems={'center'}>
 					<Button backgroundColor={isDisableBtn ? colors.bluePale : colors.blue} colorText={colors.white}
-									styleContainer={{
-										borderRadius: 28,
-										maxWidth: 280,
-										width: '100%',
-									}} onPress={onPressSendFeedback} title={'Send feedback'} />
+							styleContainer={{
+								borderRadius: 28,
+								maxWidth: 280,
+								width: '100%',
+							}} onPress={onPressSendFeedback} title={dictionary[DictionaryEnum.SendFeedback]} />
 				</Box>
 			</Box>
 		</BaseWrapperComponent>
 	)
-}
+})
 
 export default FeedbackS

@@ -24,7 +24,7 @@ const BurgerLink = ({ img, text, onPress, countryName }: BurgerLinkProps) => {
 					 borderColor={colors.grayBright}>
 				<Box flexDirection={'row'} alignItems={'center'}>
 					<Image w={6} h={6} alt={'img'} source={img} />
-					<Text fontSize={15} fontWeight={'regular'} ml={2}>{text}</Text>
+					<Text fontSize={15} maxWidth={'90%'} fontWeight={'regular'} ml={2}>{text}</Text>
 				</Box>
 				<Box alignItems={'center'}
 						 flexDirection={'row'}>

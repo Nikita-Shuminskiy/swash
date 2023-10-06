@@ -8,11 +8,15 @@ import InputCustom from '../../components/TextInput'
 import { View } from 'react-native'
 import { Input } from 'native-base'
 import Button from '../../components/Button'
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
+import {observer} from "mobx-react-lite";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
 
 type AddNewCartSProps = {
 	navigation: NavigationProp<ParamListBase>
 }
-const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
+const AddNewCardS = observer(({ navigation }: AddNewCartSProps) => {
+	const {dictionary} = DictionaryStore
 	const [cardNumber, setCardNumber] = useState('')
 	const [expiry, setExpiry] = useState('')
 	const [cvv, setCvv] = useState('')
@@ -57,7 +61,7 @@ const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
 						<ArrowBack goBackPress={goBackPress} />
 					</Box>
 					<Box flex={2} alignItems={'center'} >
-						<Text fontSize={22} fontFamily={'semiBold'}>Add new card</Text>
+						<Text fontSize={22} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.AddNewCard]}</Text>
 					</Box>
 					<Box flex={1} />
 				</Box>
@@ -66,8 +70,8 @@ const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
 					<InputCustom
 						borderRadius={12}
 						borderColor={colors.grayBright}
-						placeholder={'Card number'}
-						label={'Card Number'}
+						placeholder={dictionary[DictionaryEnum.CardNumber]}
+						label={dictionary[DictionaryEnum.CardNumber]}
 						value={cardNumber}
 						placeholderTextColor={'#B0BAC1'}
 						onChangeText={handleCardNumberChange}
@@ -81,7 +85,7 @@ const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
 								placeholder={'MM / YY'}
 								borderRadius={12}
 								borderColor={colors.grayBright}
-								label={'Expiry'}
+								label={dictionary[DictionaryEnum.Expiry]}
 								value={expiry}
 								placeholderTextColor={'#B0BAC1'}
 								onChangeText={handleExpiryChange}
@@ -106,13 +110,13 @@ const AddNewCardS = ({ navigation }: AddNewCartSProps) => {
 				</Box>
 				<Box mt={10} flex={1} w={'100%'} alignItems={'center'}>
 					<Button styleContainer={{ maxWidth: 280, width: '100%', borderRadius: 28 }}
-									backgroundColor={isDisabledBtn ? colors.bluePale : colors.blue}
-									colorText={colors.white}
-									onPress={saveNewCard} title={'Add new card'} />
+							backgroundColor={isDisabledBtn ? colors.bluePale : colors.blue}
+							colorText={colors.white}
+							onPress={saveNewCard} title={dictionary[DictionaryEnum.AddNewCard]} />
 				</Box>
 			</Box>
 		</BaseWrapperComponent>
 	)
-}
+})
 
 export default AddNewCardS

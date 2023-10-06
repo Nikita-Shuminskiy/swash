@@ -7,13 +7,13 @@ import {Image, Modal, StyleSheet} from 'react-native'
 import {colors} from '../assets/colors/colors'
 import Button from './Button'
 import {StatusBar} from 'expo-status-bar'
-import {LaundryService} from "../store/DictionaryStore/dictionary-store";
+import {DictionaryType} from "../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../store/DictionaryStore/type";
 
 type WifiReconnectProps = {
     visible?: boolean
     checkInternet?: () => void
-    dictionary: LaundryService
+    dictionary: DictionaryType
 }
 const WifiReconnect = ({visible, checkInternet, dictionary}: WifiReconnectProps) => {
     const onPressReconnect = () => {

@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite'
 import rootStore from '../store/RootStore/root-store'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { routerConstants } from '../constants/routerConstants'
-import {LaundryService} from "../store/DictionaryStore/dictionary-store";
+import {DictionaryType} from "../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../store/DictionaryStore/type";
 
 
@@ -16,7 +16,7 @@ const CELL_COUNT = 5
 type PhoneVerificationProps = {
 	navigation: NavigationProp<ParamListBase>
 	isFromUpdate: boolean
-	dictionary: LaundryService
+	dictionary: DictionaryType
 }
 const PhoneVerificationCode = observer(({ navigation, isFromUpdate, dictionary }: PhoneVerificationProps) => {
 	const [code, setCode] = useState('')

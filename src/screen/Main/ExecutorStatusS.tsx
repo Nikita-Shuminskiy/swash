@@ -13,24 +13,31 @@ import { Image } from 'react-native'
 import { colors } from '../../assets/colors/colors'
 import locationImg from '../../assets/Images/locationBlue.png'
 import { dateStringFormat } from '../../utils/commonUtils'
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
+import LoadingGlobal from "../../components/LoadingGlobal";
 
-const STATUS_DATA = {
-	'3': {
-		img: inProgressImg,
-		text: 'Swash in progress',
-	},
-	'4': {
-		img: contractorSentImg,
-		text: 'Contractor sent the\npackage',
-	},
-	'2': {
-		img: contractorGotImg,
-		text: 'Contractor got the\npackage',
-	},
-	'1': {
-		img: onTheWayImg,
-		text: 'On the way\nto the contractor',
-	},
+
+const getExecutorInfo = (id, dictionary) => {
+	let STATUS_DATA = {
+		'3': {
+			img: inProgressImg,
+			text: dictionary[DictionaryEnum.SwashInProgress],
+		},
+		'4': {
+			img: contractorSentImg,
+			text: dictionary[DictionaryEnum.ContractorSentPackage],
+		},
+		'2': {
+			img: contractorGotImg,
+			text: dictionary[DictionaryEnum.ContractorGotPackage],
+		},
+		'1': {
+			img: onTheWayImg,
+			text: dictionary[DictionaryEnum.OnTheWay],
+		},
+	}
+	return STATUS_DATA[id]
 }
 type ExecutorStatusSPorps = {
 	navigation: NavigationProp<ParamListBase>
@@ -38,7 +45,9 @@ type ExecutorStatusSPorps = {
 }
 const ExecutorStatusS = observer(({ navigation, route }: ExecutorStatusSPorps) => {
 	const { orderDetail } = OrdersStore
-	const statusData = STATUS_DATA[route.params.from]
+	const {dictionary} = DictionaryStore
+	const statusData = getExecutorInfo(route.params.from, dictionary)
+
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={true}>
 			<Box paddingX={4}>
@@ -50,12 +59,12 @@ const ExecutorStatusS = observer(({ navigation, route }: ExecutorStatusSPorps) =
 					</Box>
 				</Box>
 				<Box borderRadius={16} mb={3} p={3} alignItems={'flex-start'} backgroundColor={'#E8F5FE'}>
-					<Text fontSize={15} fontFamily={'semiBold'}>Estimated time of arrival</Text>
+					<Text fontSize={15} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.EstimatedTimeOfArrival]}</Text>
 					<Text fontSize={15}
 								fontFamily={'regular'}>{dateStringFormat('dd MMMM yyyy HH:mm', orderDetail.date_estimated_ready)}</Text>
 				</Box>
 				<Box borderRadius={16} mb={3} p={3} alignItems={'flex-start'} backgroundColor={'#E8F5FE'}>
-					<Text fontSize={15} fontFamily={'semiBold'}>Paczkomat</Text>
+					<Text fontSize={15} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.Paczkomat]}</Text>
 					<Text flexDirection={'row'} alignItems={'center'} fontSize={15} fontFamily={'regular'} color={colors.blue}>
 						<Image style={{ width: 20, height: 20, marginRight: 4 }} source={locationImg} />
 						GDA64, Gdańsk, Pszenna, 1

@@ -8,44 +8,6 @@ import UnderWearSocks from '../assets/Images/Сlothing/UnderwearSocks.png'
 import ChildrenClothing from '../assets/Images/Сlothing/ChildrensСlothing.png'
 import Bedding from '../assets/Images/Сlothing/Bedding.png'
 
-export const DATA_IMG = {
-	'1': {
-		img: Outerwear,
-		name: 'Outerwear'
-	},
-	'2': {
-		img: ShirtsJackets,
-		name: 'Shirts jackets'
-	},
-	'3': {
-		img: tShirtTop,
-		name: 'T-shirts tops'
-	},
-	'4': {
-		img: PulloversSweaters,
-		name: 'Pullovers Sweaters'
-	},
-	'5': {
-		img: PantsShorts,
-		name: 'Pants shorts'
-	},
-	'6': {
-		img: SkirtsDresses,
-		name: 'Skirts dresses'
-	},
-	'7': {
-		img: UnderWearSocks,
-		name: 'Underwear socks'
-	},
-	'8': {
-		img: ChildrenClothing,
-		name: 'Childrens clothing'
-	},
-	'9': {
-		img: Bedding,
-		name: 'Bedding'
-	},
-}
 export const countryDataDefault = {
 	callingCode: ['48'],
 	cca2: 'PL',

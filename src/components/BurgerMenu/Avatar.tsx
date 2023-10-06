@@ -6,14 +6,18 @@ import { colors } from '../../assets/colors/colors'
 import { useNavigation } from '@react-navigation/native'
 import { routerConstants } from '../../constants/routerConstants'
 import { BASE_URL } from '../../api/config'
+import {observer} from "mobx-react-lite";
+import {DictionaryType} from "../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
 
 type AvatarProps = {
 	photo: string
 	name: string
+	dictionary: DictionaryType
 	onClose: () => void
 }
 
-const Avatar = ({ photo, name, onClose }: AvatarProps) => {
+const Avatar = observer(({ photo, name, onClose, dictionary }: AvatarProps) => {
 	const photoUrl = `${BASE_URL}${photo}`
 	const navigation = useNavigation<any>()
 	const onPressGoProfile = () => {
@@ -23,13 +27,13 @@ const Avatar = ({ photo, name, onClose }: AvatarProps) => {
 	return (
 		<TouchableOpacity onPress={onPressGoProfile} style={{ paddingTop: 10 }}>
 			<Box justifyContent={'space-between'}
-					 alignItems={'center'}
-					 flexDirection={'row'} mb={9}>
+				 alignItems={'center'}
+				 flexDirection={'row'} mb={9}>
 				<Box alignItems={'center'}
-						 flexDirection={'row'}>
+					 flexDirection={'row'}>
 					<Image style={{ width: 48, height: 48, borderRadius: 28 }} resizeMode={'center'} source={{ uri: photoUrl }} />
 					<Box ml={3} flex={1} mr={4}>
-						<Text fontSize={13} fontFamily={'regular'} color={colors.grayLight}>Welcome back,</Text>
+						<Text fontSize={13} fontFamily={'regular'} color={colors.grayLight}>{dictionary[DictionaryEnum.WelcomeBack]}</Text>
 						<Text fontSize={17} fontFamily={'semiBold'}>{name}</Text>
 					</Box>
 				</Box>
@@ -38,6 +42,6 @@ const Avatar = ({ photo, name, onClose }: AvatarProps) => {
 			</Box>
 		</TouchableOpacity>
 	)
-}
+})
 
 export default Avatar

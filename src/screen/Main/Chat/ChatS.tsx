@@ -13,11 +13,14 @@ import arrowBottomImg from '../../../assets/Images/Chat/arrowBottomBackground.pn
 import Link from '../../../components/Link'
 import AuthStore from "../../../store/AuthStore/auth-store";
 import TypicalMessages from "./TypicalMessages";
+import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../../store/DictionaryStore/type";
 
 type ChatSProps = {
     navigation: NavigationProp<ParamListBase>
 }
 const ChatS = observer(({navigation}: ChatSProps) => {
+    const {dictionary} = DictionaryStore
     const {ChatStore, ChatStoreService} = rootStore
     const {dialog, setDialog} = ChatStore
     const {clientSettings} = AuthStore
@@ -60,7 +63,7 @@ const ChatS = observer(({navigation}: ChatSProps) => {
     return (
         <BaseWrapperComponent>
             <Box paddingX={4} mt={2} mb={2}>
-                <HeaderGoBackTitle title={'Support'} goBackPress={goBack}/>
+                <HeaderGoBackTitle title={dictionary[DictionaryEnum.Support]} goBackPress={goBack}/>
             </Box>
             <ScrollView scrollEventThrottle={16} onScroll={handleScroll} ref={flatListRef}>
                 <Box paddingX={4} mb={6} flex={1}>

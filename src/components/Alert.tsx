@@ -3,12 +3,12 @@ import { Alert, Box, CloseIcon, Heading, HStack, IconButton, VStack } from 'nati
 import { colors } from '../assets/colors/colors'
 import NotificationStore from '../store/NotificationStore/notification-store'
 import { TouchableHighlight, TouchableOpacity } from 'react-native'
-import {LaundryService} from "../store/DictionaryStore/dictionary-store";
+import {DictionaryType} from "../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../store/DictionaryStore/type";
 
 type AlertProps = {
 	text: string
-	dictionary: LaundryService
+	dictionary: DictionaryType
 }
 const Alerts = ({ text, dictionary }: AlertProps) => {
 	const { setServerErrorText } = NotificationStore

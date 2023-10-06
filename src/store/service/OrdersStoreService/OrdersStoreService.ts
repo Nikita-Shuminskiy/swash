@@ -42,7 +42,7 @@ export class OrdersStoreService {
 			if (!token) return false
 
 			const data = await this.rootStore.AuthStore.getSettingsClient()
-
+			await  this.rootStore.DictionaryStore.getDictionaryLocal(data.client.language)
 			if (!data.client.phone_verify_datetime) return navigate && navigate(routerConstants.PHONE_VERIFY)
 			if (!data.client.consent_datetime) return navigate && navigate(routerConstants.TERMS_OF_USE)
 

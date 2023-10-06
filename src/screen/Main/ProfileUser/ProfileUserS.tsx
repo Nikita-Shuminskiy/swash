@@ -16,12 +16,15 @@ import AvatarProfile from './AvatarProfile'
 import {useBurgerMenu} from '../../../components/BurgerMenu/BurgerMenuContext'
 import HeaderGoBackTitle from '../../../components/HeaderGoBackTitle'
 import InputChange from "./InputChange";
+import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../../store/DictionaryStore/type";
 
 type ProfileUserSProps = {
     navigation: NavigationProp<ParamListBase>
 }
 const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
     const {isMenuOpen, setIsMenuOpen} = useBurgerMenu()
+    const {dictionary} = DictionaryStore
     const {clientSettings} = AuthStore
     const {AuthStoreService} = rootStore
     const [isDeleteAccount, setIsDeleteAccount] = useState<boolean>(false)
@@ -71,7 +74,7 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
         <BaseWrapperComponent isKeyboardAwareScrollView={false}>
             <Box paddingX={4} mb={6} mt={3} flex={1} justifyContent={'space-between'}>
                 <Box>
-                    <HeaderGoBackTitle title={'Account'} goBackPress={goBackPress}/>
+                    <HeaderGoBackTitle title={dictionary[DictionaryEnum.Account]} goBackPress={goBackPress}/>
                     <Box alignItems={'center'} mt={4}>
                         <AvatarProfile photo={clientSettings.client?.pic}/>
                     </Box>
@@ -81,21 +84,23 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
                                 <InputCustom value={dataInfo?.first_name}
                                              onChangeText={(e) => onChangeTextFields('first_name', e)}
                                              borderRadius={16}
-                                             heightInput={12} label={'First name'}/>
+                                             heightInput={12} label={dictionary[DictionaryEnum.FirstName]}/>
                             </Box>
                             <Box ml={2} flex={1}>
                                 <InputCustom value={dataInfo?.last_name}
                                              onChangeText={(e) => onChangeTextFields('last_name', e)}
                                              borderRadius={16}
-                                             heightInput={12} label={'Last name'}/>
+                                             heightInput={12} label={dictionary[DictionaryEnum.LastName]}/>
                             </Box>
                         </Box>
                         <InputCustom value={dataInfo?.email} onChangeText={(e) => onChangeTextFields('email', e)}
                                      borderRadius={16}
-                                     heightInput={12} label={'E-mail'}/>
-                        <InputChange btnTitle={'Change phone number'} label={'Phone'} onPress={onPressChangePhone}
+                                     heightInput={12} label={dictionary[DictionaryEnum.Email]}/>
+                        <InputChange btnTitle={dictionary[DictionaryEnum.ChangePhoneNumber]}
+                                     label={dictionary[DictionaryEnum.Phone]} onPress={onPressChangePhone}
                                      value={`+${clientSettings.client?.phone}`}/>
-                        <InputChange btnTitle={'Change language'} label={'Language'} onPress={onPressChangeLang}
+                        <InputChange btnTitle={dictionary[DictionaryEnum.ChangeLanguage]}
+                                     label={dictionary[DictionaryEnum.Language]} onPress={onPressChangeLang}
                                      value={clientSettings.client.language}/>
                     </Box>
                     <Box mt={4}>
@@ -103,7 +108,7 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
                                 styleContainer={{borderRadius: 50}}
                                 backgroundColor={colors.blue}
                                 colorText={colors.white}
-                                title={'Save'}/>
+                                title={dictionary[DictionaryEnum.Save]}/>
                     </Box>
                 </Box>
 
@@ -111,15 +116,16 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
                 <TouchableOpacity onPress={onPressDeleteAccount}>
                     <Box flexDirection={'row'} alignItems={'center'} justifyContent={'center'}>
                         <BtnDelete onPress={onPressDeleteAccount}/>
-                        <Text ml={2} fontSize={15} fontFamily={'regular'} color={colors.red}>Delete and forget my
-                            profile</Text>
+                        <Text ml={2} fontSize={15} fontFamily={'regular'}
+                              color={colors.red}>{dictionary[DictionaryEnum.DeleteForgetProfile]}</Text>
                     </Box>
                 </TouchableOpacity>
 
             </Box>
             {
                 isDeleteAccount &&
-                <BaseBottomPopUp text={'Delete and forget your profile?'} onDelete={deleteAccountHandler}
+                <BaseBottomPopUp dictionary={dictionary} text={dictionary[DictionaryEnum.DeleteForgetProfile]}
+                                 onDelete={deleteAccountHandler}
                                  visible={isDeleteAccount}
                                  onClose={() => setIsDeleteAccount(false)}/>
             }

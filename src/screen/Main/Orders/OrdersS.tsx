@@ -15,15 +15,16 @@ import {routerConstants} from '../../../constants/routerConstants'
 import rootStore from '../../../store/RootStore/root-store'
 import AlertFeedBack from '../../../components/AlertFeedBack'
 import {onPressOrderDetails} from "./utils";
+import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
 
 type OrdersSProps = {
     navigation: NavigationProp<ParamListBase>
     route: any
 }
 const OrdersS = observer(({navigation, route}: OrdersSProps) => {
+    const {dictionary} = DictionaryStore
     const {orders} = OrdersStore
     const isOpenMenu = route.params?.from === 'open_menu'
-
     const {OrdersStoreService} = rootStore
 
     const onPressDetails = useCallback((order: OrderType) => {
@@ -41,7 +42,7 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
 
     return (
         <>
-            <AlertFeedBack navigation={navigation} route={route}/>
+            <AlertFeedBack dictionary={dictionary} navigation={navigation} route={route}/>
             <BaseWrapperComponent isKeyboardAwareScrollView={true}>
                 <Box style={{paddingHorizontal: 16}}>
                     <BurgerMenuImg openingForced={isOpenMenu}/>

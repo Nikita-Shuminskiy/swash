@@ -4,18 +4,18 @@ import {deviceStorage} from "../../utils/storage/storage";
 import {DictionaryEnum} from "./type";
 import {language} from "../../utils/commonUtils";
 
-export type LaundryService = {
+export type DictionaryType = {
     [key: string]: string
 }
 
 export class DictionaryStore {
-    dictionary: LaundryService | null = null
+    dictionary: DictionaryType | null = null
     selectedLanguage: string = 'en'
 
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
     }
-    setDictionary = (dictionary: LaundryService) => {
+    setDictionary = (dictionary: DictionaryType) => {
         //console.log(dictionary)
         this.dictionary = dictionary
     }
@@ -40,7 +40,7 @@ export class DictionaryStore {
         } catch (e) {
             const dictionary = await deviceStorage.getItem('dictionary')
             const selectedLanguage = await deviceStorage.getItem('selectedLanguage')
-            const convertDictionary: LaundryService = JSON.parse(dictionary)
+            const convertDictionary: DictionaryType = JSON.parse(dictionary)
             if (!!dictionary) {
                 this.setDictionary(convertDictionary)
                 this.setSelectedLanguage(selectedLanguage)

@@ -11,11 +11,14 @@ import HeaderGoBackTitle from "../../components/HeaderGoBackTitle";
 import {LanguageEnum} from "../../api/Client/type";
 import rootStore from "../../store/RootStore/root-store";
 import {useBurgerMenu} from "../../components/BurgerMenu/BurgerMenuContext";
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
 
 type ChangeLanguageSProps = {
     navigation: NavigationProp<ParamListBase>
 }
 const ChangeLanguageS = observer(({navigation}: ChangeLanguageSProps) => {
+    const {dictionary} = DictionaryStore
     const {clientSettings} = AuthStore
     const {AuthStoreService} = rootStore
     const [chosenLang, setChosenLang] = useState<LanguageEnum | ''>('')
@@ -36,13 +39,12 @@ const ChangeLanguageS = observer(({navigation}: ChangeLanguageSProps) => {
     return (
         <BaseWrapperComponent>
             <Box paddingX={4} mt={3}>
-                <HeaderGoBackTitle title={'Language'} goBackPress={goBackPress}/>
+                <HeaderGoBackTitle title={dictionary[DictionaryEnum.Language]} goBackPress={goBackPress}/>
             </Box>
             <Box paddingX={4} mb={6} mt={5} flex={1} justifyContent={'space-between'}>
                 <Box mt={5}>
                     {
                         clientSettings?.languages.map((lang: LanguageEnum, index) => {
-
                             return <Box key={`${lang}-${index}`} mb={4} paddingY={18} borderRadius={16} paddingX={5}
                                         flexDirection={'row'} alignItems={'center'}
                                         justifyContent={'flex-start'}
@@ -60,7 +62,7 @@ const ChangeLanguageS = observer(({navigation}: ChangeLanguageSProps) => {
                             styleContainer={{borderRadius: 50}}
                             backgroundColor={colors.blue}
                             colorText={colors.white}
-                            title={'Save'}/>
+                            title={dictionary[DictionaryEnum.Save]}/>
                 </Box>
             </Box>
         </BaseWrapperComponent>
