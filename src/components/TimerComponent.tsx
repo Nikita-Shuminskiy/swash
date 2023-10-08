@@ -34,11 +34,11 @@ const TimerComponent = ({ onPressSendCodeAgain, dictionary }: TimerComponentProp
 	}
 	return (
 		<Container>
-			<Box contentContainerStyle={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<Box>
 				<Box>
 					{isRunning ? (
 						<Box>
-							<Text fontSize={15} fontFamily={'regular'} color={colors.grayLight}>{dictionary[DictionaryEnum.SendCodeAgainAfter]}<Text
+							<Text fontSize={15} fontFamily={'regular'} color={colors.grayLight}>{dictionary[DictionaryEnum.SendCodeAgainAfter]}{' '}<Text
 								fontSize={15} fontFamily={'regular'} color={colors.black}>{seconds} {dictionary[DictionaryEnum.Seconds]}</Text></Text>
 						</Box>
 					) : (

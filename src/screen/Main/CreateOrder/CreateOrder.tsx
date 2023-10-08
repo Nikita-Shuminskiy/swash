@@ -35,8 +35,6 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 	const deleteOrder = () => {
 		OrdersStoreService.deleteOrder('', orderDetail.orders_id, navigation.navigate)
 	}
-
-
 	const onPressChosePaczkomat = () => {
 		navigation.navigate(routerConstants.LOGISTIC_POINT)
 	}

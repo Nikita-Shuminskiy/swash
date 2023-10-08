@@ -4,7 +4,7 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { colors } from '../../assets/colors/colors'
 import { StatusBar } from 'expo-status-bar'
 import { Box, Text } from 'native-base'
-import { Image, StyleSheet, TouchableOpacity } from 'react-native'
+import {Alert, Image, StyleSheet, TouchableOpacity} from 'react-native'
 import listImg from '../../assets/Images/listTermUse.png'
 import imgBack from '../../assets/Images/backWave.png'
 import Button from '../../components/Button'
@@ -15,11 +15,12 @@ import { routerConstants } from '../../constants/routerConstants'
 import { format } from 'date-fns';
 import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../store/DictionaryStore/type";
+import {openBrowserAsync} from "expo-web-browser";
 type TermsOfUseSProps = {
 	navigation: NavigationProp<ParamListBase>
 }
 const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
-	const { AuthStoreService } = rootStore
+	const { AuthStoreService, OrdersStoreService } = rootStore
 	const [checkToc, setCheckToc] = useState(false)
 	const [checkLegal, setCheckLegal] = useState(false)
 	const [disBtn, setDisBtn] = useState(false)
@@ -36,7 +37,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 			consent_datetime: formattedDate,
 		}).then((data) => {
 			if(data) {
-				navigation.navigate(routerConstants.CREATE_ORDER)
+				OrdersStoreService.getSettingClient(navigation.navigate)
 			}
 		})
 	}
@@ -49,6 +50,15 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 		setDisBtn(false)
 	}
 	const styleDisBtn = !checkLegal || !checkToc ? 'rgba(0,148,255,0.45)' : colors.blue
+	const onPressLink = async (link: string) => {
+		try {
+			await openBrowserAsync(link)
+
+		} catch (error) {
+			console.log(error.message)
+			Alert.alert(error.message)
+		}
+	}
 	return (
 		<BaseWrapperComponent styleSafeArea={{ backgroundColor: colors.blueLight }}>
 			<StatusBar backgroundColor={colors.blueLight} />
@@ -71,7 +81,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 									<Box flexDirection={'row'} justifyContent={'flex-start'}
 											 alignItems={'center'}>
 										<Text ml={2} fontSize={15} fontFamily={'regular'}>{dictionary[DictionaryEnum.IAgreeWith]}{' '}</Text>
-										<TouchableOpacity style={styles.link}>
+										<TouchableOpacity onPress={() => onPressLink('https://www.s-wash.com/docs/termofservice.html')}  style={styles.link}>
 											<Text color={colors.blue} fontFamily={'regular'}>{dictionary[DictionaryEnum.TOC]}</Text>
 										</TouchableOpacity>
 									</Box>
@@ -83,7 +93,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 									<Box flexDirection={'row'} justifyContent={'flex-start'}
 											 alignItems={'center'}>
 										<Text ml={2} fontSize={15} fontFamily={'regular'}>{dictionary[DictionaryEnum.IAgreeWith]}{' '}</Text>
-										<TouchableOpacity style={styles.link}>
+										<TouchableOpacity onPress={() => onPressLink('https://www.s-wash.com/docs/privacy.html')} style={styles.link}>
 											<Text color={colors.blue} fontFamily={'regular'}>{dictionary[DictionaryEnum.LegalNotice]}</Text>
 										</TouchableOpacity>
 									</Box>

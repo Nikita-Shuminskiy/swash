@@ -27,6 +27,7 @@ const ChangeLanguageS = observer(({navigation}: ChangeLanguageSProps) => {
     }
     const {setIsMenuOpen} = useBurgerMenu()
     const onPressSave = () => {
+        if(chosenLang === clientSettings.client.language || chosenLang === '') return
         AuthStoreService.updateUserInfo({language: chosenLang}).then((data) => {
             if (data) {
                 setIsMenuOpen(true)

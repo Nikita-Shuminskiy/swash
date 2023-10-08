@@ -26,12 +26,14 @@ import {language} from "../utils/commonUtils";
 
 
 const RootStack = createNativeStackNavigator()
+
 const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
     const {OrdersStoreService, DictionaryStore} = rootStore
     const {dictionary, selectedLanguage} = DictionaryStore
 
     const {isAuth} = AuthStore
+
     const {
         askNotificationPermissionHandler,
         askLocationPermissionHandler,
@@ -48,7 +50,7 @@ const RootNavigation = observer(() => {
         setIsLoading(LoadingEnum.fetching)
         OrdersStoreService.getSettingClient(navigate?.navigate)
             .then((data) => {
-                if (!data) {
+                if (data === 'not_token') {
                     DictionaryStore.getDictionaryLocal()
                 }
             })

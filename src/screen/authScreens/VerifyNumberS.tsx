@@ -22,6 +22,7 @@ const VerifyNumberS = observer(({navigation, route}: VerifyNumberSProps) => {
     const isFromUpdate = route.params?.from === 'update'
     const {phone} = AuthStore
     const {AuthStoreService} = rootStore
+
     const onPressSendCodeAgain = () => {
         AuthStoreService.sendClientCode()
     }
@@ -35,7 +36,7 @@ const VerifyNumberS = observer(({navigation, route}: VerifyNumberSProps) => {
                     <ArrowBack goBackPress={goBackPress}/>
                 </Box>
                 <Text fontSize={28} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.PhoneVerification]}</Text>
-                <Text fontSize={15} color={colors.gray} fontFamily={'regular'}>The code was sent to {dictionary[DictionaryEnum.CodeWasSentTo]}<Text
+                <Text fontSize={15} color={colors.gray} fontFamily={'regular'}>{dictionary[DictionaryEnum.CodeWasSentTo]}{' '}<Text
                     fontFamily={'regular'} fontSize={15}
                     color={colors.blue}>+{phone}</Text></Text>
                 <Box mt={10} mb={10} flex={1} w={'100%'}>

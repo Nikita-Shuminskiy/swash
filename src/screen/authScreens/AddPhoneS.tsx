@@ -31,7 +31,7 @@ const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 	const { AuthStoreService } = rootStore
 	const {dictionary} = DictionaryStore
 	const isFromUpdate = route.params?.from === 'update'
-	const { setPhone: setVerifyPhone } = AuthStore
+	const { setPhone: setVerifyPhone, clientSettings } = AuthStore
 	const [phone, setPhone] = useState<string>()
 	const [isValidPhone, setIsValidPhone] = useState<boolean>(false)
 	const [disabledBtn, setDisableBtn] = useState<boolean>(false)
@@ -42,6 +42,9 @@ const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 		}
 		const formattedPhoneNumber = `${countryCode.callingCode[0]}${phone}`
 		if (isFromUpdate && !!(isValidPhone && !disabledBtn)) {
+			if(clientSettings?.client?.phone === formattedPhoneNumber) {
+				return
+			}
 			AuthStoreService.updateUserInfo({
 				phone: formattedPhoneNumber,
 			}).then((data) => {

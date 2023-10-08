@@ -20,6 +20,7 @@ type PhoneVerificationProps = {
 }
 const PhoneVerificationCode = observer(({ navigation, isFromUpdate, dictionary }: PhoneVerificationProps) => {
 	const [code, setCode] = useState('')
+	console.log(isFromUpdate)
 	const { AuthStoreService } = rootStore
 	const [isValid, setIsValid] = useState(true)
 	const [statusServer, setStatusServer] = useState<'warning' | '' | 'error'>('')
@@ -28,8 +29,6 @@ const PhoneVerificationCode = observer(({ navigation, isFromUpdate, dictionary }
 		setCode(newCode)
 		setStatusServer('')
 		setIsValid(true)
-
-
 	}
 	useEffect(() => {
 		if (code.trim().length === 5) {
