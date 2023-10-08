@@ -29,14 +29,14 @@ export const MapViews = ({ logisticPoints, orderDetail, dictionary }: MapViewsPr
 	})
 
 	const getCurrentPosition = async () => {
-		setLocalLoading(LoadingEnum.fetching)
+		//setLocalLoading(LoadingEnum.fetching)
 		try {
 			const { latitude, longitude } = await getCurrentPositionHandler()
 			setMyPosition({ latitude, longitude })
 		} catch (e) {
 
 		} finally {
-			setLocalLoading(LoadingEnum.success)
+		//	setLocalLoading(LoadingEnum.success)
 		}
 	}
 	useEffect(() => {

@@ -65,7 +65,6 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
             }
         })
     }
-
     const onPressChangeLang = () => {
         navigation.navigate(routerConstants.CHANGE_LANGUAGE)
     }
