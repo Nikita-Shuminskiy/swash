@@ -20,7 +20,6 @@ export class DictionaryStore {
         this.dictionary = dictionary
     }
     setSelectedLanguage = (lan: string) => {
-        console.log(lan)
         this.selectedLanguage = lan
     }
     sendDictionary = async (language = 'en') => {

@@ -18,6 +18,7 @@ import HeaderGoBackTitle from '../../../components/HeaderGoBackTitle'
 import InputChange from "./InputChange";
 import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../../store/DictionaryStore/type";
+import loginS from "../../authScreens/LoginS";
 
 type ProfileUserSProps = {
     navigation: NavigationProp<ParamListBase>
@@ -42,6 +43,12 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
         navigation.navigate(routerConstants.PHONE_VERIFY, {from: 'update'})
     }
     const onPressSave = () => {
+        const {last_name, first_name, email} = dataInfo
+        if (last_name === clientSettings?.client?.last_name
+            && first_name === clientSettings?.client?.first_name
+            && email === clientSettings?.client?.email) {
+            return
+        }
         AuthStoreService.updateUserInfo(dataInfo).then((data) => {
             if (data) {
                 setIsMenuOpen(true)
@@ -100,7 +107,7 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
                                      value={`+${clientSettings.client?.phone}`}/>
                         <InputChange btnTitle={dictionary[DictionaryEnum.ChangeLanguage]}
                                      label={dictionary[DictionaryEnum.Language]} onPress={onPressChangeLang}
-                                     value={clientSettings.client.language}/>
+                                     value={clientSettings.client?.language}/>
                     </Box>
                     <Box mt={4}>
                         <Button onPress={onPressSave}

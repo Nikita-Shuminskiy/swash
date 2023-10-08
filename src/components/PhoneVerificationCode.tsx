@@ -20,8 +20,9 @@ type PhoneVerificationProps = {
 }
 const PhoneVerificationCode = observer(({ navigation, isFromUpdate, dictionary }: PhoneVerificationProps) => {
 	const [code, setCode] = useState('')
-	console.log(isFromUpdate)
-	const { AuthStoreService } = rootStore
+	const { AuthStoreService, AuthStore, OrdersStoreService } = rootStore
+	const { clientSettings } = AuthStore
+
 	const [isValid, setIsValid] = useState(true)
 	const [statusServer, setStatusServer] = useState<'warning' | '' | 'error'>('')
 
@@ -43,7 +44,10 @@ const PhoneVerificationCode = observer(({ navigation, isFromUpdate, dictionary }
 					}, 700)
 				}
 				if (data.status === 'ok') {
-					if(isFromUpdate) return navigation.navigate(routerConstants.ORDERS, {from: 'open_menu'})
+					if(isFromUpdate) return navigation.navigate(routerConstants.PROFILE, {from: 'open_menu'})
+					if(clientSettings.client.consent_datetime) {
+						return OrdersStoreService.getSettingClient(navigation.navigate)
+					}
 					navigation.navigate(routerConstants.TERMS_OF_USE)
 				}
 			})

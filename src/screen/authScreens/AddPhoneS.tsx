@@ -36,10 +36,12 @@ const AddPhoneS = ({ navigation, route }: PhoneVerifySProps) => {
 	const [isValidPhone, setIsValidPhone] = useState<boolean>(false)
 	const [disabledBtn, setDisableBtn] = useState<boolean>(false)
 	const [countryCode, setCountryCode] = useState<CountryData>(countryDataDefault)
+
 	const onPressSendSMS = () => {
 		if (!isValidPhone || !phone) {
 			return setDisableBtn(true)
 		}
+
 		const formattedPhoneNumber = `${countryCode.callingCode[0]}${phone}`
 		if (isFromUpdate && !!(isValidPhone && !disabledBtn)) {
 			if(clientSettings?.client?.phone === formattedPhoneNumber) {

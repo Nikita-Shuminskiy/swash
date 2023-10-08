@@ -37,7 +37,10 @@ export class AuthStore {
 		const payload = {
 			phone: formattedPhoneNumber ?? this.phone,
 		}
-		return await authApi.sendClientCode(payload)
+
+		const {data} =  await authApi.sendClientCode(payload)
+		console.log(data, payload)
+
 	}
 
 	async sendClientVerifyCode(code: string) {
