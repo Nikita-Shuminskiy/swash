@@ -16,13 +16,12 @@ export class DictionaryStore {
         makeAutoObservable(this, {}, { autoBind: true });
     }
     setDictionary = (dictionary: DictionaryType) => {
-        //console.log(dictionary)
         this.dictionary = dictionary
     }
     setSelectedLanguage = (lan: string) => {
         this.selectedLanguage = lan
     }
-    sendDictionary = async (language = 'en') => {
+    sendDictionary = async (language) => {
         try {
             const {data} = await clientApi.getDictionary({language: language})
             await deviceStorage.saveItem('dictionary', JSON.stringify(data))
@@ -35,15 +34,9 @@ export class DictionaryStore {
     }
     getDictionaryLocal = async (languages = 'en') => {
         try {
-            await this.sendDictionary(languages)
-        } catch (e) {
-            const dictionary = await deviceStorage.getItem('dictionary')
             const selectedLanguage = await deviceStorage.getItem('selectedLanguage')
-            const convertDictionary: DictionaryType = JSON.parse(dictionary)
-            if (!!dictionary) {
-                this.setDictionary(convertDictionary)
-                this.setSelectedLanguage(selectedLanguage)
-            }
+            await this.sendDictionary(selectedLanguage ?? languages)
+        } catch (e) {
         }
     }
 }

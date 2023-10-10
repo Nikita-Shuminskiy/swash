@@ -105,7 +105,7 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
                                      heightInput={12} label={dictionary[DictionaryEnum.Email]}/>
                         <InputChange btnTitle={dictionary[DictionaryEnum.ChangePhoneNumber]}
                                      label={dictionary[DictionaryEnum.Phone]} onPress={onPressChangePhone}
-                                     value={`+${clientSettings.client?.phone}`}/>
+                                     value={`+ ${clientSettings.client?.phone}`}/>
                         <InputChange btnTitle={dictionary[DictionaryEnum.ChangeLanguage]}
                                      label={dictionary[DictionaryEnum.Language]} onPress={onPressChangeLang}
                                      value={clientSettings.client?.language}/>

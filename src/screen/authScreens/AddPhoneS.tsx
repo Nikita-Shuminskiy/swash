@@ -2,47 +2,40 @@ import React, {useState} from 'react'
 import {BaseWrapperComponent} from '../../components/baseWrapperComponent'
 import {Box, Text} from 'native-base'
 import {colors} from '../../assets/colors/colors'
-import {NavigationProp, ParamListBase, RouteProp} from '@react-navigation/native'
+import {NavigationProp, ParamListBase} from '@react-navigation/native'
 import Button from '../../components/Button'
 import rootStore from '../../store/RootStore/root-store'
 import {routerConstants} from '../../constants/routerConstants'
 import AuthStore from '../../store/AuthStore/auth-store'
 import ArrowBack from '../../components/ArrowBack'
 import {countryDataDefault} from '../../utils/constants'
-import {PhoneNumberField} from '../../components/PhoneField'
 import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../store/DictionaryStore/type";
+import {PhoneNumberInput} from "../../components/PhoneNumberFieldMask";
+import {Country} from "react-native-country-picker-modal";
 
 type PhoneVerifySProps = {
     navigation: NavigationProp<ParamListBase>
     route: any
 }
-export type CountryData = {
-    callingCode: string[];
-    cca2: string;
-    currency: string[];
-    flag: string;
-    name: string;
-    region: string;
-    subregion: string;
-};
 
 const AddPhoneS = ({navigation, route}: PhoneVerifySProps) => {
     const {AuthStoreService} = rootStore
     const {dictionary} = DictionaryStore
     const isFromUpdate = route.params?.from === 'update'
     const {setPhone: setVerifyPhone, clientSettings} = AuthStore
-    const [phone, setPhone] = useState<string>()
-    const [isValidPhone, setIsValidPhone] = useState<boolean>(false)
+
+    const [phone, setPhone] = useState<string>('')
     const [disabledBtn, setDisableBtn] = useState<boolean>(false)
-    const [countryCode, setCountryCode] = useState<CountryData>(countryDataDefault)
+
+    const [country, setCountry] = useState<Country>(countryDataDefault)
+    const [isValidPhone, setIsValidPhone] = useState<boolean>(false)
 
     const onPressSendSMS = () => {
         if (!isValidPhone || !phone) {
             return setDisableBtn(true)
         }
-
-        const formattedPhoneNumber = `${countryCode.callingCode[0]}${phone}`
+        const formattedPhoneNumber = `${country.callingCode[0]} ${phone}`
         if (isFromUpdate && !!(isValidPhone && !disabledBtn)) {
             if (clientSettings?.client?.phone === formattedPhoneNumber) {
                 return
@@ -67,18 +60,20 @@ const AddPhoneS = ({navigation, route}: PhoneVerifySProps) => {
             })
         }
     }
-    const onChangeTextPhone = (value: string, isValid: boolean) => {
+
+    const onChangeTextPhone = (text: string, isValid: boolean) => {
         setIsValidPhone(isValid)
-        if (isValid) {
-            setDisableBtn(false)
-        }
-        setPhone(value)
-    }
-    const onChangeCountry = (country) => {
-        setCountryCode(country)
+        setDisableBtn(false)
+        setPhone(text)
     }
     const goBackPress = () => {
         navigation.goBack()
+    }
+    const onPressChangeCountry = (country: Country) => {
+        setCountry(country)
+        setIsValidPhone(true)
+        setPhone('')
+        setDisableBtn(false)
     }
     return (
         <BaseWrapperComponent>
@@ -94,12 +89,16 @@ const AddPhoneS = ({navigation, route}: PhoneVerifySProps) => {
                     <Text fontSize={15} color={colors.grayLight}
                           fontFamily={'regular'}>{dictionary[DictionaryEnum.WeNeedPhoneNum]}</Text>
                 </Box>
-                <PhoneNumberField defaultCode={'PL'}
-                                  onChangeCountry={onChangeCountry} defaultValue={phone}
-                                  errorMessage={dictionary[DictionaryEnum.IncorrectConfirmationCode]}
-                                  placeholder={dictionary[DictionaryEnum.Phone]}
-                                  onChangeTextPhone={onChangeTextPhone}
-                                  isRequired={true} isInvalid={disabledBtn}/>
+                <PhoneNumberInput
+                    phoneValue={phone}
+                    country={country}
+                    setCountry={onPressChangeCountry}
+                    onValidNumber={setIsValidPhone}
+                    errorMessage={dictionary[DictionaryEnum.IncorrectConfirmationCode]}
+                    placeholder={dictionary[DictionaryEnum.Phone]}
+                    onChangeTextPhone={onChangeTextPhone}
+                    isRequired={true} isInvalid={disabledBtn}
+                    countries={clientSettings.countries}/>
                 <Box mt={10} w={'100%'} alignItems={'center'}>
                     <Button styleContainer={{maxWidth: 280, width: '100%', opacity: disabledBtn ? 0.3 : 1}}
                             backgroundColor={colors.blue}
