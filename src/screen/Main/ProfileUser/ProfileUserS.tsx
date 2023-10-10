@@ -75,7 +75,6 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
     const onPressChangeLang = () => {
         navigation.navigate(routerConstants.CHANGE_LANGUAGE)
     }
-
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={false}>
             <Box paddingX={4} mb={6} mt={3} flex={1} justifyContent={'space-between'}>
@@ -99,7 +98,9 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
                                              heightInput={12} label={dictionary[DictionaryEnum.LastName]}/>
                             </Box>
                         </Box>
-                        <InputCustom value={dataInfo?.email} onChangeText={(e) => onChangeTextFields('email', e)}
+                        <InputCustom value={dataInfo?.email} isReadOnly={true}
+                                     onChangeText={(e) => onChangeTextFields('email', e)}
+                                     backgroundColor={colors.grayBright}
                                      borderRadius={16}
                                      heightInput={12} label={dictionary[DictionaryEnum.Email]}/>
                         <InputChange btnTitle={dictionary[DictionaryEnum.ChangePhoneNumber]}

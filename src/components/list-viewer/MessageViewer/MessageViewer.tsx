@@ -25,8 +25,7 @@ const MessageViewer = memo(({message}: MessageViewerProps) => {
                  justifyContent={isClientMessage ? 'flex-end' : 'flex-start'}>
                 {!isClientMessage &&
                     <Image source={message.admins_pic ? {uri: adminAvatar} : mockImg}
-                           resizeMethod={'resize'}
-                           resizeMode={'contain'}
+                           resizeMode={'cover'}
                            style={{...styles.imgAvatar, marginRight: 4}}/>
                 }
 
@@ -42,7 +41,7 @@ const MessageViewer = memo(({message}: MessageViewerProps) => {
 
                     {message?.image &&
                         <TouchableOpacity onPress={() => setOpenImg(true)}>
-                            <Image style={styles.imgPhoto} resizeMethod={'resize'} source={{uri: imageUrl}}/>
+                            <Image style={styles.imgPhoto} source={{uri: imageUrl}}/>
                         </TouchableOpacity>
                     }
                     <Box flexDirection={'row'} alignItems={'flex-end'} justifyContent={'space-between'}
@@ -64,7 +63,7 @@ const MessageViewer = memo(({message}: MessageViewerProps) => {
     )
 })
 const styles = StyleSheet.create({
-    imgPhoto: {width: '100%', height: 160, borderRadius: 16},
+    imgPhoto: {width: '100%', height: 150, borderRadius: 16},
     imgAvatar: {width: 32, height: 32, borderRadius: 16},
 })
 export default MessageViewer

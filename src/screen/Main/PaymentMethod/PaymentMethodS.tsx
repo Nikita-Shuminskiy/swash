@@ -10,6 +10,7 @@ import {routerConstants} from '../../../constants/routerConstants'
 import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../../store/DictionaryStore/type";
 import {observer} from "mobx-react-lite";
+import {useGoBack} from "../../../utils/hook/useGoBack";
 
 type PaymentMethodSProps = {
     navigation: NavigationProp<ParamListBase>
@@ -17,8 +18,10 @@ type PaymentMethodSProps = {
 const PaymentMethodS = observer(({navigation}: PaymentMethodSProps) => {
     const {dictionary} = DictionaryStore
     const goBack = () => {
-        navigation.goBack()
+        navigation.navigate(routerConstants.ORDERS)
+        return true
     }
+    useGoBack(goBack)
     const onPressNewPayment = () => {
         navigation.navigate(routerConstants.ADD_NEW_CARD)
     }

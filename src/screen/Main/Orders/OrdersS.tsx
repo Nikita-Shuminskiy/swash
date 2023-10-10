@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {BaseWrapperComponent} from '../../../components/baseWrapperComponent'
 import {NavigationProp, ParamListBase} from '@react-navigation/native'
 import BurgerMenuImg from '../../../components/BurgerMenu/BurgerMenuBtn'
@@ -16,6 +16,7 @@ import rootStore from '../../../store/RootStore/root-store'
 import AlertFeedBack from '../../../components/AlertFeedBack'
 import {onPressOrderDetails} from "./utils";
 import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
+import {useGoBack} from "../../../utils/hook/useGoBack";
 
 type OrdersSProps = {
     navigation: NavigationProp<ParamListBase>
@@ -28,7 +29,7 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
     const {OrdersStoreService} = rootStore
 
     const onPressDetails = useCallback((order: OrderType) => {
-		OrdersStoreService.getOrderReportDetail(order.id)
+        OrdersStoreService.getOrderReportDetail(order.id)
         onPressOrderDetails(navigation, order)
     }, [])
 
@@ -39,7 +40,10 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
     const onPressSwash = () => {
         OrdersStoreService.checkOrdersEditable(navigation.navigate)
     }
-
+    const onPressGoBack = () => {
+        return true
+    }
+    useGoBack(onPressGoBack)
     return (
         <>
             <AlertFeedBack dictionary={dictionary} navigation={navigation} route={route}/>

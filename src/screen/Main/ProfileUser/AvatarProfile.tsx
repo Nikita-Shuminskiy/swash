@@ -29,6 +29,7 @@ const AvatarProfile = ({photo}) => {
             alert('Permission to access camera roll is required!')
             return
         }
+        setIsOpenCamera(false)
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -43,7 +44,7 @@ const AvatarProfile = ({photo}) => {
                         setIsMenuOpen(true)
                     }
                 })
-                setIsOpenCamera(false)
+
             }
         } catch (error) {
             console.log('Error selecting image from gallery:', error)
@@ -57,20 +58,18 @@ const AvatarProfile = ({photo}) => {
         return status
     }
     const takePicture = async () => {
-        //setLocalLoading(LoadingEnum.fetching)
         try {
             const photo = await cameraRef.current.takePictureAsync()
             setSelectedImageUri(photo.uri)
+            setIsOpenCamera(false)
             AuthStoreService.updateClientPhoto(photo.uri).then((data) => {
                 if (data) {
                     setIsMenuOpen(true)
                 }
             })
-            setIsOpenCamera(false)
         } catch (e) {
             console.log(e)
         } finally {
-            //setLocalLoading(LoadingEnum.success)
         }
     }
 
@@ -85,6 +84,7 @@ const AvatarProfile = ({photo}) => {
             <TouchableOpacity onPress={() => {
                 if (!cameraPermission) {
                     getCameraPermission()
+                    return
                 }
                 setIsOpenCamera(true)
             }}>
@@ -93,13 +93,13 @@ const AvatarProfile = ({photo}) => {
                     <Box position={'absolute'} w={24} borderRadius={50} zIndex={1} top={0} opacity={0.3} h={24}
                          backgroundColor={colors.black}/>
                 </Box>
-                <Avatar bg='green.500' alignSelf='center' w={24} h={24} source={{
+                <Avatar  w={24} h={24} source={{
                     uri: selectedImageUri,
                 }}/>
             </TouchableOpacity>
             {cameraPermission && isOpenCamera && (
                 <Modal visible={isOpenCamera}>
-                    <Camera pictureSize={'320x240'} autoFocus={true} type={cameraType} style={styles.camera}
+                    <Camera autoFocus={true} type={cameraType} style={styles.camera}
                             ref={cameraRef}>
                         <Box position={'absolute'} top={'5%'} left={5}>
                             <TouchableOpacity onPress={() => {

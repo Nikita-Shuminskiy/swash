@@ -11,7 +11,8 @@ const InputChange = ({value, onPress, label, btnTitle}) => {
                          borderRadius={16} heightInput={12}
                          label={label} />
             <Box style={{ width: 130 }} h={19} position={'absolute'} right={0} top={10}>
-                <Button styleText={{ fontSize: 10 }} styleContainer={{ minHeight: 10, height: 48 }}
+                <Button styleText={{ fontSize: 10, textAlign: 'center' }}
+                        styleContainer={{ minHeight: 10, height: 48 }}
                         onPress={onPress}
                         backgroundColor={colors.blue}
                         colorText={colors.white}

@@ -56,7 +56,6 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 
 		} catch (error) {
 			console.log(error.message)
-			Alert.alert(error.message)
 		}
 	}
 	return (

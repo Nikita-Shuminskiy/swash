@@ -29,8 +29,8 @@ export const clientApi = {
 	async updateClientPhoto(photo: string) {
 		const resizedImage = await manipulateAsync(
 			photo,
-			[{ resize: { width: 800, height: 800 } }],
-			{ format: 'jpeg' as SaveFormat, compress: 0.8 },
+			[{ resize: { width: 720, height: 1280 } }],
+			{ format: 'jpeg' as SaveFormat, compress: 0.5 },
 		)
 		const formData = new FormData()
 		// @ts-ignore
@@ -47,8 +47,8 @@ export const clientApi = {
 	async saveOrderPhoto(payload: { orders_id: string, photo: string }) {
 		const { orders_id, photo } = payload
 		const resizedImage = await manipulateAsync(
-			photo, [{ resize: { width: 800, height: 600 } }],
-			{ format: 'jpeg' as SaveFormat, compress: 0.8 },
+			photo, [{ resize: {  width: 720, height: 1280 } }],
+			{ format: 'jpeg' as SaveFormat, compress: 0.5 },
 		)
 		const formData = new FormData()
 

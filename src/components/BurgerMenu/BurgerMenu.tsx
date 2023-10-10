@@ -10,7 +10,7 @@ import questionMarkImg from '../../assets/Images/BurgerMenu/questionMarkBlue.png
 import repeatImg from '../../assets/Images/BurgerMenu/repeatBlue.png'
 import walletImg from '../../assets/Images/BurgerMenu/walletBlue.png'
 import Button from '../Button'
-import Avatar from './Avatar'
+import AvatarUser from './AvatarUser'
 import BaseBottomPopUp from '../pop-up/BaseBottomPopUp'
 import rootStore from '../../store/RootStore/root-store'
 import AuthStore from '../../store/AuthStore/auth-store'
@@ -84,10 +84,10 @@ const BurgerMenu = observer(() => {
                     ]}
                 >
                     <Box pt={8}>
-                        <Avatar photo={clientSettings?.client?.pic}
-                                dictionary={dictionary}
-                                name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`}
-                                onClose={() => setIsMenuOpen(false)}/>
+                        <AvatarUser photo={clientSettings?.client?.pic}
+                                    dictionary={dictionary}
+                                    name={`${clientSettings.client?.first_name} ${clientSettings.client?.last_name}`}
+                                    onClose={() => setIsMenuOpen(false)}/>
                         <Box justifyContent={'space-between'}
                              alignItems={'center'}
                              flexDirection={'row'}

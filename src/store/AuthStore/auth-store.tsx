@@ -29,8 +29,10 @@ export class AuthStore {
 	}
 
 	async setUserAuthData(userData: UserAuthGoogleData) {
+		const currentDate = new Date().toISOString();
 		await deviceStorage.saveItem('token', userData.token)
 		await deviceStorage.saveItem('clients_id', userData.clients_id)
+		await deviceStorage.saveItem('tokenDate', currentDate)
 	}
 
 	async sendClientCode(formattedPhoneNumber?: string) {
@@ -39,7 +41,6 @@ export class AuthStore {
 		}
 
 		const {data} =  await authApi.sendClientCode(payload)
-		console.log(data, payload)
 
 	}
 

@@ -12,6 +12,7 @@ import OrdersStore from '../../store/OrdersStore/orders-store'
 import { routerConstants } from '../../constants/routerConstants'
 import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../store/DictionaryStore/type";
+import {useGoBack} from "../../utils/hook/useGoBack";
 
 type OrderHistorySProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -22,8 +23,10 @@ const OrderHistoryS = observer(({ navigation }: OrderHistorySProps) => {
 	const { closedOrders, orderDetail } = OrdersStore
 
 	const goBack = () => {
-		navigation.goBack()
+		navigation.navigate(routerConstants.ORDERS)
+		return true
 	}
+	useGoBack(goBack)
 	const onPressDetails = useCallback((id) => {
 		OrdersStoreService.getOrderReportDetail(id)
 		navigation.navigate(routerConstants.CLIENT_PAY, {from: 'ok'})

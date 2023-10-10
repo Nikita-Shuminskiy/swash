@@ -10,6 +10,8 @@ import {Alert, StyleSheet} from 'react-native'
 import {openBrowserAsync} from "expo-web-browser";
 import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../store/DictionaryStore/type";
+import {routerConstants} from "../../constants/routerConstants";
+import {useGoBack} from "../../utils/hook/useGoBack";
 
 type AboutUsSProps = {
     navigation: NavigationProp<ParamListBase>
@@ -26,7 +28,6 @@ const AboutUsS = ({navigation}: AboutUsSProps) => {
 
         } catch (error) {
             console.log(error.message)
-            Alert.alert(error.message)
         }
     }
     return (

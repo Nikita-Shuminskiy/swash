@@ -4,6 +4,7 @@ import {routerConstants} from '../../../constants/routerConstants'
 import {LastStep, payloadUpdOrderType, StatusOrder} from '../../../api/Client/type'
 import {ReviewOrderPayload, StartOrderPayload} from '../../../api/Client/clientApi'
 import {deviceStorage} from '../../../utils/storage/storage'
+import {checkToken} from "../../../utils/commonUtils";
 
 
 export class OrdersStoreService {
@@ -38,11 +39,11 @@ export class OrdersStoreService {
     async getSettingClient(navigate) {
         //	this.rootStore.Notification.setIsLoading(LoadingEnum.fetching)
         try {
-            const token = await deviceStorage.getItem('token')
-            if (!token) return 'not_token'
+            const checkValidToken = await checkToken()
+            if (!checkValidToken) return 'not_token'
 
             const data = await this.rootStore.AuthStore.getSettingsClient()
-            await this.rootStore.DictionaryStore.getDictionaryLocal(data.client.language)
+            await this.rootStore.DictionaryStore.getDictionaryLocal(data?.client?.language)
 
             if (!data.client.phone_verify_datetime) return navigate && navigate(routerConstants.PHONE_VERIFY)
             if (!data.client.consent_datetime) return navigate && navigate(routerConstants.TERMS_OF_USE)
@@ -85,19 +86,21 @@ export class OrdersStoreService {
                 }
             }
         } catch (e) {
-            console.log(e, 'getSettingClient')
+
         } finally {
             //this.rootStore.Notification.setIsLoading(LoadingEnum.success)
         }
     }
 
     async deleteOrder(comment: string, orders_id: string, navigate) {
+        this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
         try {
             await this.rootStore.OrdersStore.deleteOrder(comment, orders_id)
             await this.rootStore.OrdersStoreService.getSettingClient(navigate)
         } catch (e) {
             console.log(e)
         } finally {
+            this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
         }
     }
 

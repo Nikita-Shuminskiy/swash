@@ -44,7 +44,6 @@ export class DictionaryStore {
                 this.setDictionary(convertDictionary)
                 this.setSelectedLanguage(selectedLanguage)
             }
-            console.log(e.response, 'convertDictionary')
         }
     }
 }

@@ -45,7 +45,7 @@ const ChangeLanguageS = observer(({navigation}: ChangeLanguageSProps) => {
             <Box paddingX={4} mb={6} mt={5} flex={1} justifyContent={'space-between'}>
                 <Box mt={5}>
                     {
-                        clientSettings?.languages.map((lang: LanguageEnum, index) => {
+                        clientSettings?.languages?.map((lang: LanguageEnum, index) => {
                             return <Box key={`${lang}-${index}`} mb={4} paddingY={18} borderRadius={16} paddingX={5}
                                         flexDirection={'row'} alignItems={'center'}
                                         justifyContent={'flex-start'}

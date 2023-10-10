@@ -15,6 +15,8 @@ import AuthStore from "../../../store/AuthStore/auth-store";
 import TypicalMessages from "./TypicalMessages";
 import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../../store/DictionaryStore/type";
+import {useGoBack} from "../../../utils/hook/useGoBack";
+import {routerConstants} from "../../../constants/routerConstants";
 
 type ChatSProps = {
     navigation: NavigationProp<ParamListBase>
@@ -53,8 +55,10 @@ const ChatS = observer(({navigation}: ChatSProps) => {
         }
     }, [])
     const goBack = () => {
-        navigation.goBack()
+        navigation.navigate(routerConstants.ORDERS)
+        return true
     }
+    useGoBack(goBack)
     const renderItem = useCallback(
         ({item}: { item: DialogType }) => {
             return <MessageViewer message={item}/>

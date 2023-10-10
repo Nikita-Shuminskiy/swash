@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Text } from 'native-base'
+import {Avatar, Box, Text} from 'native-base'
 import { Image, TouchableOpacity } from 'react-native'
 import arrowBlue from '../../assets/Images/order/arrowRightBlue.png'
 import { colors } from '../../assets/colors/colors'
@@ -17,7 +17,7 @@ type AvatarProps = {
 	onClose: () => void
 }
 
-const Avatar = observer(({ photo, name, onClose, dictionary }: AvatarProps) => {
+const AvatarUser = observer(({ photo, name, onClose, dictionary }: AvatarProps) => {
 	const photoUrl = `${BASE_URL}${photo}`
 	const navigation = useNavigation<any>()
 	const onPressGoProfile = () => {
@@ -31,7 +31,9 @@ const Avatar = observer(({ photo, name, onClose, dictionary }: AvatarProps) => {
 				 flexDirection={'row'} mb={9}>
 				<Box alignItems={'center'}
 					 flexDirection={'row'}>
-					<Image style={{ width: 48, height: 48, borderRadius: 28 }} resizeMode={'center'} source={{ uri: photoUrl }} />
+					<Avatar size={'md'} source={{
+						uri: photoUrl,
+					}}/>
 					<Box ml={3} flex={1} mr={4}>
 						<Text fontSize={13} fontFamily={'regular'} color={colors.grayLight}>{dictionary[DictionaryEnum.WelcomeBack]}</Text>
 						<Text fontSize={17} fontFamily={'semiBold'}>{name}</Text>
@@ -44,4 +46,4 @@ const Avatar = observer(({ photo, name, onClose, dictionary }: AvatarProps) => {
 	)
 })
 
-export default Avatar
+export default AvatarUser

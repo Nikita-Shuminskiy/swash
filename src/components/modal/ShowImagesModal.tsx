@@ -19,7 +19,7 @@ const ShowImagesModal = ({ visible, onClose, image }: BaseModalProps) => {
 				</Box>
 				<Box paddingY={4}>
 					<Box mt={2}>
-						<Image style={{ width: '100%', height: '100%' }} resizeMode={'contain'} source={{ uri: image }} />
+						<Image style={{ width: '100%', height: '100%' }} resizeMode={'stretch'}  source={{ uri: image }} />
 					</Box>
 				</Box>
 			</BaseWrapperComponent>
