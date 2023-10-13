@@ -11,13 +11,15 @@ import MarkerCustom from './MarkerCustom'
 import rootStore from '../../store/RootStore/root-store'
 import LoadingLocal from '../LoadingLocal'
 import { LoadingEnum } from '../../store/types/types'
+import {DictionaryType} from "../../store/DictionaryStore/dictionary-store";
 
 
 type MapViewsProps = {
 	logisticPoints?: LogisticsPointType[]
 	orderDetail: OrderReportDetailType
+	dictionary: DictionaryType
 }
-export const MapViews = ({ logisticPoints, orderDetail }: MapViewsProps) => {
+export const MapViews = ({ logisticPoints, orderDetail, dictionary }: MapViewsProps) => {
 	const { setIsLoading, setLocalLoading } = NotificationStore
 	const { OrdersStoreService } = rootStore
 	const [mapRef, setMapRef] = useState(null)
@@ -27,14 +29,14 @@ export const MapViews = ({ logisticPoints, orderDetail }: MapViewsProps) => {
 	})
 
 	const getCurrentPosition = async () => {
-		setLocalLoading(LoadingEnum.fetching)
+		//setLocalLoading(LoadingEnum.fetching)
 		try {
 			const { latitude, longitude } = await getCurrentPositionHandler()
 			setMyPosition({ latitude, longitude })
 		} catch (e) {
 
 		} finally {
-			setLocalLoading(LoadingEnum.success)
+		//	setLocalLoading(LoadingEnum.success)
 		}
 	}
 	useEffect(() => {
@@ -66,7 +68,7 @@ export const MapViews = ({ logisticPoints, orderDetail }: MapViewsProps) => {
 		<Box style={styles.container}>
 			<Box zIndex={20} position={'absolute'} top={5} alignItems={'center'} justifyContent={'center'} flex={1}
 					 w={'100%'}>
-				<AddressAutocomplete onSave={onSaveAutoCompleteHandler} />
+				<AddressAutocomplete dictionary={dictionary} onSave={onSaveAutoCompleteHandler} />
 			</Box>
 			<MapView
 				ref={(ref) => setMapRef(ref)}

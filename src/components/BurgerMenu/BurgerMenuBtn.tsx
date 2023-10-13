@@ -3,7 +3,7 @@ import { Image, TouchableOpacity } from 'react-native'
 import burgerImg from '../../assets/Images/burgerMenu.png'
 import { useBurgerMenu } from './BurgerMenuContext'
 
-const BergerMenuImg = ({ openingForced }) => {
+const BergerMenuImg = ({ openingForced }: any) => {
 	const { isMenuOpen, setIsMenuOpen } = useBurgerMenu()
 	useEffect(() => {
 		if (openingForced) {

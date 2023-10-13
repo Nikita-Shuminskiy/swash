@@ -7,14 +7,16 @@ import {
 	LogisticsPointType, payloadUpdOrderType,
 } from './type'
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator'
+import {DictionaryType} from "../../store/DictionaryStore/dictionary-store";
 
 
 export const clientApi = {
 	async getLogisticPoints(payload: { country: string }) {
 		return await instance.get<ResponseLogisticsPoints>(`washapi.php/get_logistics_points`, { params: payload })
 	},
+
 	async getDictionary(payload: { language: string }) {
-		return await instance.get(`washapi.php/get_dictionary`, { params: payload })
+		return await instance.get<DictionaryType>(`washapi.php/get_dictionary`, { params: payload })
 	},
 	async getSettingsClient() {
 		return await instance.get<DataSettingClientType>(`washapi.php/get_settings_client`)
@@ -27,8 +29,8 @@ export const clientApi = {
 	async updateClientPhoto(photo: string) {
 		const resizedImage = await manipulateAsync(
 			photo,
-			[{ resize: { width: 800, height: 800 } }],
-			{ format: 'jpeg' as SaveFormat, compress: 0.8 },
+			[{ resize: { width: 720, height: 1280 } }],
+			{ format: 'jpeg' as SaveFormat, compress: 0.5 },
 		)
 		const formData = new FormData()
 		// @ts-ignore
@@ -45,8 +47,8 @@ export const clientApi = {
 	async saveOrderPhoto(payload: { orders_id: string, photo: string }) {
 		const { orders_id, photo } = payload
 		const resizedImage = await manipulateAsync(
-			photo, [{ resize: { width: 800, height: 600 } }],
-			{ format: 'jpeg' as SaveFormat, compress: 0.8 },
+			photo, [{ resize: {  width: 720, height: 1280 } }],
+			{ format: 'jpeg' as SaveFormat, compress: 0.5 },
 		)
 		const formData = new FormData()
 

@@ -17,6 +17,7 @@ import PaymentMethodS from '../screen/Main/PaymentMethod/PaymentMethodS';
 import ChatS from '../screen/Main/Chat/ChatS';
 
 import { routerConstants } from '../constants/routerConstants';
+import ChangeLanguageS from "../screen/Main/ChangeLanguageS";
 
 type Route = {
 	name: string;
@@ -39,6 +40,7 @@ const authenticatedRoutes: Route[] = [
 	{ name: routerConstants.ORDER_HISTORY, component: OrderHistoryS },
 	{ name: routerConstants.CHANGE_COUNTRY, component: ChangeCountryS },
 	{ name: routerConstants.CHAT_SUPPORT, component: ChatS },
+	{ name: routerConstants.CHANGE_LANGUAGE, component: ChangeLanguageS },
 ];
 
 export default authenticatedRoutes;

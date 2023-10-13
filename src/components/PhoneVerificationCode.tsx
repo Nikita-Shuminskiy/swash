@@ -8,16 +8,21 @@ import { observer } from 'mobx-react-lite'
 import rootStore from '../store/RootStore/root-store'
 import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { routerConstants } from '../constants/routerConstants'
+import {DictionaryType} from "../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../store/DictionaryStore/type";
 
 
 const CELL_COUNT = 5
 type PhoneVerificationProps = {
 	navigation: NavigationProp<ParamListBase>
 	isFromUpdate: boolean
+	dictionary: DictionaryType
 }
-const PhoneVerificationCode = observer(({ navigation, isFromUpdate }: PhoneVerificationProps) => {
+const PhoneVerificationCode = observer(({ navigation, isFromUpdate, dictionary }: PhoneVerificationProps) => {
 	const [code, setCode] = useState('')
-	const { AuthStoreService } = rootStore
+	const { AuthStoreService, AuthStore, OrdersStoreService } = rootStore
+	const { clientSettings } = AuthStore
+
 	const [isValid, setIsValid] = useState(true)
 	const [statusServer, setStatusServer] = useState<'warning' | '' | 'error'>('')
 
@@ -25,8 +30,6 @@ const PhoneVerificationCode = observer(({ navigation, isFromUpdate }: PhoneVerif
 		setCode(newCode)
 		setStatusServer('')
 		setIsValid(true)
-
-
 	}
 	useEffect(() => {
 		if (code.trim().length === 5) {
@@ -41,23 +44,21 @@ const PhoneVerificationCode = observer(({ navigation, isFromUpdate }: PhoneVerif
 					}, 700)
 				}
 				if (data.status === 'ok') {
-					if(isFromUpdate) return navigation.navigate(routerConstants.ORDERS, {from: 'open_menu'})
+					if(isFromUpdate) return navigation.navigate(routerConstants.PROFILE, {from: 'open_menu'})
+					if(clientSettings.client.consent_datetime) {
+						return OrdersStoreService.getSettingClient(navigation.navigate)
+					}
 					navigation.navigate(routerConstants.TERMS_OF_USE)
 				}
 			})
 		}
 	}, [code])
-	const handleVerifyCode = () => {
-
-	}
-
 	const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT })
 
 	const [props, getCellOnLayoutHandler] = useClearByFocusCell({
 		value: code,
 		setValue: handleCodeChange,
 	})
-
 
 	return (
 		<View>
@@ -87,7 +88,7 @@ const PhoneVerificationCode = observer(({ navigation, isFromUpdate }: PhoneVerif
 				)}
 			/>
 			{
-				!isValid && <Text mt={2} fontFamily={'regular'} fontSize={15} color={colors.red}>Incorrect confirmation code</Text>
+				!isValid && <Text mt={2} fontFamily={'regular'} fontSize={15} color={colors.red}>{dictionary[DictionaryEnum.IncorrectConfirmationCode]}</Text>
 			}
 
 		</View>

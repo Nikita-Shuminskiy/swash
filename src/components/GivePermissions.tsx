@@ -9,8 +9,9 @@ import { colors } from '../assets/colors/colors'
 import Button from './Button'
 import { StatusBar } from 'expo-status-bar'
 import * as Notifications from 'expo-notifications'
+import {DictionaryEnum} from "../store/DictionaryStore/type";
 
-const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificationPermissionHandler }) => {
+const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificationPermissionHandler, dictionary }) => {
 	const [errorPermission, setErrorPermission] = useState<boolean>(false)
 	const onPressGivePermission = () => {
 		Promise.all([
@@ -28,7 +29,7 @@ const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificatio
 	}
 	return (
 		<Modal isOpen={visible}>
-			<BaseWrapperComponent styleSafeArea={{ backgroundColor: errorPermission ? colors.redLight : colors.blueLight }}>
+			<BaseWrapperComponent isKeyboardAwareScrollView={true} styleSafeArea={{ backgroundColor: errorPermission ? colors.redLight : colors.white }}>
 				<StatusBar backgroundColor={errorPermission ? colors.redLight : colors.blueLight} />
 				<Box justifyContent={'space-between'} alignItems={'center'}
 						 backgroundColor={errorPermission ? colors.redLight : colors.blueLight}>
@@ -38,21 +39,19 @@ const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificatio
 							<Image style={{ width: '100%' }} source={imgBack} />
 							{
 								errorPermission &&
-								<Text fontSize={15} fontFamily={'regular'} color={colors.red} position={'absolute'} bottom={32}>Error in
-									getting
-									permissions</Text>
+								<Text fontSize={15} fontFamily={'regular'} color={colors.red} position={'absolute'} bottom={32}>{dictionary[DictionaryEnum.ErrorGettingPermissions]}</Text>
 							}
 						</Box>
 						<Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
 								 backgroundColor={colors.white}>
 							<Box flex={1} alignItems={'center'}>
-								<Text fontSize={28} fontFamily={'semiBold'}>Give permissions</Text>
+								<Text fontSize={28} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.GivePermissions]}</Text>
 								<Text textAlign={'center'} fontSize={15} fontFamily={'regular'} color={colors.grayLight}>
-									We need to ask you for camera, geo, push permissions. Without them application wouldn’t work properly
+									{dictionary[DictionaryEnum.WeNeedAskPushGeo]}
 								</Text>
 							</Box>
 							<Box flex={1} w={'100%'}>
-								<Button onPress={onPressGivePermission} styleContainer={styles.styleContainerBtn} title={'Give permissions'}
+								<Button onPress={onPressGivePermission} styleContainer={styles.styleContainerBtn} title={dictionary[DictionaryEnum.GivePermissions]}
 												colorText={colors.white} backgroundColor={errorPermission ? colors.red : colors.blue} />
 							</Box>
 						</Box>

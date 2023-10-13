@@ -4,6 +4,7 @@ import { deviceStorage } from '../../utils/storage/storage'
 import { UserAuthGoogleData } from '../../screen/authScreens/LoginS'
 import { clientApi } from '../../api/Client/clientApi'
 import { ClientRegisterPayloadType, DataSettingClientType, LogisticsPointType } from '../../api/Client/type'
+import {language} from "../../utils/commonUtils";
 import { createAlert } from '../../components/CreateAlert'
 
 export class AuthStore {
@@ -29,15 +30,19 @@ export class AuthStore {
 	}
 
 	async setUserAuthData(userData: UserAuthGoogleData) {
+		const currentDate = new Date().toISOString();
 		await deviceStorage.saveItem('token', userData.token)
 		await deviceStorage.saveItem('clients_id', userData.clients_id)
+		await deviceStorage.saveItem('tokenDate', currentDate)
 	}
 
 	async sendClientCode(formattedPhoneNumber?: string) {
 		const payload = {
 			phone: formattedPhoneNumber ?? this.phone,
 		}
-		return await authApi.sendClientCode(payload)
+
+		const {data} =  await authApi.sendClientCode(payload)
+
 	}
 
 	async sendClientVerifyCode(code: string) {
@@ -50,7 +55,7 @@ export class AuthStore {
 	async getLogisticPoints() {
 		const { data } = await clientApi.getLogisticPoints({ country: 'PL' }) // временно
 		this.setLogisticPoints(data.points)
-		/*		const { data: dataDictionary } = await clientApi.getDictionary({ language })
+		/*
 				const dataPushMessages = await clientApi.getClientPushMessages(payload)*/
 	}
 
@@ -76,29 +81,11 @@ export class AuthStore {
 
 	async sendClientRegister(payload: ClientRegisterPayloadType) {
 		const { data } = await clientApi.sendClientRegister(payload)
-		console.log(data)
 		return data
 	}
-
 	async updateClientPhoto(photo: string) {
 		const { data } = await clientApi.updateClientPhoto(photo)
 		return data
-	}
-
-	async authWithGoogle(id_device: string) {
-		try {
-			const { data } = await authApi.authWithGoogle(id_device)
-			console.log(data.token)
-			await deviceStorage.saveItem('token', data.token)
-			return true
-		} catch (e) {
-			createAlert({
-				title: 'Message',
-				message: `${e}, authWithGoogle cath`,
-				buttons: [{ text: 'Exit' }],
-			})
-			console.log(e, 'auth store')
-		}
 	}
 
 	constructor() {
@@ -113,7 +100,6 @@ export class AuthStore {
 			setClientSettings: action,
 			sendClientVerifyCode: action,
 			getLogisticPoints: action,
-			authWithGoogle: action,
 			setAuth: action,
 			setUserAuthData: action,
 			sendClientCode: action,
@@ -121,7 +107,6 @@ export class AuthStore {
 			setLogisticPoints: action,
 		})
 		this.setAuth = this.setAuth.bind(this)
-		this.authWithGoogle = this.authWithGoogle.bind(this)
 		this.setLogisticPoints = this.setLogisticPoints.bind(this)
 		this.getSettingsClient = this.getSettingsClient.bind(this)
 		this.updateClientPhoto = this.updateClientPhoto.bind(this)

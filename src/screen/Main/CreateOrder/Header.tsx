@@ -10,14 +10,18 @@ import hypoallergenicBlueImg from '../../../assets/Images/order/quill-blue.png'
 import hypoallergenicImg from '../../../assets/Images/order/quil-gray.png'
 import { OrderReportDetailType, payloadUpdOrderType } from '../../../api/Client/type'
 import BergerMenuImg from '../../../components/BurgerMenu/BurgerMenuBtn'
+import {observer} from "mobx-react-lite";
+import {DictionaryType} from "../../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../../store/DictionaryStore/type";
 
 type HeaderProps = {
 	orderDetail: OrderReportDetailType
+	dictionary: DictionaryType
 	onPressDeleteOrder: () => void
 	updateOrder: (payload: payloadUpdOrderType) => void
 }
 
-const Header = ({ orderDetail, onPressDeleteOrder, updateOrder }: HeaderProps) => {
+const Header = observer(({ orderDetail, onPressDeleteOrder, updateOrder, dictionary }: HeaderProps) => {
 	const onPressWithIron = () => {
 		updateOrder({
 			orders_id: orderDetail.orders_id,
@@ -45,7 +49,7 @@ const Header = ({ orderDetail, onPressDeleteOrder, updateOrder }: HeaderProps) =
 				<BtnDelete onPress={onPressDeleteOrder} />
 			</Box>
 			<Text fontSize={28} mt={3} fontFamily={'semiBold'} color={colors.black}>Swash #{orderDetail?.orders_id}</Text>
-			<Text fontSize={22} mt={3} fontFamily={'semiBold'} fontWeight={'600'}>Services</Text>
+			<Text fontSize={22} mt={3} fontFamily={'semiBold'} fontWeight={'600'}>{dictionary[DictionaryEnum.Services]}</Text>
 			<Box mt={2} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
 				<Box flex={1}>
 					<Button
@@ -62,7 +66,7 @@ const Header = ({ orderDetail, onPressDeleteOrder, updateOrder }: HeaderProps) =
 							source={isIron ? ironBlueImg : ironImg}
 						/>
 						<Text fontFamily={'regular'} ml={2} color={isIron ? colors.blue : colors.grayLight}>
-							With iron
+							{dictionary[DictionaryEnum.WithIroning]}
 						</Text>
 					</Button>
 				</Box>
@@ -81,14 +85,14 @@ const Header = ({ orderDetail, onPressDeleteOrder, updateOrder }: HeaderProps) =
 							source={isHypoallergenic ? hypoallergenicBlueImg : hypoallergenicImg}
 						/>
 						<Text fontFamily={'regular'} ml={2} color={isHypoallergenic ? colors.blue : colors.grayLight}>
-							Hypoallergenic
+							{dictionary[DictionaryEnum.Hypoallergenic]}
 						</Text>
 					</Button>
 				</Box>
 			</Box>
 		</>
 	)
-}
+})
 const styles = StyleSheet.create({
 	styleContainerBtn: {
 		width: '100%',

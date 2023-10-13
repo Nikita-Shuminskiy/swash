@@ -18,11 +18,14 @@ import CustomCheckbox from '../../../components/CustomCheckbox'
 import { LogisticsPointType, payloadUpdOrderType } from '../../../api/Client/type'
 import AuthStore from '../../../store/AuthStore/auth-store'
 import PaymentMethod from '../../../components/PaymentMethod'
+import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../../store/DictionaryStore/type";
 
 type CreateOrderProps = {
 	navigation: NavigationProp<ParamListBase>
 }
 const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
+	const {dictionary} = DictionaryStore
 	const { orderDetail } = OrdersStore
 	const { logisticPoints, clientSettings } = AuthStore
 	const { OrdersStoreService } = rootStore
@@ -32,8 +35,6 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 	const deleteOrder = () => {
 		OrdersStoreService.deleteOrder('', orderDetail.orders_id, navigation.navigate)
 	}
-
-
 	const onPressChosePaczkomat = () => {
 		navigation.navigate(routerConstants.LOGISTIC_POINT)
 	}
@@ -54,10 +55,7 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 		OrdersStoreService.updateOrder(payload)
 	}
 	const renderItem = ({ item }: { item: LogisticsPointType }) => {
-
 		const chousenPaczkomat = Number(orderDetail.client_logistic_partners_points_id) === Number(item.id)
-
-
 		const onPressPaczkomat = () => {
 			OrdersStoreService.updateOrder({
 				orders_id: orderDetail.orders_id,
@@ -80,13 +78,13 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 		<>
 			<BaseWrapperComponent isKeyboardAwareScrollView={true}>
 				<Box paddingX={4}>
-					<Header updateOrder={updateOrder} onPressDeleteOrder={onPressDeleteOrder} orderDetail={orderDetail} />
+					<Header dictionary={dictionary} updateOrder={updateOrder} onPressDeleteOrder={onPressDeleteOrder} orderDetail={orderDetail} />
 					<Box mt={2}>
-						<Text fontSize={22} fontFamily={'semiBold'}>Photo</Text>
+						<Text fontSize={22} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.Photo]}</Text>
 						<AddPhotoComponent />
 					</Box>
 					<Box>
-						<Text mb={2} fontSize={22} fontFamily={'semiBold'}>Paczkomat</Text>
+						<Text mb={2} fontSize={22} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.ParcelLocker]}</Text>
 
 						<FlatList keyExtractor={(item, index) => index.toString()} scrollEnabled={false} data={logisticPoints}
 											renderItem={renderItem} />
@@ -94,25 +92,25 @@ const CreateOrder = observer(({ navigation }: CreateOrderProps) => {
 					<Box mt={4} alignItems={'center'}>
 						<Button backgroundColor={colors.blue} styleText={styles.btnText} colorText={colors.white}
 										styleContainer={styles.styleContainerBtn}
-										onPress={onPressChosePaczkomat} title={'Choose new Paczkomat'} />
+										onPress={onPressChosePaczkomat} title={dictionary[DictionaryEnum.ChooseNewParcelLocker]} />
 					</Box>
 					<Box mt={3} borderBottomWidth={1} borderColor={colors.grayBright} />
 					<Box mt={4}>
 						<PaymentMethod onPressChangePayment={onPressChangePayment} />
 					</Box>
 					<Box mt={4}>
-						<Footer orderDetail={orderDetail} navigate={navigation.navigate} onSave={onSendOrder} />
+						<Footer dictionary={dictionary} orderDetail={orderDetail} navigate={navigation.navigate} onSave={onSendOrder} />
 					</Box>
 				</Box>
 			</BaseWrapperComponent>
 			{
 				isShowPopUpCanselSwash &&
-				<BaseBottomPopUp text={'Cancel Swash ?'} onDelete={deleteOrder} visible={isShowPopUpCanselSwash}
+				<BaseBottomPopUp dictionary={dictionary} text={dictionary[DictionaryEnum.CancelSwash]} onDelete={deleteOrder} visible={isShowPopUpCanselSwash}
 												 onClose={() => setIsShowPopUpCanselSwash(false)} />
 			}
 			{
 				isShowModalPayment &&
-				<PaymentMethodPopUp navigation={navigation} visible={isShowModalPayment}
+				<PaymentMethodPopUp dictionary={dictionary} navigation={navigation} visible={isShowModalPayment}
 														onClose={() => setIsShowModalPayment(false)} />
 			}
 

@@ -6,8 +6,8 @@ import { manipulateAsync, SaveFormat } from 'expo-image-manipulator'
 const convertToFormDataImg = async (img) => {
 	const resizedImage = await manipulateAsync(
 		img,
-		[{ resize: { width: 1000, height: 1000 } }],
-		{ format: 'jpeg' as SaveFormat, compress: 0.8 },
+		[{ resize: { width: 720, height: 1280 } }],
+		{ format: 'jpeg' as SaveFormat, compress: 0.5 },
 	)
 	const formData = new FormData()
 	// @ts-ignore
