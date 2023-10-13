@@ -10,7 +10,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build_apk": "eas build -p android --profile preview",
-    "build_dev_android": "eas build --profile development --platform android",
+    "build_dev_android": "npx eas build --profile development --platform android",
     "build_android_aab": "eas build --platform android"
   },
   "dependencies": {
@@ -18,12 +18,14 @@
     "@expo/webpack-config": "^18.0.1",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/netinfo": "9.3.10",
+    "@react-native-firebase/app": "^18.3.0",
+    "@react-native-firebase/messaging": "^18.3.0",
+    "@react-native-google-signin/google-signin": "^10.0.1",
     "@react-native-picker/picker": "2.4.10",
     "axios": "^1.2.1",
     "date-fns": "^2.30.0",
     "expo": "~49.0.2",
     "expo-application": "~5.3.0",
-    "expo-auth-session": "~5.0.2",
     "expo-camera": "~13.4.2",
     "expo-crypto": "~12.4.1",
     "expo-dev-client": "~2.4.8",
@@ -79,6 +81,9 @@
   },
   "eslintConfig": {
     "extends": "universe/native"
+  },
+  "resolutions": {
+    "@react-native/normalize-colors": "0.73.0"
   },
   "private": true
 }
