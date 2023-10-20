@@ -53,9 +53,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 	const onPressLink = async (link: string) => {
 		try {
 			await openBrowserAsync(link)
-
 		} catch (error) {
-			console.log(error.message)
 		}
 	}
 	return (

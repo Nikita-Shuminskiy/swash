@@ -22,16 +22,15 @@ export const getCurrentPositionHandler = async () => {
 	try {
 		const status = await allowLocation()
 		if (status) {
-			let currentLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation })
+			let currentLocation = await Location.getCurrentPositionAsync({
+				accuracy: Location.Accuracy.BestForNavigation,
+			})
+			console.log(currentLocation)
 			const { latitude, longitude } = currentLocation.coords
 			return { latitude, longitude }
 		}
 	} catch (e) {
-/*		createAlert({
-			title: 'Message',
-			message: 'Permission to access location was denied',
-			buttons: [{ text: 'Exit'}],
-		})*/
+		console.log(e, 'getCurrent')
 	} finally {
 	}
 }

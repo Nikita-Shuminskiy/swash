@@ -83,8 +83,8 @@ export class OrdersStore {
 	}
 
 	async getOrderReportClient() {
-		const { data } = await clientApi.getOrderReportClient({})
-		this.setOrders(data)
+		const { data } = await clientApi.getSettingsClient()
+		this.setOrders(data.orders)
 	}
 
 	constructor() {

@@ -29,13 +29,12 @@ export class DictionaryStore {
             this.setDictionary(data)
             this.setSelectedLanguage(language)
         } catch (e) {
-            console.log(e.response)
         }
     }
     getDictionaryLocal = async (languages = 'en') => {
         try {
             const selectedLanguage = await deviceStorage.getItem('selectedLanguage')
-            await this.sendDictionary(selectedLanguage ?? languages)
+            await this.sendDictionary(languages ?? selectedLanguage )
         } catch (e) {
         }
     }

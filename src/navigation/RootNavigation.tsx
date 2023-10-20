@@ -23,6 +23,7 @@ import rootStore from '../store/RootStore/root-store'
 import {useNavigation} from '@react-navigation/native'
 import AboutUsS from '../screen/Main/AboutUsS'
 import {language} from "../utils/commonUtils";
+import {useNotification} from "../utils/hook/useNotification";
 
 
 const RootStack = createNativeStackNavigator()
@@ -38,14 +39,16 @@ const RootNavigation = observer(() => {
         askNotificationPermissionHandler,
         askLocationPermissionHandler,
         locationStatus,
+        notificationStatus
     } = usePermissionsPushGeo()
 
-    const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
+    const checkStatusPermissions =  locationStatus !== 'granted' || notificationStatus !== 'granted'
 
     const {checkInternetConnection, isConnected} = useInternetConnected()
 
     const navigate = useNavigation<any>()
 
+    useNotification()
     useLayoutEffect(() => {
         setIsLoading(LoadingEnum.fetching)
         OrdersStoreService.getSettingClient(navigate?.navigate)

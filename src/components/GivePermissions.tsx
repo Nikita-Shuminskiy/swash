@@ -18,6 +18,7 @@ const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificatio
 			askNotificationPermissionHandler(),
 			askLocationPermissionHandler(),
 		]).then(([notificationStatus, locationStatus]) => {
+			console.log(notificationStatus, 'Notifications.requestPermissionsAsync')
 			if (notificationStatus !== 'granted' || locationStatus !== 'granted') {
 				return setErrorPermission(true)
 			} else {
@@ -28,8 +29,9 @@ const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificatio
 		})
 	}
 	return (
-		<Modal isOpen={visible}>
-			<BaseWrapperComponent isKeyboardAwareScrollView={true} styleSafeArea={{ backgroundColor: errorPermission ? colors.redLight : colors.white }}>
+		<Modal isOpen={visible} >
+			<BaseWrapperComponent isKeyboardAwareScrollView={true}
+								  styleSafeArea={{ backgroundColor: errorPermission ? colors.redLight : colors.white }}>
 				<StatusBar backgroundColor={errorPermission ? colors.redLight : colors.blueLight} />
 				<Box justifyContent={'space-between'} alignItems={'center'}
 						 backgroundColor={errorPermission ? colors.redLight : colors.blueLight}>
@@ -42,7 +44,7 @@ const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificatio
 								<Text fontSize={15} fontFamily={'regular'} color={colors.red} position={'absolute'} bottom={32}>{dictionary[DictionaryEnum.ErrorGettingPermissions]}</Text>
 							}
 						</Box>
-						<Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
+						<Box h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
 								 backgroundColor={colors.white}>
 							<Box flex={1} alignItems={'center'}>
 								<Text fontSize={28} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.GivePermissions]}</Text>

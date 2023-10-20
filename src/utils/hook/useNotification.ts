@@ -5,14 +5,10 @@ import {Platform} from "react-native";
 import {authApi} from "../../api/authApi";
 import AuthStore from "../../store/AuthStore/auth-store";
 
-const sendToken = async (token) => {
-    //const {version, name, deviceName} = getInfoAboutPhone()
-    //console.log(token, 'token')
+const sendToken = async (token: string) => {
     try {
-       const data = await authApi.sendDeviceToken(token)
-        //console.log(data.data, 'ok')
+      await authApi.sendDeviceToken(token)
     } catch (e) {
-        //console.log(e, 'not ok')
     }
 }
 
@@ -26,7 +22,7 @@ export const useNotification = () => {
     const { isAuth} = AuthStore
 
     useEffect(() => {
-        if(!isAuth) {
+        if(isAuth) {
             if (requestUserPermission()) {
                 messaging()
                     .getToken()

@@ -45,7 +45,6 @@ const ChatS = observer(({navigation}: ChatSProps) => {
         }
     }
     useEffect(() => {
-        ChatStoreService.getDialog(true)
         const id = +setInterval(() => {
             ChatStoreService.getDialog()
         }, 10000)

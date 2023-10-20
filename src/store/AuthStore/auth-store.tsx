@@ -1,7 +1,6 @@
 import { action, makeObservable, observable } from 'mobx'
-import { authApi } from '../../api/authApi'
+import {authApi, AuthGooglePayload} from '../../api/authApi'
 import { deviceStorage } from '../../utils/storage/storage'
-import { UserAuthGoogleData } from '../../screen/authScreens/LoginS'
 import { clientApi } from '../../api/Client/clientApi'
 import { ClientRegisterPayloadType, DataSettingClientType, LogisticsPointType } from '../../api/Client/type'
 import {language} from "../../utils/commonUtils";
@@ -29,10 +28,9 @@ export class AuthStore {
 		this.clientSettings = data
 	}
 
-	async setUserAuthData(userData: UserAuthGoogleData) {
+	async setUserAuthData(token: string) {
 		const currentDate = new Date().toISOString();
-		await deviceStorage.saveItem('token', userData.token)
-		await deviceStorage.saveItem('clients_id', userData.clients_id)
+		await deviceStorage.saveItem('token', token)
 		await deviceStorage.saveItem('tokenDate', currentDate)
 	}
 
@@ -87,7 +85,11 @@ export class AuthStore {
 		const { data } = await clientApi.updateClientPhoto(photo)
 		return data
 	}
-
+	async authWithGoogle(payload: AuthGooglePayload) {
+		const { data } = await authApi.authWithGoogle(payload)
+		await this.setUserAuthData(data?.token)
+		return data
+	}
 	constructor() {
 		makeObservable(this, {
 			clientSettings: observable,
@@ -96,6 +98,7 @@ export class AuthStore {
 			phone: observable,
 			setPhone: action,
 			getSettingsClient: action,
+			authWithGoogle: action,
 			updateClientPhoto: action,
 			setClientSettings: action,
 			sendClientVerifyCode: action,

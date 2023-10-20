@@ -14,6 +14,7 @@ import OrdersStore from '../../store/OrdersStore/orders-store'
 import Loaders from 'react-native-pure-loaders'
 import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../store/DictionaryStore/type";
+import userImg from "../../assets/Images/Map/user.svg";
 
 type Coordinates = {
     latitude: number;
@@ -27,7 +28,7 @@ const NavigatingToCheckpointS = observer(({navigation, route}: NavigatingToCheck
     const {dictionary} = DictionaryStore
     const {orderDetail} = OrdersStore
     const isFromExecutorPerfomed = route.params.from === 'takeIt'
-    const [myPosition, setMyPosition] = useState<Coordinates>()
+    const [myPosition, setMyPosition] = useState<Coordinates>(null)
     const goBackPress = () => {
         navigation.goBack()
     }
@@ -45,6 +46,7 @@ const NavigatingToCheckpointS = observer(({navigation, route}: NavigatingToCheck
     const getCurrentPosition = async () => {
         try {
             const {latitude, longitude} = await getCurrentPositionHandler()
+            console.log(latitude, 'latitude')
             setMyPosition({latitude, longitude})
         } catch (e) {
         }
@@ -52,7 +54,7 @@ const NavigatingToCheckpointS = observer(({navigation, route}: NavigatingToCheck
     useEffect(() => {
         getCurrentPosition()
     }, [])
-    const initialRegion = {
+    let initialRegion = {
         latitude: myPosition?.latitude,
         longitude: myPosition?.longitude,
         latitudeDelta: 0.0221,
@@ -62,7 +64,13 @@ const NavigatingToCheckpointS = observer(({navigation, route}: NavigatingToCheck
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true}>
             <Box
-                style={{paddingHorizontal: 16, justifyContent: 'space-between', width: '100%', flex: 1, height: Dimensions.get('window').height}}>
+                style={{
+                    paddingHorizontal: 16,
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    flex: 1,
+                    height: Dimensions.get('window').height
+                }}>
                 <Box>
                     <ArrowBack goBackPress={goBackPress}/>
                     <Box mt={2} mb={2}>
@@ -105,7 +113,7 @@ const NavigatingToCheckpointS = observer(({navigation, route}: NavigatingToCheck
                                     !!myPosition?.latitude && <Marker
                                         focusable={true}
                                         style={{width: 30, height: 30}}
-                                        image={require('../../assets/Images/Map/user.png')}
+                                        image={require('../../assets/Images/Map/user.svg')}
                                         coordinate={myPosition}
                                         title={''}
                                     />

@@ -44,6 +44,9 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
         return true
     }
     useGoBack(onPressGoBack)
+    useEffect(() => {
+        OrdersStoreService.getOrderReportClient()
+    }, []);
     return (
         <>
             <AlertFeedBack dictionary={dictionary} navigation={navigation} route={route}/>

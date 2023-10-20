@@ -31,7 +31,7 @@ const AvatarUser = observer(({ photo, name, onClose, dictionary }: AvatarProps) 
 				 flexDirection={'row'} mb={9}>
 				<Box alignItems={'center'}
 					 flexDirection={'row'}>
-					<Image style={{ width: 48, height: 48, borderRadius: 28 }} resizeMode={'center'} source={{ uri: photoUrl }} />
+					<Image style={{ width: 48, height: 48, borderRadius: 28 }} resizeMode={'cover'} source={{ uri: photoUrl }} />
 					<Box ml={3} flex={1} mr={4}>
 						<Text fontSize={13} fontFamily={'regular'} color={colors.grayLight}>{dictionary[DictionaryEnum.WelcomeBack]}</Text>
 						<Text fontSize={17} fontFamily={'semiBold'}>{name}</Text>

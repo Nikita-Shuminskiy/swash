@@ -61,7 +61,13 @@
     "scheme": "com.nick.swash",
     "plugins": [
       "expo-localization",
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Swash to use your location."
+        }
+      ]
     ]
   }
 }

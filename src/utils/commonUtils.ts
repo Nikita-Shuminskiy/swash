@@ -29,12 +29,9 @@ export const checkToken = async () => {
 		const tokenDateObject = new Date(tokenDate);
 
 		if (isBefore(tokenDateObject, currentDate) && !isBefore(tokenDateObject, oneYearAgo)) {
-			// Токен действителен и хранится менее года
+			//The token is valid and stored for less than a year
 			return true
 		}
-
-		// Токен устарел (хранится более года)
-		console.log('Токен устарел.');
 		await deviceStorage.removeItem('token');
 		await deviceStorage.removeItem('tokenDate');
 		await deviceStorage.removeItem('clients_id')

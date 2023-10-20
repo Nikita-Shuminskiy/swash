@@ -68,11 +68,8 @@ const AvatarProfile = ({photo}) => {
                 }
             })
         } catch (e) {
-            console.log(e)
-        } finally {
         }
     }
-
     useEffect(() => {
         getCameraPermission()
     }, [])

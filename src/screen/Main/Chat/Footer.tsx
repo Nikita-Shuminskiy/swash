@@ -41,7 +41,6 @@ const Footer = ({scrollToBottomHandler, client_typical_messages, dialogLength}: 
                 setCurrentImg(selectedAsset.uri)
             }
         } catch (error) {
-            console.log('Error selecting image from gallery:', error)
         }
     }
     const onPressDeleteImg = () => {

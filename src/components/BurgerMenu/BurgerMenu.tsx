@@ -24,6 +24,7 @@ const BurgerMenu = observer(() => {
     const {isMenuOpen, setIsMenuOpen} = useBurgerMenu()
 
     const {dictionary} = DictionaryStore
+    const {OrdersStoreService, ChatStoreService} = rootStore
 
     const [isOpenLogout, setIsLogout] = useState<boolean>(false)
     const toValue = isMenuOpen ? 0 : -1000
@@ -53,6 +54,20 @@ const BurgerMenu = observer(() => {
     const onPressNavigateHandler = (routeName: any) => {
         navigation.navigate(routeName)
         setIsMenuOpen(false)
+    }
+    const onPressOrderHistoryHandler = () => {
+        OrdersStoreService.getClosedOrders().then((data) => {
+            if (data) {
+                onPressNavigateHandler(routerConstants.ORDER_HISTORY)
+            }
+        })
+    }
+    const onPressChatHandler = () => {
+        ChatStoreService.getDialog(true).then((data) => {
+            if (data) {
+                onPressNavigateHandler(routerConstants.CHAT_SUPPORT)
+            }
+        })
     }
     return (
         <>
@@ -107,10 +122,10 @@ const BurgerMenu = observer(() => {
                                       color={colors.grayLight}>{clientSettings.client?.country}</Text>
                             </Box>
                         </Box>
-                        <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)}
+                        <BurgerLink onPress={onPressOrderHistoryHandler}
                                     img={repeatImg}
                                     text={dictionary[DictionaryEnum.OrderHistory]}/>
-                        <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHAT_SUPPORT)}
+                        <BurgerLink onPress={onPressChatHandler}
                                     img={questionMarkImg}
                                     text={dictionary[DictionaryEnum.ContactSupport]}/>
                         <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.PAYMENT_METHOD)}
