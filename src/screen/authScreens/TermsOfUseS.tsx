@@ -32,12 +32,12 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 		}
 		const currentDate = new Date();
 
-		const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm');
+		const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm:ss');
 		AuthStoreService.sendClientRegister({
 			consent_datetime: formattedDate,
 		}).then((data) => {
 			if(data) {
-				OrdersStoreService.getSettingClient(navigation.navigate)
+				OrdersStoreService.getSettingClient(navigation.navigate, true)
 			}
 		})
 	}

@@ -46,12 +46,12 @@ export class OrdersStoreService {
             const data = await this.rootStore.AuthStore.getSettingsClient()
             await this.rootStore.DictionaryStore.getDictionaryLocal(data?.client?.language)
 
-            if (!data.client.phone_verify_datetime) return navigate && navigate(routerConstants.PHONE_VERIFY)
-            if (!data.client.consent_datetime) return navigate && navigate(routerConstants.TERMS_OF_USE)
+            if (!data?.client.phone_verify_datetime) return navigate && navigate(routerConstants.PHONE_VERIFY)
+            if (!data?.client.consent_datetime) return navigate && navigate(routerConstants.TERMS_OF_USE)
 
             this.rootStore.AuthStore.setAuth(true)
             await this.rootStore.AuthStore.getLogisticPoints()
-            if (!data.orders.length) {
+            if (!data?.orders.length) {
                 const idOrder = await this.rootStore.OrdersStore.createOrderClient({
                     hypo: 0,
                     iron: 0,
@@ -60,17 +60,17 @@ export class OrdersStoreService {
                 navigate && navigate(routerConstants.CREATE_ORDER)
                 return
             }
-            if (data.orders.length === 1) {
-                if (data.orders[0].status === StatusOrder.EDITABLE) {
+            if (data?.orders.length === 1) {
+                if (data?.orders[0].status === StatusOrder.EDITABLE) {
                     await this.rootStore.OrdersStore.getOrderReportDetail(data.orders[0].id)
                 }
                 navigate && navigate(routerConstants.CREATE_ORDER)
                 return
             }
-            if (data.orders.length > 1) {
+            if (data?.orders.length > 1) {
                 const checkInDoneOrder = data.orders.filter(order => order.status.trim() === StatusOrder.IN_PROCESS)
 
-                if (data.orders.length > checkInDoneOrder.length) { // есть ли в массиве заказ с editable
+                if (data?.orders.length > checkInDoneOrder.length) { // есть ли в массиве заказ с editable
                     const orderEditable = data.orders.find(order => order.status.trim() === StatusOrder.EDITABLE)
 
                     if (orderEditable) {
@@ -87,6 +87,7 @@ export class OrdersStoreService {
                 }
             }
         } catch (e) {
+            console.log(e)
             this.rootStore.Notification.setNotification({serverResponse: e?.message})
         } finally {
             isLoading && setTimeout(() => {

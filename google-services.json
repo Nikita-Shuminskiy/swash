@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "298228729066-c9p42a5nn01ctvfa7jhrek971e4cebi6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.nick.swash",
-            "certificate_hash": "fd57f13e40fdca37ed50245c9ef834b9ff08763f"
-          }
-        },
-        {
           "client_id": "298228729066-dismtm0gkkvtl7hurlrgvqcj20kej3k1.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -44,12 +36,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:298228729066:android:d7c243299569b7b3424393",
+        "mobilesdk_app_id": "1:298228729066:android:7d0b62b8d52fa706424393",
         "android_client_info": {
-          "package_name": "com.swash.swashclient"
+          "package_name": "com.swash.executor"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "298228729066-8pvti4rie86gcm35pktd5p497ck67ne6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.swash.executor",
+            "certificate_hash": "567969a170347403a12b5a4826edb1948afa7bb1"
+          }
+        },
         {
           "client_id": "298228729066-dismtm0gkkvtl7hurlrgvqcj20kej3k1.apps.googleusercontent.com",
           "client_type": 3

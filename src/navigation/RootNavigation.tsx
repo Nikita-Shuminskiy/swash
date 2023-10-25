@@ -22,19 +22,23 @@ import authenticatedRoutes from './routesConstants'
 import rootStore from '../store/RootStore/root-store'
 import {useNavigation} from '@react-navigation/native'
 import AboutUsS from '../screen/Main/AboutUsS'
-import {language} from "../utils/commonUtils";
 import {useNotification} from "../utils/hook/useNotification";
-
+import * as Notifications from "expo-notifications";
+import messaging from "@react-native-firebase/messaging";
 
 const RootStack = createNativeStackNavigator()
-
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+    }),
+});
 const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
     const {OrdersStoreService, DictionaryStore} = rootStore
     const {dictionary, selectedLanguage} = DictionaryStore
-
     const {isAuth} = AuthStore
-
     const {
         askNotificationPermissionHandler,
         askLocationPermissionHandler,
@@ -50,6 +54,9 @@ const RootNavigation = observer(() => {
 
     useNotification()
     useLayoutEffect(() => {
+        if (notificationStatus !== 'granted') {
+            askNotificationPermissionHandler()
+        }
         setIsLoading(LoadingEnum.fetching)
         OrdersStoreService.getSettingClient(navigate?.navigate)
             .then((data) => {

@@ -15,6 +15,7 @@ import Loaders from 'react-native-pure-loaders'
 import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../store/DictionaryStore/type";
 import userImg from "../../assets/Images/Map/user.svg";
+import * as Location from "expo-location";
 
 type Coordinates = {
     latitude: number;

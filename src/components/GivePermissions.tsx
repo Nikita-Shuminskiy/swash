@@ -3,8 +3,8 @@ import { BaseWrapperComponent } from './baseWrapperComponent'
 import imgBack from '../assets/Images/backWave.png'
 import imgLook from '../assets/Images/lockBlue.png'
 import imgLookRed from '../assets/Images/imgLookRed.png'
-import { Box, Modal, Text } from 'native-base'
-import { Image, StyleSheet } from 'react-native'
+import { Box, Text } from 'native-base'
+import {Image, Modal, StyleSheet} from 'react-native'
 import { colors } from '../assets/colors/colors'
 import Button from './Button'
 import { StatusBar } from 'expo-status-bar'
@@ -18,7 +18,6 @@ const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificatio
 			askNotificationPermissionHandler(),
 			askLocationPermissionHandler(),
 		]).then(([notificationStatus, locationStatus]) => {
-			console.log(notificationStatus, 'Notifications.requestPermissionsAsync')
 			if (notificationStatus !== 'granted' || locationStatus !== 'granted') {
 				return setErrorPermission(true)
 			} else {
@@ -29,9 +28,10 @@ const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificatio
 		})
 	}
 	return (
-		<Modal isOpen={visible} >
+		<Modal visible={visible} >
+
 			<BaseWrapperComponent isKeyboardAwareScrollView={true}
-								  styleSafeArea={{ backgroundColor: errorPermission ? colors.redLight : colors.white }}>
+								  styleSafeArea={{ backgroundColor: errorPermission ? colors.redLight : colors.white, paddingTop: 0  }}>
 				<StatusBar backgroundColor={errorPermission ? colors.redLight : colors.blueLight} />
 				<Box justifyContent={'space-between'} alignItems={'center'}
 						 backgroundColor={errorPermission ? colors.redLight : colors.blueLight}>
@@ -44,7 +44,7 @@ const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificatio
 								<Text fontSize={15} fontFamily={'regular'} color={colors.red} position={'absolute'} bottom={32}>{dictionary[DictionaryEnum.ErrorGettingPermissions]}</Text>
 							}
 						</Box>
-						<Box h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
+						<Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
 								 backgroundColor={colors.white}>
 							<Box flex={1} alignItems={'center'}>
 								<Text fontSize={28} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.GivePermissions]}</Text>

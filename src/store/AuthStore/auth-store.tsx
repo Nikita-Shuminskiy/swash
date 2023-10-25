@@ -1,10 +1,8 @@
-import { action, makeObservable, observable } from 'mobx'
+import {action, makeObservable, observable} from 'mobx'
 import {authApi, AuthGooglePayload} from '../../api/authApi'
-import { deviceStorage } from '../../utils/storage/storage'
-import { clientApi } from '../../api/Client/clientApi'
-import { ClientRegisterPayloadType, DataSettingClientType, LogisticsPointType } from '../../api/Client/type'
-import {language} from "../../utils/commonUtils";
-import { createAlert } from '../../components/CreateAlert'
+import {deviceStorage} from '../../utils/storage/storage'
+import {clientApi} from '../../api/Client/clientApi'
+import {ClientRegisterPayloadType, DataSettingClientType, LogisticsPointType} from '../../api/Client/type'
 
 export class AuthStore {
 	isAuth: boolean = false

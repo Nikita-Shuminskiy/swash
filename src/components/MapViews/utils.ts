@@ -1,22 +1,22 @@
 import * as Location from 'expo-location'
-import { createAlert } from '../CreateAlert'
+import {createAlert} from '../CreateAlert'
 
 export const allowLocation = async () => {
-	try {
-		let { status } = await Location.requestForegroundPermissionsAsync()
-		if (status !== 'granted') {
-			createAlert({
-				title: 'Message',
-				message: 'Permission to access location was denied',
-				buttons: [{ text: 'Exit' }],
-			})
-			return
-		}
-		return status
-	} catch (e) {
-		console.log('error', e)
-	} finally {
-	}
+    try {
+        let {status} = await Location.requestForegroundPermissionsAsync()
+        if (status !== 'granted') {
+            createAlert({
+                title: 'Message',
+                message: 'Permission to access location was denied',
+                buttons: [{text: 'Exit'}],
+            })
+            return
+        }
+        return status
+    } catch (e) {
+        console.log('error', e)
+    } finally {
+    }
 }
 export const getCurrentPositionHandler = async () => {
 	try {

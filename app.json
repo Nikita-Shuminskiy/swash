@@ -1,6 +1,5 @@
 {
   "expo": {
-    "originalFullName": "@nick_111122/swash",
     "name": "swash",
     "slug": "swash",
     "version": "1.0.1",
@@ -16,15 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "googleServicesFile": "./google-services.json",
       "userInterfaceStyle": "light",
       "supportsTablet": true,
-      "infoPlist": {
-        "LSApplicationQueriesSchemes": [
-          "googlechrome",
-          "https"
-        ]
-      },
       "config": {
         "googleMapsApiKey": "AIzaSyD-3PKe63YHjDDaxjVahTekuyvvOFfwKp4"
       },
@@ -58,16 +50,10 @@
       }
     },
     "owner": "nick_111122",
-    "scheme": "com.nick.swash",
     "plugins": [
+      "@react-native-firebase/app",
       "expo-localization",
-      "@react-native-google-signin/google-signin",
-      [
-        "expo-location",
-        {
-          "locationAlwaysAndWhenInUsePermission": "Allow Swash to use your location."
-        }
-      ]
+      "@react-native-google-signin/google-signin"
     ]
   }
 }

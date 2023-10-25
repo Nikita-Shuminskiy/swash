@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Box } from 'native-base'
+import React, {useEffect, useState} from 'react'
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps'
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native'
+import {Box} from 'native-base'
 import NotificationStore from '../../store/NotificationStore/notification-store'
-import { getCurrentPositionHandler } from './utils'
+import {getCurrentPositionHandler} from './utils'
 import AddressAutocomplete from '../AddressAutocomplete'
 import myPositionImg from '../../assets/Images/Map/MyPosition.png'
-import { LogisticsPointType, OrderReportDetailType } from '../../api/Client/type'
+import {LogisticsPointType, OrderReportDetailType} from '../../api/Client/type'
 import MarkerCustom from './MarkerCustom'
 import rootStore from '../../store/RootStore/root-store'
-import LoadingLocal from '../LoadingLocal'
-import { LoadingEnum } from '../../store/types/types'
 import {DictionaryType} from "../../store/DictionaryStore/dictionary-store";
 
 
@@ -20,7 +18,6 @@ type MapViewsProps = {
 	dictionary: DictionaryType
 }
 export const MapViews = ({ logisticPoints, orderDetail, dictionary }: MapViewsProps) => {
-	const { setIsLoading, setLocalLoading } = NotificationStore
 	const { OrdersStoreService } = rootStore
 	const [mapRef, setMapRef] = useState(null)
 	const [myPosition, setMyPosition] = useState<{ latitude: number, longitude: number }>({
@@ -29,14 +26,12 @@ export const MapViews = ({ logisticPoints, orderDetail, dictionary }: MapViewsPr
 	})
 
 	const getCurrentPosition = async () => {
-		//setLocalLoading(LoadingEnum.fetching)
 		try {
 			const { latitude, longitude } = await getCurrentPositionHandler()
 			setMyPosition({ latitude, longitude })
 		} catch (e) {
 
 		} finally {
-		//	setLocalLoading(LoadingEnum.success)
 		}
 	}
 	useEffect(() => {

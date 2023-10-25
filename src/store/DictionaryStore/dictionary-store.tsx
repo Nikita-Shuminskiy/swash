@@ -1,8 +1,6 @@
-import {action, makeAutoObservable, makeObservable, observable} from 'mobx'
+import {makeAutoObservable} from 'mobx'
 import {clientApi} from '../../api/Client/clientApi'
 import {deviceStorage} from "../../utils/storage/storage";
-import {DictionaryEnum} from "./type";
-import {language} from "../../utils/commonUtils";
 
 export type DictionaryType = {
     [key: string]: string
