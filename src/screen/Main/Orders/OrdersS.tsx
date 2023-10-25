@@ -1,22 +1,20 @@
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback} from 'react'
 import {BaseWrapperComponent} from '../../../components/baseWrapperComponent'
-import {NavigationProp, ParamListBase} from '@react-navigation/native'
+import {NavigationProp, ParamListBase, useFocusEffect} from '@react-navigation/native'
 import BurgerMenuImg from '../../../components/BurgerMenu/BurgerMenuBtn'
 import {observer} from 'mobx-react-lite'
 import OrdersStore from '../../../store/OrdersStore/orders-store'
-import {FlatList} from 'react-native'
+import {BackHandler, FlatList} from 'react-native'
 import {Box, Image, Text} from 'native-base'
 import {LastStep, OrderType} from '../../../api/Client/type'
 import OrderViewer from '../../../components/list-viewer/OrderViewer/OrderViewer'
 import Button from '../../../components/Button'
 import {colors} from '../../../assets/colors/colors'
 import addCircleImage from '../../../assets/Images/plus-circle-white.png'
-import {routerConstants} from '../../../constants/routerConstants'
 import rootStore from '../../../store/RootStore/root-store'
 import AlertFeedBack from '../../../components/AlertFeedBack'
 import {onPressOrderDetails} from "./utils";
 import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
-import {useGoBack} from "../../../utils/hook/useGoBack";
 
 type OrdersSProps = {
     navigation: NavigationProp<ParamListBase>
@@ -43,10 +41,17 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
     const onPressGoBack = () => {
         return true
     }
-    useGoBack(onPressGoBack)
-    useEffect(() => {
-        OrdersStoreService.getOrderReportClient()
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener('hardwareBackPress', onPressGoBack)
+            OrdersStoreService.getOrderReportClient()
+
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', onPressGoBack)
+            };
+        }, [])
+    );
+
     return (
         <>
             <AlertFeedBack dictionary={dictionary} navigation={navigation} route={route}/>

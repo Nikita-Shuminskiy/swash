@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {BaseWrapperComponent} from '../../components/baseWrapperComponent'
 import {NavigationProp, ParamListBase} from '@react-navigation/native'
 import GeneralHeader from '../../components/GeneralHeader'
@@ -48,7 +48,6 @@ const ExecutorStatusS = observer(({navigation, route}: ExecutorStatusSPorps) => 
     const {dictionary} = DictionaryStore
     const statusData = getExecutorInfo(route.params.from, dictionary)
     const isContractorSend = route.params.from === '4'
-
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true}>
             <Box paddingX={4}>

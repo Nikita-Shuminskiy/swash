@@ -35,7 +35,7 @@ const ChangeCountryS = observer(({navigation}: ChangeCountrySProps) => {
     }
     const onPressSave = () => {
         if (!selectedCountry.country) return
-        AuthStoreService.updateUserInfo({country: '131313131'}).then((data) => {
+        AuthStoreService.updateUserInfo({country: selectedCountry.country}).then((data) => {
             if (data) {
                 setIsMenuOpen(true)
             }

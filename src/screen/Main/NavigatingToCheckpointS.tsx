@@ -18,6 +18,7 @@ import userImg from "../../assets/Images/Map/user.svg";
 import * as Location from "expo-location";
 import Svg, {Path, SvgXml} from "react-native-svg";
 import {userSvg} from "../../assets/Images/Svg";
+import {routerConstants} from "../../constants/routerConstants";
 
 type Coordinates = {
     latitude: number;

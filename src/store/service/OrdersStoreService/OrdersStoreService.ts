@@ -108,13 +108,11 @@ export class OrdersStoreService {
     }
 
     async getOrderReportClient() {
-       // this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
         try {
             await this.rootStore.OrdersStore.getOrderReportClient()
         } catch (e) {
             this.rootStore.Notification.setNotification({serverResponse: e?.message})
         } finally {
-           // this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
         }
     }
 
