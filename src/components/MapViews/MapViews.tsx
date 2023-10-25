@@ -10,6 +10,8 @@ import {LogisticsPointType, OrderReportDetailType} from '../../api/Client/type'
 import MarkerCustom from './MarkerCustom'
 import rootStore from '../../store/RootStore/root-store'
 import {DictionaryType} from "../../store/DictionaryStore/dictionary-store";
+import {SvgXml} from "react-native-svg";
+import {userSvg} from "../../assets/Images/Svg";
 
 
 type MapViewsProps = {
@@ -79,10 +81,11 @@ export const MapViews = ({ logisticPoints, orderDetail, dictionary, goBackPress 
 					!!myPosition?.latitude && <Marker
 						focusable={true}
 						style={{ width: 20, height: 20 }}
-						image={require('../../assets/Images/Map/user.png')}
 						coordinate={myPosition}
 						title={''}
-					/>
+					>
+						<SvgXml xml={userSvg} width="100%" height="100%" />
+					</Marker>
 				}
 				{logisticPoints.length && logisticPoints.map((point) => {
 

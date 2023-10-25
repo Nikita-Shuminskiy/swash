@@ -66,6 +66,7 @@ export class OrdersStore {
 		const data = await clientApi.updOrder({
 			...payload,
 		})
+		return data
 	}
 
 	async reviewOrder(payload: Omit<ReviewOrderPayload, 'orders_id'>) {

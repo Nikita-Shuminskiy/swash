@@ -180,7 +180,7 @@ export class OrdersStoreService {
     async updateOrder(payload: payloadUpdOrderType) {
         this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
         try {
-            await this.rootStore.OrdersStore.updateOrder(payload)
+           const data = await this.rootStore.OrdersStore.updateOrder(payload)
             await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
             return true
         } catch (e) {

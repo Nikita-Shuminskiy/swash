@@ -16,6 +16,8 @@ import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../store/DictionaryStore/type";
 import userImg from "../../assets/Images/Map/user.svg";
 import * as Location from "expo-location";
+import Svg, {Path, SvgXml} from "react-native-svg";
+import {userSvg} from "../../assets/Images/Svg";
 
 type Coordinates = {
     latitude: number;
@@ -25,6 +27,7 @@ type NavigatingToCheckpointSProps = {
     navigation: any
     route: any
 }
+
 const NavigatingToCheckpointS = observer(({navigation, route}: NavigatingToCheckpointSProps) => {
     const {dictionary} = DictionaryStore
     const {orderDetail} = OrdersStore
@@ -113,10 +116,11 @@ const NavigatingToCheckpointS = observer(({navigation, route}: NavigatingToCheck
                                     !!myPosition?.latitude && <Marker
                                         focusable={true}
                                         style={{width: 30, height: 30}}
-                                        image={require('../../assets/Images/Map/user.svg')}
                                         coordinate={myPosition}
                                         title={''}
-                                    />
+                                    >
+                                        <SvgXml xml={userSvg} width="100%" height="100%" />
+                                    </Marker>
                                 }
                             </MapView> : <View style={styles.containerLoading}>
                                 <Loaders.Ellipses color={colors.blue}/>
