@@ -46,7 +46,7 @@ const RootNavigation = observer(() => {
         notificationStatus
     } = usePermissionsPushGeo()
 
-    const checkStatusPermissions =  locationStatus !== 'granted' || notificationStatus !== 'granted'
+    const checkStatusPermissions = locationStatus === 'denied'
 
     const {checkInternetConnection, isConnected} = useInternetConnected()
 

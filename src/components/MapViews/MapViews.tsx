@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps'
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native'
 import {Box} from 'native-base'
@@ -16,21 +16,19 @@ type MapViewsProps = {
 	logisticPoints?: LogisticsPointType[]
 	orderDetail: OrderReportDetailType
 	dictionary: DictionaryType
+	goBackPress: () => void
 }
-export const MapViews = ({ logisticPoints, orderDetail, dictionary }: MapViewsProps) => {
+export const MapViews = ({ logisticPoints, orderDetail, dictionary, goBackPress }: MapViewsProps) => {
 	const { OrdersStoreService } = rootStore
 	const [mapRef, setMapRef] = useState(null)
-	const [myPosition, setMyPosition] = useState<{ latitude: number, longitude: number }>({
-		latitude: 54.34544523458879,
-		longitude: 18.66879642843845,
-	})
+	const [myPosition, setMyPosition] = useState<{ latitude: number, longitude: number }>()
 
 	const getCurrentPosition = async () => {
 		try {
 			const { latitude, longitude } = await getCurrentPositionHandler()
 			setMyPosition({ latitude, longitude })
 		} catch (e) {
-
+			console.log(e)
 		} finally {
 		}
 	}
@@ -49,16 +47,22 @@ export const MapViews = ({ logisticPoints, orderDetail, dictionary }: MapViewsPr
 	const onSaveAutoCompleteHandler = () => {
 
 	}
-	if (!myPosition) {
-		return <View style={styles.container} />
-	}
 	const initialRegion = {
-		latitude: myPosition?.latitude,
-		longitude: myPosition?.longitude,
-		latitudeDelta: 0.0922,
-		longitudeDelta: 0.0421,
+		latitude: 54,
+		longitude: 18,
+		latitudeDelta: 12,
+		longitudeDelta: 18,
 	}
-
+	const onPressCheckPoint = useCallback((point: LogisticsPointType) => {
+		OrdersStoreService.updateOrder({
+			orders_id: orderDetail.orders_id,
+			client_logistic_partners_points_id: point.id,
+		}).then((data) => {
+			if(data) {
+				goBackPress()
+			}
+		})
+	}, [])
 	return <>
 		<Box style={styles.container}>
 			<Box zIndex={20} position={'absolute'} top={5} alignItems={'center'} justifyContent={'center'} flex={1}
@@ -81,12 +85,7 @@ export const MapViews = ({ logisticPoints, orderDetail, dictionary }: MapViewsPr
 					/>
 				}
 				{logisticPoints.length && logisticPoints.map((point) => {
-					const onPressCheckPoint = () => {
-						OrdersStoreService.updateOrder({
-							orders_id: orderDetail.orders_id,
-							client_logistic_partners_points_id: point.logistic_partners_id,
-						})
-					}
+
 					return <MarkerCustom onPressCheckPoint={onPressCheckPoint} point={point} key={point.id} />
 				})}
 			</MapView>

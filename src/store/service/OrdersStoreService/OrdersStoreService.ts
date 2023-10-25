@@ -87,7 +87,6 @@ export class OrdersStoreService {
                 }
             }
         } catch (e) {
-            console.log(e)
             this.rootStore.Notification.setNotification({serverResponse: e?.message})
         } finally {
             isLoading && setTimeout(() => {
@@ -183,6 +182,7 @@ export class OrdersStoreService {
         try {
             await this.rootStore.OrdersStore.updateOrder(payload)
             await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
+            return true
         } catch (e) {
             this.rootStore.Notification.setNotification({serverResponse: e?.message})
         } finally {

@@ -47,7 +47,6 @@ const NavigatingToCheckpointS = observer(({navigation, route}: NavigatingToCheck
     const getCurrentPosition = async () => {
         try {
             const {latitude, longitude} = await getCurrentPositionHandler()
-            console.log(latitude, 'latitude')
             setMyPosition({latitude, longitude})
         } catch (e) {
         }

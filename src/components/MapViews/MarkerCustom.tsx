@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 import { Box, Text, Image } from 'native-base'
 import { LogisticsPointType } from '../../api/Client/type'
 import { Marker } from 'react-native-maps'
@@ -8,12 +8,11 @@ import { colors } from '../../assets/colors/colors'
 
 type MarkerCustomProps = {
 	point: LogisticsPointType
-	onPressCheckPoint: () => void
+	onPressCheckPoint: (point: LogisticsPointType) => void
 }
-const MarkerCustom = ({ point, onPressCheckPoint }: MarkerCustomProps) => {
-
+const MarkerCustom = memo(({ point, onPressCheckPoint }: MarkerCustomProps) => {
 	return (
-		<Marker onPress={onPressCheckPoint} title={point.point_name} description={point.address} coordinate={{
+		<Marker onPress={() => onPressCheckPoint(point)} title={point.point_name} description={point.address} coordinate={{
 			latitude: +point.lat,
 			longitude: +point.lon,
 		}}>
@@ -25,6 +24,6 @@ const MarkerCustom = ({ point, onPressCheckPoint }: MarkerCustomProps) => {
 
 		</Marker>
 	)
-}
+})
 
 export default MarkerCustom

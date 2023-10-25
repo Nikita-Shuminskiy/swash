@@ -21,14 +21,11 @@ export const allowLocation = async () => {
 export const getCurrentPositionHandler = async () => {
 	try {
 		const status = await allowLocation()
-		if (status) {
-			let currentLocation = await Location.getCurrentPositionAsync({
-				accuracy: Location.Accuracy.BestForNavigation,
-			})
-			console.log(currentLocation)
-			const { latitude, longitude } = currentLocation.coords
-			return { latitude, longitude }
-		}
+        let currentLocation = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.BestForNavigation,
+        })
+        const { latitude, longitude } = currentLocation.coords
+        return { latitude, longitude }
 	} catch (e) {
 		console.log(e, 'getCurrent')
 	} finally {

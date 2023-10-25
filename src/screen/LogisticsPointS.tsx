@@ -36,7 +36,7 @@ const LogisticsPointS = observer(({navigation}: LogisticsPointProps) => {
                 </Box>
                 <Box/>
             </Box>
-            <MapViews dictionary={dictionary} orderDetail={orderDetail} logisticPoints={logisticPoints}/>
+            <MapViews dictionary={dictionary} goBackPress={goBackPress} orderDetail={orderDetail} logisticPoints={logisticPoints}/>
         </BaseWrapperComponent>
     )
 })

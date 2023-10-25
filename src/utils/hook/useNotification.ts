@@ -1,14 +1,13 @@
 import {useEffect} from "react";
 import messaging from "@react-native-firebase/messaging";
 import * as Notifications from 'expo-notifications';
+import {AndroidNotificationPriority} from 'expo-notifications';
 import {authApi} from "../../api/authApi";
 import AuthStore from "../../store/AuthStore/auth-store";
-import {AndroidNotificationPriority} from "expo-notifications";
+
 const sendToken = async (token: string) => {
-    console.log(token)
     try {
-      const {data} = await authApi.sendDeviceToken(token)
-        console.log(data, 'data')
+        const {data} = await authApi.sendDeviceToken(token)
     } catch (e) {
         console.log(e)
     }
@@ -19,11 +18,11 @@ const requestUserPermission = async () => {
         authStatus === messaging.AuthorizationStatus.PROVISIONAL
 }
 export const useNotification = () => {
-    const { isAuth} = AuthStore
+    const {isAuth} = AuthStore
 
     useEffect(() => {
-        if(isAuth) {
-            if(requestUserPermission()) {
+        if (isAuth) {
+            if (requestUserPermission()) {
                 messaging()
                     .getToken()
                     .then((token) => {
@@ -51,7 +50,7 @@ export const useNotification = () => {
             messaging()
                 .getInitialNotification()
                 .then((remoteMessage) => {
-                    console.log(remoteMessage, 'getInitialNotification')
+                    // console.log(remoteMessage, 'getInitialNotification')
                 });
 
             // Handle push notifications when the app is in the background
@@ -68,10 +67,9 @@ export const useNotification = () => {
                     body: remoteMessage.notification.body,
                     data: remoteMessage.data, // optional data payload
                     sound: true,
-                    vibrate: [12,44,11,33,11],
+                    vibrate: [12, 44, 11, 33, 11],
                     priority: AndroidNotificationPriority.MAX
                 };
-                console.log(remoteMessage)
                 // Schedule the notification with a null trigger to show immediately
                 await Notifications.scheduleNotificationAsync({
                     content: notification,
