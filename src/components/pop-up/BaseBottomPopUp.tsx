@@ -40,7 +40,6 @@ const BaseBottomPopUp = observer(({visible, onClose, onDelete, text, dictionary}
                     <Box flex={1}>
                         <Button styleContainer={{...styles.styleContainerBtn, ...styles.btnYes}} colorText={colors.blue}
                                 onPress={onPressDelete}
-                                styleText={colors.blue}
                                 title={dictionary[DictionaryEnum.Yes]}/>
                     </Box>
                 </Box>
