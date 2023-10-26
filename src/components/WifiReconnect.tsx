@@ -22,7 +22,7 @@ const WifiReconnect = ({visible, checkInternet, dictionary}: WifiReconnectProps)
 
     return (
         <Modal visible={visible}>
-            <BaseWrapperComponent styleSafeArea={{backgroundColor: colors.redLight}}>
+            <BaseWrapperComponent isKeyboardAwareScrollView={true} styleSafeArea={{backgroundColor: colors.redLight}}>
                 <StatusBar backgroundColor={colors.redLight}/>
                 <Box flex={1} w={'100%'} justifyContent={'space-between'} alignItems={'center'}
                      backgroundColor={colors.redLight}>

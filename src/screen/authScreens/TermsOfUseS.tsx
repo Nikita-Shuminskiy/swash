@@ -57,7 +57,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 		}
 	}
 	return (
-		<BaseWrapperComponent styleSafeArea={{ backgroundColor: colors.blueLight }}>
+		<BaseWrapperComponent isKeyboardAwareScrollView={true} styleSafeArea={{ backgroundColor: colors.blueLight }}>
 			<StatusBar backgroundColor={colors.blueLight} />
 			<Box flex={1} w={'100%'} justifyContent={'space-between'} alignItems={'center'}
 					 backgroundColor={colors.blueLight}>

@@ -3,7 +3,7 @@ import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps'
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native'
 import {Box} from 'native-base'
 import NotificationStore from '../../store/NotificationStore/notification-store'
-import {getCurrentPositionHandler} from './utils'
+import {allowLocation, getCurrentPositionHandler} from './utils'
 import AddressAutocomplete from '../AddressAutocomplete'
 import myPositionImg from '../../assets/Images/Map/MyPosition.png'
 import {LogisticsPointType, OrderReportDetailType} from '../../api/Client/type'
@@ -12,6 +12,7 @@ import rootStore from '../../store/RootStore/root-store'
 import {DictionaryType} from "../../store/DictionaryStore/dictionary-store";
 import {SvgXml} from "react-native-svg";
 import {userSvg} from "../../assets/Images/Svg";
+import {createAlert} from "../CreateAlert";
 
 
 type MapViewsProps = {
