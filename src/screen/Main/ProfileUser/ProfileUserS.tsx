@@ -18,7 +18,6 @@ import HeaderGoBackTitle from '../../../components/HeaderGoBackTitle'
 import InputChange from "./InputChange";
 import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../../store/DictionaryStore/type";
-import loginS from "../../authScreens/LoginS";
 
 type ProfileUserSProps = {
     navigation: NavigationProp<ParamListBase>

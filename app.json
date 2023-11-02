@@ -4,6 +4,10 @@
     "slug": "swash",
     "version": "1.0.1",
     "orientation": "portrait",
+    "scheme": [
+      "swash-executor",
+      "fb3631350497192290"
+    ],
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -15,14 +19,16 @@
       "**/*"
     ],
     "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
       "userInterfaceStyle": "light",
       "supportsTablet": true,
       "config": {
-        "googleMapsApiKey": "AIzaSyD-3PKe63YHjDDaxjVahTekuyvvOFfwKp4"
+        "googleMapsApiKey": "AIzaSyDJwL5Sga6m6xvxUVf_yAil6R48AJfs0xE"
       },
       "bundleIdentifier": "com.nick.swash"
     },
     "android": {
+      "useNextNotificationsApi": true,
       "googleServicesFile": "./google-services.json",
       "userInterfaceStyle": "light",
       "adaptiveIcon": {
@@ -32,7 +38,7 @@
       "package": "com.nick.swash",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyD-3PKe63YHjDDaxjVahTekuyvvOFfwKp4"
+          "apiKey": "AIzaSyCR74jQheniMKW9sTcQtVsmF_v42Vn4u38"
         }
       },
       "permissions": [
@@ -53,7 +59,15 @@
     "plugins": [
       "@react-native-firebase/app",
       "expo-localization",
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icons.png",
+          "color": "#50d3d7",
+          "sounds": []
+        }
+      ]
     ]
   }
 }

@@ -27,13 +27,7 @@ import * as Notifications from "expo-notifications";
 import messaging from "@react-native-firebase/messaging";
 
 const RootStack = createNativeStackNavigator()
-Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: true,
-        shouldSetBadge: false,
-    }),
-});
+
 const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
     const {OrdersStoreService, DictionaryStore} = rootStore
@@ -43,20 +37,14 @@ const RootNavigation = observer(() => {
         askNotificationPermissionHandler,
         askLocationPermissionHandler,
         locationStatus,
-        notificationStatus
     } = usePermissionsPushGeo()
 
     const checkStatusPermissions = locationStatus === 'denied'
-
     const {checkInternetConnection, isConnected} = useInternetConnected()
-
     const navigate = useNavigation<any>()
 
-    useNotification()
+    useNotification(isAuth)
     useLayoutEffect(() => {
-        if (notificationStatus !== 'granted') {
-            askNotificationPermissionHandler()
-        }
         setIsLoading(LoadingEnum.fetching)
         OrdersStoreService.getSettingClient(navigate?.navigate)
             .then((data) => {
@@ -77,8 +65,8 @@ const RootNavigation = observer(() => {
 
     return (
         <BurgerMenuProvider>
-            {isLoading === LoadingEnum.fetching && <LoadingGlobal visible={true}/>}
-            {isLocalLoading === LoadingEnum.fetching && <LoadingLocal visible={true}/>}
+            {isLoading === LoadingEnum.fetching && <LoadingGlobal visible={isLoading === LoadingEnum.fetching}/>}
+            {isLocalLoading === LoadingEnum.fetching && <LoadingLocal visible={isLocalLoading === LoadingEnum.fetching}/>}
             {serverResponseText && <Alerts
                 dictionary={dictionary}
                 text={serverResponseText}/>}

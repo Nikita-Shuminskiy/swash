@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {Image} from "native-base";
 import {colors} from "../assets/colors/colors";
@@ -39,7 +39,7 @@ const AddressAutocomplete = ({onSave, dictionary}: AddressAutocompleteProps) => 
             }}
             debounce={200}
             query={{
-                key: 'AIzaSyD-3PKe63YHjDDaxjVahTekuyvvOFfwKp4',
+                key: Platform.OS === 'ios' ? 'AIzaSyDJwL5Sga6m6xvxUVf_yAil6R48AJfs0xE' : 'AIzaSyCR74jQheniMKW9sTcQtVsmF_v42Vn4u38',
                 language: 'en',
             }}
         />
