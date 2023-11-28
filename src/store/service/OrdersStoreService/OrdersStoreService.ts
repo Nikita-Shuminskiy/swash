@@ -44,6 +44,9 @@ export class OrdersStoreService {
             if (!checkValidToken) return 'not_token'
 
             const data = await this.rootStore.AuthStore.getSettingsClient()
+            if (data?.message === 'Incorrect token.') return navigate && navigate(routerConstants.LOGIN)
+            if (data?.message === 'User not found.') return navigate && navigate(routerConstants.LOGIN)
+
             await this.rootStore.DictionaryStore.getDictionaryLocal(data?.client?.language)
 
             if (!data?.client.phone_verify_datetime) return navigate && navigate(routerConstants.PHONE_VERIFY)

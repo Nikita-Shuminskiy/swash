@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Image, StyleSheet} from 'react-native'
 import {BaseWrapperComponent} from '../../components/baseWrapperComponent'
 import imgLogo from '../../assets/Images/logoSwash.png'
@@ -9,21 +9,23 @@ import {colors} from '../../assets/colors/colors'
 import Button from '../../components/Button'
 import {observer} from 'mobx-react-lite'
 import {GoogleSignin, statusCodes} from '@react-native-google-signin/google-signin';
-import NotificationStore from "../../store/NotificationStore/notification-store";
 import rootStore from "../../store/RootStore/root-store";
 import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../store/DictionaryStore/type";
 import {routerConstants} from "../../constants/routerConstants";
-import {useNotification} from "../../utils/hook/useNotification";
+import * as Facebook from "expo-auth-session/providers/facebook";
+import * as WebBrowser from "expo-web-browser";
+import {Prompt} from "expo-auth-session";
 
+WebBrowser.maybeCompleteAuthSession();
 GoogleSignin.configure({
     scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
     webClientId: '298228729066-qtmrfm78vfcs6nmhsup9q5hhp3ilbasu.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-    offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+    offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER
     hostedDomain: '', // specifies a hosted domain restriction
     forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
     accountName: '', // [Android] specifies an account name on the device that should be used
-    iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+    iosClientId: '298228729066-cce5m3a57ir14tfed5o07s9eiv6rse0h.apps.googleusercontent.com', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     googleServicePlistPath: '', // [iOS] if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
     openIdRealm: '', // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
     profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
@@ -31,10 +33,31 @@ GoogleSignin.configure({
 /*androidClientId: '298228729066-qtmrfm78vfcs6nmhsup9q5hhp3ilbasu.apps.googleusercontent.com',
     expoClientId: '298228729066-qtmrfm78vfcs6nmhsup9q5hhp3ilbasu.apps.googleusercontent.com',*/
 export const LoginS = observer(({navigation}: any) => {
-    const {setIsLoading} = NotificationStore
     const {OrdersStoreService, AuthStoreService} = rootStore
     const {dictionary, selectedLanguage} = DictionaryStore
-
+    const [request, response, promptAsync] = Facebook.useAuthRequest({
+        clientId: "679597410577527", // change this for yours 3631350497192290
+        prompt: Prompt.SelectAccount,
+    });
+    useEffect(() => {
+        if (response && response.type === "success" && response.authentication) {
+            (async () => {
+                const userInfoResponse = await fetch(
+                    `https://graph.facebook.com/me?access_token=${response.authentication.accessToken}&fields=id`
+                );
+                const userInfo = await userInfoResponse.json();
+                alert(userInfo.id)
+                console.log(JSON.stringify(response, null, 2));
+            })();
+        }
+    }, [response]);
+    const onPressFacebookHandler = async () => {
+        const result = await promptAsync();
+        if (result.type !== "success") {
+            alert("Uh oh, something went wrong");
+            return;
+        }
+    };
     const loginGoogle = async () => {
         try {
             const data = await GoogleSignin.hasPlayServices();
@@ -80,7 +103,7 @@ export const LoginS = observer(({navigation}: any) => {
                 </Box>
                 <Box alignItems={'center'} w={'100%'}>
                     <Button styleContainer={styles.styleContainerBtn} backgroundColor={colors.blue}
-                            onPress={loginGoogle}
+                            onPress={onPressFacebookHandler}
                     >
 
                         <Box flexDirection={'row'} alignItems={'center'}>

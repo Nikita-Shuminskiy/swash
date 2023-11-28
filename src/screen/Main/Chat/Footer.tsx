@@ -32,8 +32,7 @@ const Footer = ({scrollToBottomHandler, client_typical_messages, dialogLength}: 
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: false,
-                quality: 1,
+                allowsEditing: false
             })
 
             if (!result.canceled) {

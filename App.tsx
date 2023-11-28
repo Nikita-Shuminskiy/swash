@@ -6,6 +6,7 @@ import { LogBox } from 'react-native'
 import { useFonts } from '@expo-google-fonts/inter/useFonts'
 import { NavigationContainer } from '@react-navigation/native'
 import {spy} from "mobx";
+import * as Notifications from "expo-notifications";
 
 LogBox.ignoreLogs([
 	'In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.',
@@ -17,6 +18,13 @@ LogBox.ignoreLogs([
 		console.log(ev, 'ev action')
 	}
 })*/
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: true,
+		shouldPlaySound: true,
+		shouldSetBadge: false,
+	}),
+});
 export default function App() {
 
 	let [fontsLoaded] = useFonts({

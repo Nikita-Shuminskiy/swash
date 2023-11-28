@@ -47,8 +47,8 @@ const BurgerMenu = observer(() => {
         setIsLogout(true)
     }
     const logOutHandler = () => {
-        AuthStoreService.logout()
         navigation.navigate(routerConstants.LOGIN)
+        AuthStoreService.logout()
         setIsMenuOpen(false)
     }
     const onPressNavigateHandler = (routeName: any) => {

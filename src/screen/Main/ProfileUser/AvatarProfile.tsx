@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import {Avatar, Box, Image} from 'native-base'
 import photoImg from '../../../assets/Images/photoWhite.png'
 import {colors} from '../../../assets/colors/colors'
-import {Modal, StyleSheet, TouchableOpacity} from 'react-native'
+import {Modal, Platform, StyleSheet, TouchableOpacity} from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import rootStore from '../../../store/RootStore/root-store'
 import {BASE_URL} from '../../../api/config'
@@ -18,7 +18,7 @@ const AvatarProfile = ({photo}) => {
     const [cameraPermission, setCameraPermission] = useState(null)
     const [isOpenCamera, setIsOpenCamera] = useState(false)
     const [cameraType, setCameraType] = useState<CameraType>(CameraType.back)
-
+    const [ratio, setRatio] = useState<string>('')
     const {AuthStoreService} = rootStore
 
     const [selectedImageUri, setSelectedImageUri] = useState<string>(photoUrl)
@@ -76,6 +76,17 @@ const AvatarProfile = ({photo}) => {
     const changeCameraType = () => {
         setCameraType(cameraType === CameraType.front ? CameraType.back : CameraType.front)
     }
+    useEffect(() => {
+        if(Platform.OS !== 'ios') {
+            if ((cameraPermission && isOpenCamera) && (cameraRef.current && !ratio)) {
+                (async () => {
+                    const getSupportedRatios = await cameraRef.current.getSupportedRatiosAsync()
+                    setRatio(getSupportedRatios[getSupportedRatios.length - 1])
+                })();
+            }
+        }
+    }, [cameraPermission, isOpenCamera]);
+
     return (
         <>
             <TouchableOpacity onPress={() => {
@@ -96,7 +107,7 @@ const AvatarProfile = ({photo}) => {
             </TouchableOpacity>
             {cameraPermission && isOpenCamera && (
                 <Modal visible={isOpenCamera}>
-                    <Camera autoFocus={true} type={cameraType} style={styles.camera}
+                    <Camera autoFocus={true} ratio={ratio ? ratio :'16:9'} type={cameraType} style={styles.camera}
                             ref={cameraRef}>
                         <Box position={'absolute'} top={'5%'} left={5}>
                             <TouchableOpacity onPress={() => {

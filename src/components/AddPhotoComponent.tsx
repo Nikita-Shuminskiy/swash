@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, Image, ImageBackground, Modal, StyleSheet, TouchableOpacity, View } from 'react-native'
+import {FlatList, Image, ImageBackground, Modal, Platform, StyleSheet, TouchableOpacity, View} from 'react-native'
 import { Camera, CameraType, FlashMode,  } from 'expo-camera'
 import addPhotoImage from '../assets/Images/order/add_photo.png'
 import { observer } from 'mobx-react-lite'
@@ -30,7 +30,7 @@ const AddPhotoComponent = observer(() => {
 	const [isDeleteModal, setIsDeleteModal] = useState(false)
 	const [deletedPhotoId, setDeletedPhotoId] = useState('')
 	const [flashMode, setFlashMode] = React.useState<FlashMode>(FlashMode.off)
-
+	const [ratio, setRatio] = useState<string>('')
 	const cameraRef = useRef(null)
 
 	useEffect(() => {
@@ -115,15 +115,16 @@ const AddPhotoComponent = observer(() => {
 			setFlashMode(FlashMode.torch)
 		}
 	}
-	/*useEffect(() => {
-		console.log(cameraPermission)
-		if (cameraPermission && cameraRef.current) {
-			cameraRef.current.getAvailablePictureSizesAsync('4:3').then(sizes => {
-				console.log(sizes)
-			});
+	useEffect(() => {
+		if(Platform.OS !== 'ios') {
+			if ((cameraPermission && isOpenCamera) && (cameraRef.current && !ratio)) {
+				(async () => {
+					const getSupportedRatios = await cameraRef.current.getSupportedRatiosAsync()
+					setRatio(getSupportedRatios[getSupportedRatios.length - 1])
+				})();
+			}
 		}
-	}, [cameraPermission]);*/
-
+	}, [cameraPermission, isOpenCamera]);
 	return (
 		<>
 			<View style={styles.container}>
@@ -150,7 +151,7 @@ const AddPhotoComponent = observer(() => {
 			</View>
 			{cameraPermission && isOpenCamera && (
 				<Modal visible={isOpenCamera}>
-					<Camera pictureSize={'320x240'} type={CameraType.back} flashMode={flashMode} style={styles.camera} ref={cameraRef}>
+					<Camera  ratio={ratio ? ratio :'16:9'} type={CameraType.back} flashMode={flashMode} style={styles.camera} ref={cameraRef}>
 						<Box position={'absolute'} top={'5%'} left={5}>
 							<TouchableOpacity onPress={() => setIsOpenCamera(false)}>
 								<Image source={closeCameraImg} alt={'delete'} />

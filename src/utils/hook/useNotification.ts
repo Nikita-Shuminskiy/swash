@@ -4,6 +4,7 @@ import * as Notifications from 'expo-notifications';
 import {AndroidNotificationPriority} from 'expo-notifications';
 import {authApi} from "../../api/authApi";
 import AuthStore from "../../store/AuthStore/auth-store";
+import {PermissionsAndroid} from "react-native";
 
 const sendToken = async (token: string) => {
     try {
@@ -13,12 +14,12 @@ const sendToken = async (token: string) => {
     }
 }
 const requestUserPermission = async () => {
+    await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
     const authStatus = await messaging().requestPermission();
     return authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL
 }
-export const useNotification = () => {
-    const {isAuth} = AuthStore
+export const useNotification = (isAuth) => {
 
     useEffect(() => {
         if (isAuth) {

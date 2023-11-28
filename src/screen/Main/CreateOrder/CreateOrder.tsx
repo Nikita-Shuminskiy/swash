@@ -30,7 +30,6 @@ type CreateOrderProps = {
 const CreateOrder = observer(({navigation}: CreateOrderProps) => {
     const {dictionary} = DictionaryStore
     const {orderDetail} = OrdersStore
-    const {setLocalLoading} = NotificationStore
     const {logisticPoints, clientSettings} = AuthStore
     const {OrdersStoreService} = rootStore
     const [isShowModalPayment, setIsShowModalPayment] = useState<boolean>(false)
