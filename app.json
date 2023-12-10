@@ -8,6 +8,11 @@
       "swash-executor",
       "fb3631350497192290"
     ],
+    "notification": {
+      "iosDisplayInForeground": true,
+      "color": "#ffffff",
+      "icon": "./assets/notification_icon.png"
+    },
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -60,14 +65,8 @@
       "@react-native-firebase/app",
       "expo-localization",
       "@react-native-google-signin/google-signin",
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/icons.png",
-          "color": "#50d3d7",
-          "sounds": []
-        }
-      ]
+      "expo-notifications",
+      "expo-location"
     ]
   }
 }

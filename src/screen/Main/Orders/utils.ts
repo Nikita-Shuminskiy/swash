@@ -1,24 +1,13 @@
 import {LastStep} from "../../../api/Client/type";
 import {routerConstants} from "../../../constants/routerConstants";
-import {allowLocation, getCurrentPositionHandler} from "../../../components/MapViews/utils";
 
-export const onPressOrderDetails = (navigation, order) => {
+export const processingNavigationOrderStatus = (navigation, order) => {
     switch (order.last_step?.trim()) {
         case LastStep.client_must_get: {
-            getCurrentPositionHandler().then((data) => {
-                if (data) {
-                    return navigation.navigate(routerConstants.EXECUTOR_MAP, {from: 'get'})
-                }
-            })
-            return
+            return navigation.navigate(routerConstants.EXECUTOR_MAP, {from: 'get'})
         }
         case LastStep.executor_perfomed: {
-            getCurrentPositionHandler().then((data) => {
-                if (data) {
-                    return navigation.navigate(routerConstants.EXECUTOR_MAP, {from: 'takeIt'})
-                }
-            })
-            return
+            return navigation.navigate(routerConstants.EXECUTOR_MAP, {from: 'takeIt'})
         }
         case LastStep.client_received: {
             return navigation.navigate(routerConstants.CLIENT_RECEIVED)

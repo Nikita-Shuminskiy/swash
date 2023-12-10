@@ -6,7 +6,7 @@ import {ReviewOrderPayload, StartOrderPayload} from '../../../api/Client/clientA
 import {deviceStorage} from '../../../utils/storage/storage'
 import {checkToken} from "../../../utils/commonUtils";
 import {createAlert} from "../../../components/CreateAlert";
-
+import notifee from "@notifee/react-native";
 
 export class OrdersStoreService {
     rootStore: typeof RootStore
@@ -40,6 +40,7 @@ export class OrdersStoreService {
     async getSettingClient(navigate: (route: string) => void, isLoading = false) {
         isLoading && this.rootStore.Notification.setIsLoading(LoadingEnum.fetching)
         try {
+            const getInitialNotification = await notifee.getInitialNotification()
             const checkValidToken = await checkToken()
             if (!checkValidToken) return 'not_token'
 
@@ -54,6 +55,10 @@ export class OrdersStoreService {
 
             this.rootStore.AuthStore.setAuth(true)
             await this.rootStore.AuthStore.getLogisticPoints()
+            if (getInitialNotification) {
+                await this.rootStore.AuthStoreService.processingNotificationResponse(JSON.parse(<string>getInitialNotification?.notification.data.route))
+                return
+            }
             if (!data?.orders.length) {
                 const idOrder = await this.rootStore.OrdersStore.createOrderClient({
                     hypo: 0,
@@ -90,11 +95,11 @@ export class OrdersStoreService {
                 }
             }
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
             isLoading && setTimeout(() => {
                 this.rootStore.Notification.setIsLoading(LoadingEnum.success)
-            }, 3000)
+            }, 4000)
         }
     }
 
@@ -104,7 +109,7 @@ export class OrdersStoreService {
             await this.rootStore.OrdersStore.deleteOrder(comment, orders_id)
             await this.rootStore.OrdersStoreService.getSettingClient(navigate)
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
             this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
         }
@@ -114,7 +119,7 @@ export class OrdersStoreService {
         try {
             await this.rootStore.OrdersStore.getOrderReportClient()
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
         }
     }
@@ -125,7 +130,7 @@ export class OrdersStoreService {
             await this.rootStore.OrdersStore.startOrder()
             return true
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
             this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
         }
@@ -139,7 +144,7 @@ export class OrdersStoreService {
             this.rootStore.OrdersStore.setOrders(data.orders)
             return true
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
             this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
         }
@@ -150,7 +155,7 @@ export class OrdersStoreService {
             await this.rootStore.OrdersStore.deleteOrderPhoto(photo_id)
             await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
 
         }
@@ -162,7 +167,7 @@ export class OrdersStoreService {
 
             await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
 
         }
@@ -171,8 +176,9 @@ export class OrdersStoreService {
     async getOrderReportDetail(orders_id: string) {
         try {
             await this.rootStore.OrdersStore.getOrderReportDetail(orders_id)
+            return true
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
 
         }
@@ -185,7 +191,7 @@ export class OrdersStoreService {
             await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
             return true
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
             this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
         }
@@ -199,7 +205,7 @@ export class OrdersStoreService {
             await this.rootStore.OrdersStore.setClosedOrder(closedOrders)
             return true
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
             this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
         }

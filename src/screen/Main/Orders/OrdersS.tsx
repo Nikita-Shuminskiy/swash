@@ -13,7 +13,7 @@ import {colors} from '../../../assets/colors/colors'
 import addCircleImage from '../../../assets/Images/plus-circle-white.png'
 import rootStore from '../../../store/RootStore/root-store'
 import AlertFeedBack from '../../../components/AlertFeedBack'
-import {onPressOrderDetails} from "./utils";
+import {processingNavigationOrderStatus} from "./utils";
 import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
 
 type OrdersSProps = {
@@ -27,8 +27,12 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
     const {OrdersStoreService} = rootStore
 
     const onPressDetails = useCallback((order: OrderType) => {
-        OrdersStoreService.getOrderReportDetail(order.id)
-        onPressOrderDetails(navigation, order)
+        OrdersStoreService.getOrderReportDetail(order.id).then((data) => {
+            if(data)  {
+                processingNavigationOrderStatus(navigation, order)
+            }
+        })
+
     }, [])
 
     const renderItem = useCallback(({item}: { item: OrderType }) => {

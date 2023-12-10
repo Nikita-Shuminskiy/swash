@@ -46,16 +46,11 @@ const RootNavigation = observer(() => {
     useNotification(isAuth)
     useLayoutEffect(() => {
         setIsLoading(LoadingEnum.fetching)
-        OrdersStoreService.getSettingClient(navigate?.navigate)
+        OrdersStoreService.getSettingClient(navigate?.navigate, true)
             .then((data) => {
                 if (data === 'not_token') {
                     DictionaryStore.getDictionaryLocal()
                 }
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    setIsLoading(LoadingEnum.success)
-                }, 3000)
             })
     }, [])
 

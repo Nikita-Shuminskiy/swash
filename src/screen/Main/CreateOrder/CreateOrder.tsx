@@ -23,6 +23,7 @@ import {DictionaryEnum} from "../../../store/DictionaryStore/type";
 import {getCurrentPositionHandler} from "../../../components/MapViews/utils";
 import NotificationStore from "../../../store/NotificationStore/notification-store";
 import {LoadingEnum} from "../../../store/types/types";
+import {useGoBack} from "../../../utils/hook/useGoBack";
 
 type CreateOrderProps = {
     navigation: NavigationProp<ParamListBase>
@@ -84,6 +85,10 @@ const CreateOrder = observer(({navigation}: CreateOrderProps) => {
             </Box>
         </Box>
     }
+    const goBack = () => {
+        return true
+    }
+    useGoBack(goBack)
     return (
         <>
             <BaseWrapperComponent isKeyboardAwareScrollView={true}>

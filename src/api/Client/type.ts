@@ -97,7 +97,6 @@ export enum LastStep {
     executor_sent = 'executor_sent',// в процессе
     admin_closed_order = 'admin_closed_order',// не показывать
     client_confirm = 'client_confirm',// не показывать
-
 }
 
 export type UntilsOrderType = {
@@ -178,9 +177,19 @@ type CreateServicesDataType = {
     hypo: number;
     iron: number;
 };
-
+type NotificationResponse = {
+    "0": string,
+    "executor_id": string,
+    "need_to_reading_report": 0 | 1 | null,
+    "push_id": string,
+    "text": string,
+    "order_id": number | null,
+    "type": 'message',
+    "type_of_picture": "go" | "pay" | "alarm" | "bench" | "perfect" | "message" | null
+}
 export {
     payloadUpdOrderType,
+    NotificationResponse,
     DeleteOrderPayload,
     ClientRegisterPayloadType,
     CreateOrderClientPrevType,

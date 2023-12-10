@@ -11,6 +11,8 @@ import Button from '../../components/Button'
 import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 import {observer} from "mobx-react-lite";
 import {DictionaryEnum} from "../../store/DictionaryStore/type";
+import {routerConstants} from "../../constants/routerConstants";
+import {useGoBack} from "../../utils/hook/useGoBack";
 
 type AddNewCartSProps = {
 	navigation: NavigationProp<ParamListBase>
@@ -47,9 +49,11 @@ const AddNewCardS = observer(({ navigation }: AddNewCartSProps) => {
 			setCvv(value)
 		}
 	}
-	const goBackPress = () => {
-		navigation.goBack()
+	const goBack = () => {
+		navigation.navigate(routerConstants.ORDERS)
+		return true
 	}
+	useGoBack(goBack)
 	const saveNewCard = () => {
 		if (isDisabledBtn) return
 	}
@@ -58,7 +62,7 @@ const AddNewCardS = observer(({ navigation }: AddNewCartSProps) => {
 			<Box paddingX={5}>
 				<Box flexDirection={'row'} alignItems={'center'} justifyContent={'center'}>
 					<Box flex={1} position={'relative'} bottom={1}>
-						<ArrowBack goBackPress={goBackPress} />
+						<ArrowBack goBackPress={goBack} />
 					</Box>
 					<Box flex={2} alignItems={'center'} >
 						<Text fontSize={22} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.AddNewCard]}</Text>

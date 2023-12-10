@@ -24,6 +24,9 @@ export const authApi = {
 	async sendDeviceToken(token) {
 		return await instance.post(`washapi.php/client_fcm_token`, {fcm_token: token})
 	},
+	async sendPushReport(push_id: string) {
+		return await instance.post(`push_report`, {}, {params: {push_id}})
+	},
 } //'http://stirka.webd.pro/washapi.php/auth_client_by_google?status=client&country=PL&language=PL',
 export type AuthGooglePayload = {
 	id_token: string

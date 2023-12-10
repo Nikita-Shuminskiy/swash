@@ -1,89 +1,164 @@
 import {useEffect} from "react";
 import messaging from "@react-native-firebase/messaging";
-import * as Notifications from 'expo-notifications';
-import {AndroidNotificationPriority} from 'expo-notifications';
 import {authApi} from "../../api/authApi";
-import AuthStore from "../../store/AuthStore/auth-store";
-import {PermissionsAndroid} from "react-native";
-
-const sendToken = async (token: string) => {
-    try {
-        const {data} = await authApi.sendDeviceToken(token)
-    } catch (e) {
-        console.log(e)
-    }
+import notifee, {AndroidColor, AndroidImportance, AndroidVisibility, EventType} from "@notifee/react-native";
+import * as Notifications from 'expo-notifications';
+import {NotificationResponse} from "../../api/Client/type";
+import rootStore from "../../store/RootStore/root-store";
+const setCategories = async () => {
+    await notifee.setNotificationCategories([
+        {
+            id: 'iosDefault',
+            actions: [
+                {
+                    id: 'ok',
+                    title: 'MAP',
+                    foreground: true,
+                },
+                {
+                    id: 'delete-chat',
+                    title: 'Cansel',
+                    destructive: true,
+                    foreground: true,
+                    // Only show if device is unlocked
+                    authenticationRequired: true,
+                },
+            ],
+        },
+    ]);
 }
-const requestUserPermission = async () => {
-    await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-    const authStatus = await messaging().requestPermission();
-    return authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL
+const createChannel = async () => {
+    return await notifee.createChannel({
+        id: 'id-def',
+        name: 'Default channel',
+        vibration: true,
+        visibility: AndroidVisibility.PUBLIC,
+        sound: 'default',
+        lights: true,
+        badge: true,
+        lightColor: AndroidColor.BLUE,
+        importance: AndroidImportance.HIGH,
+    }) // return channelId
 }
-export const useNotification = (isAuth) => {
-
+export const onDisplayNotification = async (data) => {
+    await setCategories() // for ios
+    const dataAndroid = JSON.parse(data.data.android)
+    const dataIos = JSON.parse(data.data.ios)
+    const channelId = await createChannel()
+    await notifee.displayNotification({
+        title: data.data.title,
+        body: data.data.body,
+        data: {
+            route: data.data.route,
+        },
+        ios: {
+            categoryId: 'iosDefault',
+            threadId: "iosDefault",
+            targetContentId: "iosDefault",
+            interruptionLevel: "active",
+            badgeCount: 0,
+            sound: "default",
+            foregroundPresentationOptions: {
+                banner: true,
+                sound: true,
+                badge: true,
+                list: true,
+                alert: true
+            },
+            launchImageName: "notification_icon",
+            attachments: [{
+                url: "https://cdn.vox-cdn.com/thumbor/MbYxeyxG82sFlibdnv9Br1aCLg8=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/24395697/bkq6gtrpcnw43vsm5zm62q3z.png"
+            }],
+            ...dataIos
+        },
+        android: {
+            channelId,
+            lightUpScreen: true,
+            smallIcon: 'notification_icon',
+            ...dataAndroid
+        }
+    })
+}
+export const useNotification = (isAuth: boolean) => {
+    const {AuthStoreService} = rootStore
     useEffect(() => {
         if (isAuth) {
-            if (requestUserPermission()) {
-                messaging()
-                    .getToken()
-                    .then((token) => {
-                        sendToken(token)
-                    });
-            }
-
-            // Handle user clicking on a notification and open the screen
-            const handleNotificationClick = () => { // response
-                //if (user.role === 'volunteer') return setRedirectFromNotification(routerConstants.DASHBOARD)
-
-            };
-
-            // Listen for user clicking on a notification
-            const notificationClickSubscription =
-                Notifications.addNotificationResponseReceivedListener(
-                    handleNotificationClick
-                );
-
-            // Handle user opening the app from a notification (when the app is in the background)
-            messaging().onNotificationOpenedApp((remoteMessage) => {
-            });
-
-            // Check if the app was opened from a notification (when the app was completely quit)
-            messaging()
-                .getInitialNotification()
-                .then((remoteMessage) => {
-                    // console.log(remoteMessage, 'getInitialNotification')
-                });
-
-            // Handle push notifications when the app is in the background
-            messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-                console.log(remoteMessage)
-                console.log("Message handled in the background!");
-            });
-
-            // Handle push notifications when the app is in the foreground
-            const handlePushNotification = async (remoteMessage) => {
-                console.log('Handle push notifications when the app is in the foreground')
-                const notification = {
-                    title: remoteMessage.notification.title,
-                    body: remoteMessage.notification.body,
-                    data: remoteMessage.data, // optional data payload
-                    sound: true,
-                    vibrate: [12, 44, 11, 33, 11],
-                    priority: AndroidNotificationPriority.MAX
-                };
-                // Schedule the notification with a null trigger to show immediately
-                await Notifications.scheduleNotificationAsync({
-                    content: notification,
-                    trigger: null,
-                });
-            };
-
-            const unsubscribe = messaging().onMessage(handlePushNotification);
-
-            return () => {
-                unsubscribe();
-                notificationClickSubscription.remove();
-            };
+            requestUserPermission().then((data) => {
+                if (data) {
+                    messaging()
+                        .getToken()
+                        .then((token) => {
+                            console.log(token)
+                            sendToken(token);
+                        });
+                }
+            })
         }
+        ;(async () => {
+            //for ios
+            await notifee.requestPermission({
+                sound: true,
+                announcement: true,
+                alert: true,
+                // provisional: true, // тихие увед
+                criticalAlert: true,
+            });
+        })()
     }, [isAuth]);
+    useEffect(() => {
+        // дергается при открытом приложении
+        const unsubscribeForegroundEvent = notifee.onForegroundEvent(async (event) => {
+            const {
+                type,
+                detail: {notification},
+            } = event
+            const dataPush: NotificationResponse = JSON.parse(<string>notification.data.route)
+            if (dataPush?.type === 'message') {
+                await notifee.cancelNotification(notification.id)
+            }
+            if (type === EventType.PRESS || event?.detail?.pressAction?.id) {
+                await AuthStoreService.processingNotificationResponse(JSON.parse(<string>notification.data.route))
+                await notifee.cancelNotification(notification.id)
+            }
+        })
+        // дергается при фоновом и убитом стейте
+        notifee.onBackgroundEvent(async (event) => {
+            const {
+                type,
+                detail: {notification},
+            } = event
+            if (type === EventType.PRESS || event?.detail?.pressAction?.id) {
+                await AuthStoreService.processingNotificationResponse(JSON.parse(<string>notification.data.route))
+                await notifee.cancelNotification(notification.id)
+            }
+        })
+        let unsubscribeOnMessage: () => void = () => {
+            }
+        ;(async () => {
+            unsubscribeOnMessage = messaging().onMessage(onDisplayNotification)
+        })()
+        return () => {
+            unsubscribeForegroundEvent()
+            unsubscribeOnMessage()
+        }
+    }, [])
+};
+
+
+const requestUserPermission = async () => {
+    try {
+        const authStatus = await messaging().requestPermission();
+        // await messaging().registerDeviceForRemoteMessages();
+        return authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    } catch (e) {
+        return false
+    }
+}
+const sendToken = async (token: string) => {
+    try {
+        await authApi.sendDeviceToken(token);
+    } catch (e) {
+        console.log(e, 'sendDeviceToken');
+    }
 }

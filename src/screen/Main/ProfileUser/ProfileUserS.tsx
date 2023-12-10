@@ -18,6 +18,7 @@ import HeaderGoBackTitle from '../../../components/HeaderGoBackTitle'
 import InputChange from "./InputChange";
 import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../../store/DictionaryStore/type";
+import {useGoBack} from "../../../utils/hook/useGoBack";
 
 type ProfileUserSProps = {
     navigation: NavigationProp<ParamListBase>
@@ -35,9 +36,11 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
         email: clientSettings?.client?.email,
     })
 
-    const goBackPress = () => {
-        navigation.goBack()
+    const goBack = () => {
+        navigation.navigate(routerConstants.ORDERS)
+        return true
     }
+    useGoBack(goBack)
     const onPressChangePhone = () => {
         navigation.navigate(routerConstants.PHONE_VERIFY, {from: 'update'})
     }
@@ -78,7 +81,7 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
         <BaseWrapperComponent isKeyboardAwareScrollView={false}>
             <Box paddingX={4} mb={6} mt={3} flex={1} justifyContent={'space-between'}>
                 <Box>
-                    <HeaderGoBackTitle title={dictionary[DictionaryEnum.Account]} goBackPress={goBackPress}/>
+                    <HeaderGoBackTitle title={dictionary[DictionaryEnum.Account]} goBackPress={goBack}/>
                     <Box alignItems={'center'} mt={4}>
                         <AvatarProfile photo={clientSettings.client?.pic}/>
                     </Box>

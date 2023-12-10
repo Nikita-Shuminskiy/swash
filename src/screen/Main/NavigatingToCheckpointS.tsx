@@ -14,11 +14,10 @@ import OrdersStore from '../../store/OrdersStore/orders-store'
 import Loaders from 'react-native-pure-loaders'
 import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../store/DictionaryStore/type";
-import userImg from "../../assets/Images/Map/user.svg";
-import * as Location from "expo-location";
-import Svg, {Path, SvgXml} from "react-native-svg";
-import {userSvg} from "../../assets/Images/Svg";
+import {SvgXml} from "react-native-svg";
+import {homeSvg, userSvg} from "../../assets/Images/Svg";
 import {routerConstants} from "../../constants/routerConstants";
+import {useGoBack} from "../../utils/hook/useGoBack";
 
 type Coordinates = {
     latitude: number;
@@ -33,36 +32,28 @@ const NavigatingToCheckpointS = observer(({navigation, route}: NavigatingToCheck
     const {dictionary} = DictionaryStore
     const {orderDetail} = OrdersStore
     const isFromExecutorPerfomed = route.params.from === 'takeIt'
-    const [myPosition, setMyPosition] = useState<Coordinates>(null)
-    const goBackPress = () => {
-        navigation.goBack()
+    const latitude = Number(orderDetail?.client_logistic_partners_points_lat)
+    const longitude = Number(orderDetail?.client_logistic_partners_points_lon)
+
+    const goBack = () => {
+        navigation.navigate(routerConstants.ORDERS)
+        return true
     }
+    useGoBack(goBack)
 
     const onPressNavigate = () => {
-        if (!myPosition?.latitude) return
-        const endLocation = [+orderDetail.client_logistic_partners_points_lat, +orderDetail.client_logistic_partners_points_lon]
-        const startLocation = [myPosition.latitude, myPosition.longitude]
-
-        const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${startLocation}&destination=${endLocation}`
+        if (!latitude) return
+        const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${[latitude, longitude]}`
         Linking.openURL(googleMapsUrl).catch((err) =>
             console.error('Error opening Google Maps: ', err),
         )
     }
-    const getCurrentPosition = async () => {
-        try {
-            const {latitude, longitude} = await getCurrentPositionHandler()
-            setMyPosition({latitude, longitude})
-        } catch (e) {
-        }
-    }
-    useEffect(() => {
-        getCurrentPosition()
-    }, [])
+
     let initialRegion = {
-        latitude: myPosition?.latitude,
-        longitude: myPosition?.longitude,
-        latitudeDelta: 0.0221,
-        longitudeDelta: 0.0221,
+        latitude: latitude ?? 52.2297,
+        longitude: longitude ?? 21.0122,
+        latitudeDelta: 1.0221,
+        longitudeDelta: 1.0221,
     }
 
     return (
@@ -76,7 +67,7 @@ const NavigatingToCheckpointS = observer(({navigation, route}: NavigatingToCheck
                     height: Dimensions.get('window').height
                 }}>
                 <Box>
-                    <ArrowBack goBackPress={goBackPress}/>
+                    <ArrowBack goBackPress={goBack}/>
                     <Box mt={2} mb={2}>
                         <Text fontSize={28} fontFamily={'semiBold'}>
                             Swash #{orderDetail.orders_id}
@@ -107,26 +98,25 @@ const NavigatingToCheckpointS = observer(({navigation, route}: NavigatingToCheck
                     </Box>
 
                     <Box mt={4} h={200}>
-                        {
-                            myPosition ? <MapView
-                                style={styles.map}
-                                provider={PROVIDER_GOOGLE}
-                                initialRegion={initialRegion}
-                            >
-                                {
-                                    !!myPosition?.latitude && <Marker
-                                        focusable={true}
-                                        style={{width: 30, height: 30}}
-                                        coordinate={myPosition}
-                                        title={''}
-                                    >
-                                        <SvgXml xml={userSvg} width="100%" height="100%" />
-                                    </Marker>
-                                }
-                            </MapView> : <View style={styles.containerLoading}>
-                                <Loaders.Ellipses color={colors.blue}/>
-                            </View>
-                        }
+                        <MapView
+                            style={styles.map}
+                            provider={PROVIDER_GOOGLE}
+                            initialRegion={initialRegion}
+                        >
+                            {
+                                !!latitude && <Marker
+                                    focusable={true}
+                                    style={{width: 30, height: 30}}
+                                    coordinate={{
+                                        latitude: latitude,
+                                        longitude: longitude
+                                    }}
+                                    title={''}
+                                >
+                                    <SvgXml xml={homeSvg} width="100%" height="100%"/>
+                                </Marker>
+                            }
+                        </MapView>
                     </Box>
 
                     <Box mt={4}>

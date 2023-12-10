@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react'
-import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
-import { NavigationProp, ParamListBase } from '@react-navigation/native'
-import { Box, Image, Text } from 'native-base'
+import React from 'react'
+import {BaseWrapperComponent} from '../../components/baseWrapperComponent'
+import {NavigationProp, ParamListBase} from '@react-navigation/native'
+import {Box, Image, Text} from 'native-base'
 import ArrowBack from '../../components/ArrowBack'
-import { observer } from 'mobx-react-lite'
+import {observer} from 'mobx-react-lite'
 import OrdersStore from '../../store/OrdersStore/orders-store'
 import loadingGif from '../../assets/Gif/loadingGif.gif'
 import rootStore from '../../store/RootStore/root-store'
-import { routerConstants } from '../../constants/routerConstants'
-import { BackHandler } from 'react-native'
-import { useGoBack } from '../../utils/hook/useGoBack'
+import {routerConstants} from '../../constants/routerConstants'
+import {useGoBack} from '../../utils/hook/useGoBack'
 import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../store/DictionaryStore/type";
 
