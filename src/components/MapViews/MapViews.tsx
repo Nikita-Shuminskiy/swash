@@ -43,9 +43,7 @@ export const MapViews = ({ logisticPoints, orderDetail, dictionary, goBackPress 
 			})
 		}
 	}, [myPosition])
-	useEffect(() => {
-		getCurrentPosition()
-	}, [])
+
 
 	const onSaveAutoCompleteHandler = () => {
 
@@ -89,7 +87,6 @@ export const MapViews = ({ logisticPoints, orderDetail, dictionary, goBackPress 
 					</Marker>
 				}
 				{logisticPoints.length && logisticPoints.map((point) => {
-
 					return <MarkerCustom onPressCheckPoint={onPressCheckPoint} point={point} key={point.id} />
 				})}
 			</MapView>

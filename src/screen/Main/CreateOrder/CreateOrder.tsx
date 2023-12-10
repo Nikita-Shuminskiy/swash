@@ -40,13 +40,7 @@ const CreateOrder = observer(({navigation}: CreateOrderProps) => {
         OrdersStoreService.deleteOrder('', orderDetail.orders_id, navigation.navigate)
     }
     const onPressChosePaczkomat = async () => {
-        try {
-            const data = await getCurrentPositionHandler()
-            if (data) {
-                navigation.navigate(routerConstants.LOGISTIC_POINT)
-            }
-        } finally {
-        }
+        navigation.navigate(routerConstants.LOGISTIC_POINT)
     }
 
     const onPressChangePayment = () => {

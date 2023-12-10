@@ -50,7 +50,7 @@ const AddNewCardS = observer(({ navigation }: AddNewCartSProps) => {
 		}
 	}
 	const goBack = () => {
-		navigation.navigate(routerConstants.ORDERS)
+		navigation.goBack()
 		return true
 	}
 	useGoBack(goBack)
