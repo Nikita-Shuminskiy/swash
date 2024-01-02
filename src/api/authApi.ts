@@ -1,10 +1,17 @@
 import { instance } from './config'
+import {language} from "../utils/commonUtils";
+import {GlobalSettingsType} from "./Client/type";
 
 export const authApi = {
 	async sendClientCodeVerify(payload: { phone_verify_code: string }) {
 		return await instance.post(`washapi.php/client_code_verify`, null, {
 			params: payload,
 		})
+	},
+	async getGlobalSetting() {
+		return await instance.get<{ result: GlobalSettingsType; status: string }>(
+			`washapi.php/first_settings?language=${language?.slice(0, 2)}`
+		)
 	},
 	async sendClientCode(payload: { phone: string }) {
 		return await instance.post(`washapi.php/client_code_send`, {}, {
@@ -25,7 +32,7 @@ export const authApi = {
 		return await instance.post(`washapi.php/client_fcm_token`, {fcm_token: token})
 	},
 	async sendPushReport(push_id: string) {
-		return await instance.post(`push_report`, {}, {params: {push_id}})
+		return await instance.post(`washapi.php/client_push_report`, {}, {params: {push_id}})
 	},
 } //'http://stirka.webd.pro/washapi.php/auth_client_by_google?status=client&country=PL&language=PL',
 export type AuthGooglePayload = {

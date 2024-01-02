@@ -20,9 +20,6 @@ import AuthStore from '../../../store/AuthStore/auth-store'
 import PaymentMethod from '../../../components/PaymentMethod'
 import DictionaryStore from "../../../store/DictionaryStore/dictionary-store";
 import {DictionaryEnum} from "../../../store/DictionaryStore/type";
-import {getCurrentPositionHandler} from "../../../components/MapViews/utils";
-import NotificationStore from "../../../store/NotificationStore/notification-store";
-import {LoadingEnum} from "../../../store/types/types";
 import {useGoBack} from "../../../utils/hook/useGoBack";
 
 type CreateOrderProps = {

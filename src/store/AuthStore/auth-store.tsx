@@ -2,13 +2,20 @@ import {action, makeObservable, observable} from 'mobx'
 import {authApi, AuthGooglePayload} from '../../api/authApi'
 import {deviceStorage} from '../../utils/storage/storage'
 import {clientApi} from '../../api/Client/clientApi'
-import {ClientRegisterPayloadType, DataSettingClientType, LogisticsPointType} from '../../api/Client/type'
+import {
+	ClientRegisterPayloadType,
+	DataSettingClientType,
+	GlobalSettingsType,
+	LogisticsPointType
+} from '../../api/Client/type'
 
 export class AuthStore {
 	isAuth: boolean = false
 	phone: string = ''
 	logisticPoints: LogisticsPointType[] = [] as LogisticsPointType[]
 	clientSettings: DataSettingClientType = {} as DataSettingClientType
+	isOnboarding: boolean = false
+	globalSettings: GlobalSettingsType | null = null
 
 	setAuth(auth: boolean): void {
 		this.isAuth = auth
@@ -40,7 +47,18 @@ export class AuthStore {
 		const {data} =  await authApi.sendClientCode(payload)
 
 	}
-
+	setGlobalSettings = (data: GlobalSettingsType | null): void => {
+		this.globalSettings = data
+	}
+	setIsOnboarding = (val: boolean) => {
+		this.isOnboarding = val
+	}
+	getGlobalSetting = async () => {
+		const { data } = await authApi.getGlobalSetting()
+		this.setGlobalSettings(data?.result)
+		this.setIsOnboarding(true)
+		return data
+	}
 	async sendClientVerifyCode(code: string) {
 		const payload = {
 			phone_verify_code: code,
@@ -92,6 +110,8 @@ export class AuthStore {
 		makeObservable(this, {
 			clientSettings: observable,
 			isAuth: observable,
+			isOnboarding: observable,
+			globalSettings: observable,
 			logisticPoints: observable,
 			phone: observable,
 			setPhone: action,
@@ -117,6 +137,8 @@ export class AuthStore {
 		this.sendClientVerifyCode = this.sendClientVerifyCode.bind(this)
 		this.getLogisticPoints = this.getLogisticPoints.bind(this)
 		this.setUserAuthData = this.setUserAuthData.bind(this)
+		this.setGlobalSettings = this.setGlobalSettings.bind(this)
+		this.setIsOnboarding = this.setIsOnboarding.bind(this)
 	}
 }
 

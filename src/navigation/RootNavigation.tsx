@@ -25,14 +25,15 @@ import AboutUsS from '../screen/Main/AboutUsS'
 import {useNotification} from "../utils/hook/useNotification";
 import * as Notifications from "expo-notifications";
 import messaging from "@react-native-firebase/messaging";
+import Onboarding from "../components/Onboarding/Onboarding";
 
 const RootStack = createNativeStackNavigator()
 
 const RootNavigation = observer(() => {
-    const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
-    const {OrdersStoreService, DictionaryStore} = rootStore
+    const {isLoading, serverResponseText, isLocalLoading} = NotificationStore
+    const {OrdersStoreService, DictionaryStore, AuthStoreService} = rootStore
     const {dictionary, selectedLanguage} = DictionaryStore
-    const {isAuth} = AuthStore
+    const {isAuth, isOnboarding} = AuthStore
     const {
         askNotificationPermissionHandler,
         askLocationPermissionHandler,
@@ -45,7 +46,7 @@ const RootNavigation = observer(() => {
 
     useNotification(isAuth)
     useLayoutEffect(() => {
-        setIsLoading(LoadingEnum.fetching)
+        AuthStoreService.getGlobalSetting()
         OrdersStoreService.getSettingClient(navigate?.navigate, true)
             .then((data) => {
                 if (data === 'not_token') {
@@ -68,6 +69,7 @@ const RootNavigation = observer(() => {
             {!isConnected && <WifiReconnect
                 dictionary={dictionary}
                 checkInternet={checkInternetConnection} visible={!isConnected}/>}
+            {isOnboarding && <Onboarding visible={isOnboarding} />}
             {checkStatusPermissions && <GivePermissions
                 dictionary={dictionary}
                 askLocationPermissionHandler={askLocationPermissionHandler}

@@ -180,14 +180,32 @@ type CreateServicesDataType = {
 type NotificationResponse = {
     "0": string,
     "executor_id": string,
-    "need_to_reading_report": 0 | 1 | null,
+    "need_to_reading_report": "0" | "1" | null,
     "push_id": string,
     "text": string,
     "order_id": number | null,
     "type": 'message',
     "type_of_picture": "go" | "pay" | "alarm" | "bench" | "perfect" | "message" | null
 }
+type GlobalSettingsType = {
+    client_app_onboarding: ClientOnboardingType
+    client_app_last_version: string
+}
+type ClientOnboardingType = {
+    client_app_onboarding_1: string
+    client_app_onboarding_2: string
+    client_app_onboarding_3: string
+    client_app_onboarding_4: string
+    client_app_onboarding_5: string
+    client_app_onboarding_text_1: string
+    client_app_onboarding_text_2: string
+    client_app_onboarding_text_3: string
+    client_app_onboarding_text_4: string
+    client_app_onboarding_text_5: string
+}
 export {
+    GlobalSettingsType,
+    ClientOnboardingType,
     payloadUpdOrderType,
     NotificationResponse,
     DeleteOrderPayload,
