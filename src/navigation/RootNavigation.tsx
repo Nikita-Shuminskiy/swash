@@ -23,9 +23,8 @@ import rootStore from '../store/RootStore/root-store'
 import {useNavigation} from '@react-navigation/native'
 import AboutUsS from '../screen/Main/AboutUsS'
 import {useNotification} from "../utils/hook/useNotification";
-import * as Notifications from "expo-notifications";
-import messaging from "@react-native-firebase/messaging";
 import Onboarding from "../components/Onboarding/Onboarding";
+import UpdateAppModal from "../components/modal/UpdateAppModal";
 
 const RootStack = createNativeStackNavigator()
 
@@ -33,7 +32,7 @@ const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading} = NotificationStore
     const {OrdersStoreService, DictionaryStore, AuthStoreService} = rootStore
     const {dictionary, selectedLanguage} = DictionaryStore
-    const {isAuth, isOnboarding} = AuthStore
+    const {isAuth, isOnboarding, isNewVersionApp} = AuthStore
     const {
         askNotificationPermissionHandler,
         askLocationPermissionHandler,
@@ -62,14 +61,16 @@ const RootNavigation = observer(() => {
     return (
         <BurgerMenuProvider>
             {isLoading === LoadingEnum.fetching && <LoadingGlobal visible={isLoading === LoadingEnum.fetching}/>}
-            {isLocalLoading === LoadingEnum.fetching && <LoadingLocal visible={isLocalLoading === LoadingEnum.fetching}/>}
+            {isLocalLoading === LoadingEnum.fetching &&
+                <LoadingLocal visible={isLocalLoading === LoadingEnum.fetching}/>}
             {serverResponseText && <Alerts
                 dictionary={dictionary}
                 text={serverResponseText}/>}
             {!isConnected && <WifiReconnect
                 dictionary={dictionary}
                 checkInternet={checkInternetConnection} visible={!isConnected}/>}
-            {isOnboarding && <Onboarding visible={isOnboarding} />}
+            {isOnboarding && <Onboarding visible={isOnboarding}/>}
+            {isNewVersionApp && <UpdateAppModal visible={isNewVersionApp}/>}
             {checkStatusPermissions && <GivePermissions
                 dictionary={dictionary}
                 askLocationPermissionHandler={askLocationPermissionHandler}

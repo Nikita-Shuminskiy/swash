@@ -8,9 +8,10 @@ import {
 	GlobalSettingsType,
 	LogisticsPointType
 } from '../../api/Client/type'
-
+import Constants from 'expo-constants'
 export class AuthStore {
 	isAuth: boolean = false
+	isNewVersionApp: boolean = false
 	phone: string = ''
 	logisticPoints: LogisticsPointType[] = [] as LogisticsPointType[]
 	clientSettings: DataSettingClientType = {} as DataSettingClientType
@@ -49,6 +50,9 @@ export class AuthStore {
 	}
 	setGlobalSettings = (data: GlobalSettingsType | null): void => {
 		this.globalSettings = data
+		if (Constants?.expoConfig?.version < data?.client_app_last_version) {
+			this.isNewVersionApp = true
+		}
 	}
 	setIsOnboarding = (val: boolean) => {
 		this.isOnboarding = val
@@ -56,7 +60,10 @@ export class AuthStore {
 	getGlobalSetting = async () => {
 		const { data } = await authApi.getGlobalSetting()
 		this.setGlobalSettings(data?.result)
-		this.setIsOnboarding(true)
+		const isShowOnboarding = await deviceStorage.getItem('onboarding')
+		if (!isShowOnboarding || isShowOnboarding === 'false') {
+			this.setIsOnboarding(true)
+		}
 		return data
 	}
 	async sendClientVerifyCode(code: string) {
@@ -109,6 +116,7 @@ export class AuthStore {
 	constructor() {
 		makeObservable(this, {
 			clientSettings: observable,
+			isNewVersionApp: observable,
 			isAuth: observable,
 			isOnboarding: observable,
 			globalSettings: observable,
